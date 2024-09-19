@@ -86,6 +86,27 @@
 
                     }
 
+                    function interface_comentarios_hijos(data){
+
+                        let child_comments = '<ul>';
+
+                        data.forEach(key=>{
+
+                            child_comments+=`<li class="list-group-item comments box_comment">
+                              <img src="${dominio}/${key.foto_url}" class="rounded" style="width:38px;height:38px;">
+                                <strong class='fontUserComent'>${key.usuario} <span class='fechaText' style='float: right;'>${key.fecha_creacion}</span></strong><br/>
+                                 &nbsp;<span class='fontComent'>${key.text_coment}</span>
+                                  &nbsp;<svg style='cursor:pointer;float:right' id='${key.id_comentario}' 
+                                  onclick="borrar_comentario(${key.id_comentario})" xmlns="http://www.w3.org/2000/svg" 
+                                  width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                            </li>`;
+
+                        });
+
+                        return child_comments+='</ul>';
+                        
+                    }
+
 
                     function cargar_comentarios(id_tablero) {
                         let comentarios_html = '';
@@ -99,10 +120,19 @@
                     
                         axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
                             .then(info => {
+                                //console.log("DEBUG "+data.info.comentarios_hijos);
+
                                 console.log('Datos recibidos:', info.data); // Verifica los datos recibidos
-                    
+
+
+                                
+                                 
                                 let domain;
                                 info.data.forEach(data => {
+
+                          
+                                    let childs_comments = interface_comentarios_hijos(data.comentarios_hijos);
+
                                     if (data.data_og !== "[]") {
                                         data_ogs = JSON.parse(data.data_og);
                                         domain = (new URL(data_ogs.url));
@@ -133,14 +163,22 @@
                                                 <strong class='fontUserComent'>${data.usuario} <span class='fechaText' style='float: right;'>${data.fecha_publicacion}</span></strong><br/>
                                                 ${interface_ogs}
                                                 &nbsp;<span class='fontComent'>${data.texto}</span>
-                                                &nbsp;<svg style='cursor:pointer;float:right' id='${data.id_comentario}' onclick="borrar_comentario(${data.id_comentario})" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
-                                                    <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"/>
+                                                &nbsp;<svg style='cursor:pointer;float:right' id='${data.id_comentario}' 
+                                                    onclick="borrar_comentario(${data.id_comentario})" xmlns="http://www.w3.org/2000/svg" 
+                                                    width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                                                    <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 
+                                                    1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 
+                                                    2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 
+                                                    2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 
+                                                    0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0
+                                                     1-.707-.708L7.976 8 5.829 5.854z"/>
                                                 </svg><br/>
                                                 <i class="fa-regular fa-thumbs-up" style='cursor:pointer'></i>
                                                 <i class="fa-regular fa-thumbs-down" style='cursor:pointer'></i>
                                                 <i class="fa-solid fa-heart-crack" style='cursor:pointer'></i>
-                                                <i class="fa-solid fa-reply reply_coment" id='${data.usuario}_${data.id_comentario}' style='cursor:pointer'></i>
-                                            </li>`;
+                                                <i class="fa-solid fa-reply reply_coment" id='${data.usuario}_${data.id_comentario}' style='cursor:pointer'></i>  
+                                                ${childs_comments}
+                                          </li>`;
                                     } else {
                                         comentarios_html += `
                                             <li class="list-group-item box_comment" id_comment='0'>
@@ -152,6 +190,7 @@
                                                 <i class="fa-regular fa-thumbs-down" style='cursor:pointer'></i>
                                                 <i class="fa-solid fa-heart-crack" style='cursor:pointer'></i>
                                                 <i class="fa-solid fa-reply reply_coment" id='${data.usuario}_${data.id_comentario}' style='cursor:pointer'></i>
+                                                 ${childs_comments}
                                             </li>`;
                                     }
                                 });
@@ -159,7 +198,7 @@
                                 const comentariosElement = document.getElementById('data_coments');
                                 if (comentariosElement) {
                                     comentariosElement.innerHTML = comentarios_html;
-                                    console.log('Comentarios HTML:', comentarios_html); // Verifica el HTML insertado
+                                  //  console.log('Comentarios HTML:', comentarios_html); // Verifica el HTML insertado
                                 } else {
                                     console.error('Elemento con id "data_coments" no encontrado.');
                                 }

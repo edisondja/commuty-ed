@@ -50,10 +50,16 @@ Class Coment extends EncryptToken{
 				$read->bind_param('iss',$id_post,$tipo_post,$estado);
 				$read->execute();
 				$ejecutar = $read->get_result();
+
 		
 				foreach ($ejecutar as $key) {
-						$data[] = $key;
+
+
+					$key['comentarios_hijos'] = $this->load_childs_coment($key['id_comentario']);
+					$data[] = $key;
+
 				}
+
 				echo json_encode($data);
 		}
 
@@ -152,24 +158,41 @@ Class Coment extends EncryptToken{
 
 		}
 
-		function load_childs_coment($id_coment){
+		function load_childs_coment($id_coment,$config='asoc'){
 
-			$sql = "select * from reply_coment where coment_id=?";
+			$sql = "select ch.text_coment,ch.user_id,ch.coment_id,
+			ch.fecha_creacion,ch.estado,us.usuario,us.foto_url from
+			reply_coment as ch
+				inner join user us on ch.user_id=us.id_user
+			where ch.coment_id=? order by ch.fecha_creacion desc";
 			$load = $this->conection->prepare($sql);	
-			
+
+
 			try{
 				$load->bind_param('i',$id_coment);
 				$load->execute();
 				$data = $load->get_result();
-				$coments_childs = [];
+				$comentarios = [];
+
 
 				foreach($data as $key){
 
-					$data[] = $key;
+					$comentarios[] = $key;
 
 				}
+              
+				if($config=='asoc'){
 
-				echo json_encode($coments_childs);
+					return $comentarios;
+
+				}else{
+
+					echo json_encode($comentarios);
+
+
+				}
+			
+		
 
 		   }catch(Exception $e){
 
