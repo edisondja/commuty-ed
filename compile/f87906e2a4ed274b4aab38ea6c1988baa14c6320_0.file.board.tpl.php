@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-07 19:20:29
+/* Smarty version 4.5.3, created on 2024-09-19 05:26:55
   from 'C:\xampp\htdocs\ventasrd\template\board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66dc8b5d6e2af4_52072232',
+  'unifunc' => 'content_66eb99ff75ed79_24391563',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f87906e2a4ed274b4aab38ea6c1988baa14c6320' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\board.tpl',
-      1 => 1725727822,
+      1 => 1726716413,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66dc8b5d6e2af4_52072232 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66eb99ff75ed79_24391563 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 

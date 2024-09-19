@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-07 19:28:16
+/* Smarty version 4.5.3, created on 2024-09-19 05:41:25
   from 'C:\xampp\htdocs\ventasrd\template\single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66dc8d30bead23_19825361',
+  'unifunc' => 'content_66eb9d65c04a40_28481680',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1a17874b554ac522b687cb138c1647be6616dddc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\single_board.tpl',
-      1 => 1725730058,
+      1 => 1726717284,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66dc8d30bead23_19825361 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66eb9d65c04a40_28481680 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row">
@@ -80,11 +80,10 @@ function content_66dc8d30bead23_19825361 (Smarty_Internal_Template $_smarty_tpl)
                 <img src="" class="img-fluid card-img-top" style='' />
                 <div id="carouselExampleControls" class="carousel slide" >
                     <div class="carousel-inner fixed-size-carousel">
-                        <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value == '' && $_smarty_tpl->tpl_vars['og_imagen']->value !== '') {?>
+                        <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value == array() && $_smarty_tpl->tpl_vars['og_imagen']->value !== '') {?>
 
                         <img src="<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
 " style='' class="card-img-top fixed-size-image" alt="...">
-
                         <?php }?>
                         <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value) {?>
                         <div class="carousel-item active">

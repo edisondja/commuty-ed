@@ -48,10 +48,9 @@
                 <img src="" class="img-fluid card-img-top" style='' />
                 <div id="carouselExampleControls" class="carousel slide" >
                     <div class="carousel-inner fixed-size-carousel">
-                        {if  $multimedias_t=='' &&  $og_imagen!==''}
+                        {if  $multimedias_t==[] &&  $og_imagen!==''}
 
                         <img src="{$og_imagen}" style='' class="card-img-top fixed-size-image" alt="...">
-
                         {/if}
                         {if $multimedias_t}
                         <div class="carousel-item active">
