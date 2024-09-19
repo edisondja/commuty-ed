@@ -1,6 +1,40 @@
-# canjuro
-Red social
+<h2>Descripción de la Arquitectura del Proyecto</h2>
 
+<p>El proyecto está basado en una <strong>arquitectura modular en capas</strong> que organiza de manera eficiente los componentes del sistema para mantener una clara separación de responsabilidades y facilitar el desarrollo, mantenimiento y escalabilidad. Esta estructura sigue principios de <strong>MVC (Modelo-Vista-Controlador)</strong>, con personalizaciones específicas.</p>
+
+<h3>1. Capa de Presentación (Smarty)</h3>
+<ul>
+  <li><strong>Componentes de Smarty:</strong> Los componentes de Smarty están organizados en una carpeta dedicada, donde cada uno representa una parte de la interfaz de usuario. Estos componentes son reutilizables y están diseñados para recibir datos de la lógica de negocio para renderizar la vista correspondiente. Los componentes Smarty se encargan de la presentación visual, manteniendo la lógica de UI desacoplada del resto del sistema.</li>
+</ul>
+
+<h3>2. Capa de Lógica de Negocio</h3>
+<ul>
+  <li><strong>Modelos (PHP):</strong> Los modelos se almacenan en una carpeta separada y son responsables de gestionar la interacción con la base de datos u otras fuentes de datos. Los modelos siguen el principio de desacoplar la lógica de negocio del resto de la aplicación, facilitando su reutilización en diferentes partes del sistema.</li>
+  <li><strong>Controladores (PHP):</strong> Los scripts PHP encargados de llamar a los componentes Smarty actúan como controladores. Estos scripts coordinan la lógica de negocio y la presentación, gestionando la interacción entre los modelos y las vistas (componentes Smarty). Los controladores no están acoplados directamente a la lógica de presentación, lo que permite una mayor flexibilidad y mantenimiento.</li>
+</ul>
+
+<h3>3. Capa de Interacción Cliente (JavaScript)</h3>
+<ul>
+  <li><strong>JavaScript Vanilla:</strong> Los scripts de JavaScript están organizados en carpetas específicas, separadas por funcionalidad o características. Cada script se incluye en los componentes de Smarty que lo requieren, asegurando que la lógica de interacción del cliente esté encapsulada dentro de cada componente. Esto promueve la modularidad y asegura que solo se cargue el código necesario en cada vista.</li>
+</ul>
+
+<h3>4. Gestión Global de Recursos (CDNs y Configuración)</h3>
+<ul>
+  <li><strong>Función Global para Cargar CDNs:</strong> Se ha implementado una función global que gestiona la inclusión de recursos externos, como librerías o estilos, a través de CDNs. Esto centraliza la gestión de dependencias y asegura que todas las vistas y componentes puedan reutilizar estos recursos de manera consistente y eficiente.</li>
+  <li><strong>Archivo de Configuración para el Deploy:</strong> El proyecto cuenta con un archivo de configuración centralizado que gestiona las variables y configuraciones necesarias para el despliegue en diferentes entornos. Esto permite un proceso de deploy más automatizado y organizado, asegurando que todas las configuraciones específicas del entorno estén centralizadas en un solo lugar.</li>
+</ul>
+
+<h3>5. Modularidad y Escalabilidad</h3>
+<ul>
+  <li>La arquitectura es completamente modular, con una clara separación de archivos y carpetas según la responsabilidad de cada componente. Esto permite que los desarrolladores trabajen en diferentes partes del sistema de manera independiente, favoreciendo la escalabilidad del proyecto y la reutilización de componentes en futuras expansiones.</li>
+</ul>
+
+<p>En resumen, la arquitectura del proyecto está diseñada para maximizar la modularidad, facilitar el mantenimiento y promover una clara separación de responsabilidades a través de una estructura en capas. Esto asegura que cada parte del sistema pueda desarrollarse y escalarse de manera independiente, sin generar un acoplamiento innecesario entre componentes o funcionalidades.</p>
+
+
+
+
+community-ed
 <p>
   Canjuro es un proyecto basado en una red social donde los usuarios podran compartir su contenido
   libre de expresion, teniendo sus propias tiendas si lo desean y sus pagos podran ser recibidos por paypal
