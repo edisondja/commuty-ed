@@ -1,0 +1,13 @@
+{
+    "require": {
+        "slim/php-view": "^2.2",
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.4",
+        "smarty/smarty": "^4.2",
+        "firebase/php-jwt": "^6.3",
+        "fusonic/opengraph": "^2.2",
+        "symfony/http-client": "^5.4",
+         "phpmailer/phpmailer": "^6.0",
+        "nyholm/psr7": "^1.5"
+    }
+}

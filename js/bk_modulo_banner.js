@@ -1,0 +1,4 @@
+
+
+
+alertifiy.message('testing');

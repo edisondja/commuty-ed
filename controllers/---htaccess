@@ -1,0 +1,92 @@
+		 Options +FollowSymLinks
+		 RewriteEngine on
+		#ErrorDocument 404 https://pornnetflix.com
+	         		
+		
+		 RewriteRule ^playvideo/([0-9]+)/(.*)$ playvideo.php?id=$1/$2
+
+	         RewriteRule ^leaf/([0-9]+)$ index.php?page=$1 [L]
+
+		 RewriteRule ^category/(.*)$ index.php?categoria=$1 [L]
+
+		 RewriteRule ^leaf/([0-9]+)/(.*)$ index.php?page=$1&search=$2 [L]
+
+		 RewriteRule ^profile/([0-9]+)/(.*)$ profile.php?id=$1/$2 [L]	
+
+		 RewriteRule ^search/(.*)$ index.php?search=$1 [L]
+			
+	#RewriteCond %{HTTP_HOST} ^167\.114\.115\.67 
+		#RewriteRule (.*) https://pornnetflix.com/$1 [R=301,L,QSA]
+
+
+	                 
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^id=([0-9]+)/(.*)$
+		RewriteRule ^playvideo\.php$ /playvideo/%1/%2? [R=301,L]
+
+		RewriteRule ^playvideo/([0-9]+)/(.*)$ playvideo.php?id=$1/$2 [L]
+	
+
+		           
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^page=([0-9]+)$
+		RewriteRule ^index\.php$ /leaf/%1? [R=301,L]
+		RewriteRule ^leaf/([0-9]+)$ index.php?page=$1 [L]
+
+	
+			           
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^search=(.*)$
+		RewriteRule ^index\.php$ /search/%1? [R=301,L]
+		RewriteRule ^search/(.*)$ index.php?search=$1 [L]
+
+
+
+
+		
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^page=([0-9]+)&search=(.*)$
+		RewriteRule ^index\.php$ /leaf/%1/%2? [R=301,L]
+
+		RewriteRule ^leaf/([0-9]+)/(.*)$ index.php?page=$1&titulo=$2 [L]
+
+
+
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^categoria=(.*)$
+		RewriteRule ^https://www.pornnetflix.com$ /category/%1? [R=301,L]
+		RewriteRule ^category/(.*)$ https://www.pornnetflix.com/?categoria=$1 [L]
+		
+
+		RewriteCond %{ENV:REDIRECT_STATUS} ^$
+		RewriteCond %{QUERY_STRING} ^id=([0-9]+)/(.*)$
+		RewriteRule ^profile\.php$ /profile/%1/%2? [R=301,L]
+		RewriteRule ^profile/([0-9]+)/(.*)$ profile.php?id=$1/$2 [L]
+
+	
+
+		
+
+		
+	
+
+	
+
+
+
+
+		
+
+
+
+
+
+
+
+
+		 	
+
+
+
+
+		 

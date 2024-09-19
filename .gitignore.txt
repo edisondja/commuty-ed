@@ -1,0 +1,18 @@
+# Ignorar la carpeta imagenes
+/imagenes/
+
+# Ignorar la carpeta videos
+/videos/
+
+
+# Ignorar la carpeta videos
+/imagenes_tablero/
+
+
+# Ignorar la carpeta compile
+/compile/
+
+
+
+# Ignorar la carpeta cache
+/cache/
