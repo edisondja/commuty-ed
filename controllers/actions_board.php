@@ -69,7 +69,7 @@
             $config->favicon_url = $imagen_actual->favicon_url;
         
             #Verificando si se enviaron multimedias
-                    if(isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio']) ){
+               if(isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio']) ){
 
                         $config->DetectarMultimedias($_FILES['logo_sitio'], $_FILES['favicon_sitio']);
                     
@@ -81,7 +81,7 @@
 
                         $config->DetectarMultimedias(null,$_FILES['favicon_sitio']);
 
-                    }
+                }
                 $config->dominio = $_POST['dominio'];
                 $config->nombre_sitio = $_POST['nombre_sitio'];
                 $config->descripcion_slogan = $_POST['descripcion_slogan'];
@@ -232,9 +232,17 @@
         break;
 
         case 'delete_comment':
+
             $delete = new Coment();
             $delete->eliminar_comentario($_POST['id_comentario']);
 
+        break;
+
+        case 'delete_comment_child':
+
+            $coment = new Coment();
+            $coment->delete_coment_reply($_POST['id_comentario']);
+        
         break;
 
         case 'load_comments':
@@ -248,6 +256,7 @@
         break;
 
         case 'reply_coment':
+
             $id_coment = $_POST['id_coment'];
             $id_user = $_POST['id_user'];
             $text_coment = $_POST['text_coment'];
@@ -280,7 +289,9 @@
         break;
 
         case 'sigout':
-            User::SigOut();
+            $usuario = $_POST['usuario'];
+            $user = new User();
+            $user->SigOut($usuario);
 
         break;
 

@@ -37,6 +37,7 @@
             los resultados del perfil
         
         */
+
         $smarty->assign('paginador_scroll','user_profile');
         $smarty->assign('boards',$data);
         $smarty->assign('data_profile',$data_user);

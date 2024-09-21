@@ -511,6 +511,7 @@ window.onload=function(){
 
         localStorage.clear();
         let FormDatas = new FormData();
+        FormDatas.append('usuario',document.querySelector('#usuario').value);
         FormDatas.append('action','sigout');
 
         axios.post(`${dominio}/controllers/actions_board.php`,FormDatas).then(data=>{

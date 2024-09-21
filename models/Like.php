@@ -18,6 +18,7 @@ Class Coment extends EncryptToken{
 	 }  
 
 
+
      public function validar_like(){
             /* 
                 Este metodo es utilizado para ver si 
@@ -77,7 +78,7 @@ Class Coment extends EncryptToken{
         
      }
 
-
+     
 		function delete_coment_reply($id_coment){
 
 			$sql = "delete from reply_coment where id_coment=?";

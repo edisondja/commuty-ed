@@ -67,8 +67,8 @@ Class User extends EncryptToken{
                 $tipo_usuario
                 );
                 $ready->execute();
-        
-                $this->SendMailActivedAccount($this->usuario);
+                $id_usuario  = $this->conection->insert_id;
+                $this->SendMailActivedAccount($id_usuario);
             
                 echo "success";
 
@@ -262,13 +262,23 @@ Class User extends EncryptToken{
         }
 
 
-        public static function SigOut(){
+        public function SigOut($username){
+
+            try{
+                session_start();
+
+                $this->TrackingLog(date('y-m-d h:i:s').' Cerrando sesion '.$username,'eventos');
+                session_destroy();
+                echo 'SigOut';
+             
+
+            }catch(Exception $e){
+
+                $this->TrackingLog(date('y-m-d h:i:s').' Cerrando sesion '.$username.' '.$e,'errores');
+                echo 'SigOut';  
 
 
-            $this->TrackingLog(date('y-m-d h:i:s').' Cerrando sesion '.$_SESSION['usuario'],'eventos');
-            session_start(); 
-            session_destroy();
-            echo 'SigOut';
+            }
 
         }
 

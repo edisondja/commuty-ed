@@ -10,6 +10,8 @@ Class Ads extends EncryptToken{
     public string $titulo;
     public string $desripcion;
     public string $imagen_ruta;
+    public string $tipo;
+    public string $scrip_banner;
     public int $posicion;
 
 

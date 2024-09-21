@@ -184,8 +184,7 @@
                       {assign var="counter" value=true}
 
                       {include file="single_board.tpl"}
-                    
-
+            
 
                     {elseif $content_config=='profile'}
                         {include file="profile.tpl"}

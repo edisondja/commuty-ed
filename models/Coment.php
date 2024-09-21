@@ -137,14 +137,14 @@ Class Coment extends EncryptToken{
 
 		function reply_coment($id_coment,$id_user,$text_coment){
 
-
+			$estado = $this->enable();
 			$fecha = date('Ymdhis');
-			$sql = "insert into reply_coment (coment_id,user_id,text_coment,fecha_creacion)VALUES(?,?,?,?)";
+			$sql = "insert into reply_coment (coment_id,user_id,text_coment,fecha_creacion)VALUES(?,?,?,?,?)";
 			
 			try{
 				
 				$insertar = $this->conection->prepare($sql);	
-				$insertar->bind_param('iiss',$id_coment,$id_user,$text_coment,$fecha);
+				$insertar->bind_param('iisss',$id_coment,$id_user,$text_coment,$fecha,$estado);
 				$insertar->execute() or die('error saving coment');
 
 			}catch(Exception $e){
@@ -160,16 +160,18 @@ Class Coment extends EncryptToken{
 
 		function load_childs_coment($id_coment,$config='asoc'){
 
-			$sql = "select ch.text_coment,ch.user_id,ch.coment_id,
-			ch.fecha_creacion,ch.estado,us.usuario,us.foto_url from
+			$estado = $this->enable();
+			
+			$sql = "select ch.text_coment,ch.user_id,ch.id_reply_id,
+			ch.fecha_creacion,ch.estado,ch.user_id,us.usuario,us.foto_url from
 			reply_coment as ch
 				inner join user us on ch.user_id=us.id_user
-			where ch.coment_id=? order by ch.fecha_creacion desc";
+			where ch.coment_id=? and ch.estado=? order by ch.fecha_creacion desc";
 			$load = $this->conection->prepare($sql);	
 
 
 			try{
-				$load->bind_param('i',$id_coment);
+				$load->bind_param('is',$id_coment,$estado);
 				$load->execute();
 				$data = $load->get_result();
 				$comentarios = [];
@@ -206,9 +208,9 @@ Class Coment extends EncryptToken{
 
 		function delete_coment_reply($id_coment){
 			
-			$estado = $this->enable();
+			$estado = $this->disable();
 
-			$sql = "update reply_coment set estado=? where id_coment=?";
+			$sql = "update reply_coment set estado=? where id_reply_id=?";
 			
 			try{
 
@@ -218,11 +220,11 @@ Class Coment extends EncryptToken{
 
 			}catch(Exception $e){
 				
-				$this->TrackingLog(date('y-m-d h:i:s').' No se pudo eliminar el comentario '.$id_coment,'errores');
+				$this->TrackingLog(date('y-m-d h:i:s').' No se pudo eliminar el comentario hijo'.$id_coment,'errores');
 
 			}
 
-			$this->TrackingLog(date('y-m-d h:i:s').'Comentario eliminado con exito ID:'.$id_coment,'eventos');
+			$this->TrackingLog(date('y-m-d h:i:s').'Comentario hijo eliminado con exito ID:'.$id_coment,'eventos');
 
 
 		}

@@ -59,16 +59,36 @@
 
                   //  guardar_comentario(1,2,'mantequilla','board');      
 
-                  function borrar_comentario(id_comentario){
+                  function borrar_comentario(id_comentario,config){
                        // alert('dsdsd');
-
-                       
                         
-                                alertify.confirm('eliminar comentario','Quieres eliminar este comentario?',function(e){
+                        alertify.confirm('eliminar comentario','Quieres eliminar este comentario?',function(e){
+                                
 
-                                        document.querySelector(`#comment_del${id_comentario}`).remove();
+                                        if(config=='padre'){
+
+                                            document.querySelector(`#comment_del${id_comentario}`).remove();
+
+                                        }else{
+
+                                            document.querySelector(`#child_coment${id_comentario}`).remove();
+                                        }
+
                                         let Borrar_comentario = new FormData();
-                                        Borrar_comentario.append('action','delete_comment');
+
+                                        if(config=='padre'){
+
+                                            Borrar_comentario.append('action','delete_comment');
+
+                                        }else{
+                                            /*
+                                                Si no es el comentario padre elimina el comentario
+                                                hijo
+                                            */
+                                            Borrar_comentario.append('action','delete_comment_child');
+
+                                        }
+                                       
                                         Borrar_comentario.append('id_comentario',id_comentario);
 
                                         axios.post(`${dominio}/controllers/actions_board.php`,Borrar_comentario).then(info=>{
@@ -86,27 +106,57 @@
 
                     }
 
+
                     function interface_comentarios_hijos(data){
 
                         let child_comments = '<ul>';
-
+                        let btn_eliminar;
                         data.forEach(key=>{
 
-                            child_comments+=`<li class="list-group-item comments box_comment">
+
+                            if(id_usuario==key.user_id){
+
+                                console.log(id_usuario+' '+data.user_id);
+                                btn_eliminar=`<i id="${key.id_reply_id}" class="fa-solid fa-delete-left" style="cursor:pointer;float:right" ></i>`;
+                            
+                            }else{
+
+                                btn_eliminar ='';    
+                            }
+
+                            child_comments+=`<li class="list-group-item comments box_comment" id="child_coment${key.id_reply_id}">
                               <img src="${dominio}/${key.foto_url}" class="rounded" style="width:38px;height:38px;">
                                 <strong class='fontUserComent'>${key.usuario} <span class='fechaText' style='float: right;'>${key.fecha_creacion}</span></strong><br/>
                                  &nbsp;<span class='fontComent'>${key.text_coment}</span>
                                   &nbsp;<svg style='cursor:pointer;float:right' id='${key.id_comentario}' 
                                   onclick="borrar_comentario(${key.id_comentario})" xmlns="http://www.w3.org/2000/svg" 
                                   width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
-                            </li>`;
-
+                                ${btn_eliminar}
+                              </li>`;
                         });
 
                         return child_comments+='</ul>';
                         
                     }
 
+
+                    function EventEliminarChild_C(){
+
+                            // Asignar eventos a los comentarios hijos
+                            let add_event_c_child = document.querySelectorAll(".fa-delete-left");
+                                  add_event_c_child.forEach(data => {
+                                      data.addEventListener('click', () => borrar_comentario(data.id,'hijo'));
+                                  });
+                    }
+
+                    function EventElminarPadre_C(){
+                        //Agregar evento para eliminar comentarios padre
+
+                        let add_event = document.querySelectorAll(".comments svg");
+                        add_event.forEach(data => {
+                            data.addEventListener('click', () => borrar_comentario(data.id,'padre'));
+                        });
+                    }
 
                     function cargar_comentarios(id_tablero) {
                         let comentarios_html = '';
@@ -125,8 +175,6 @@
                                 console.log('Datos recibidos:', info.data); // Verifica los datos recibidos
 
 
-                                
-                                 
                                 let domain;
                                 info.data.forEach(data => {
 
@@ -164,7 +212,7 @@
                                                 ${interface_ogs}
                                                 &nbsp;<span class='fontComent'>${data.texto}</span>
                                                 &nbsp;<svg style='cursor:pointer;float:right' id='${data.id_comentario}' 
-                                                    onclick="borrar_comentario(${data.id_comentario})" xmlns="http://www.w3.org/2000/svg" 
+                                                    onclick="" xmlns="http://www.w3.org/2000/svg" 
                                                     width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
                                                     <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 
                                                     1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 
@@ -198,16 +246,18 @@
                                 const comentariosElement = document.getElementById('data_coments');
                                 if (comentariosElement) {
                                     comentariosElement.innerHTML = comentarios_html;
+                                            
+                                    
                                   //  console.log('Comentarios HTML:', comentarios_html); // Verifica el HTML insertado
                                 } else {
                                     console.error('Elemento con id "data_coments" no encontrado.');
                                 }
                     
-                                // Asignar eventos a los elementos
-                                let add_event = document.querySelectorAll(".comments svg");
-                                add_event.forEach(data => {
-                                    data.addEventListener('click', () => borrar_comentario(data.id));
-                                });
+                                // Asignar eventos a los comentarios padre
+                                EventElminarPadre_C();
+                                
+                                // Asignar eventos a los comentarios hijos
+                                EventEliminarChild_C();
                     
                                 add_reply_comment(id_usuario);
                             })
@@ -250,6 +300,8 @@
                                         let  text_coment = document.querySelector('.textComent').value;
 
                                          reply_coment(id_coment,text_coment,id_usuario);
+                                         cargar_comentarios(id_tablero);
+
                                          action_comment= 'normal';
 
                                 }else{

@@ -43,13 +43,14 @@ class Mail extends EncryptToken
 
     }
 
-    public function EnviarCorreo($username,$subject='Activar cuenta',$config='registrer')
+    public function EnviarCorreo($id_user,$subject='Activar cuenta',$config='registrer')
     {
         try {
             // Destinatarios    
-      
-
-
+            
+            $usuario = new Usuario();
+            $usuario->id_user = $id_user;
+            $usuario->get_info_user('asoc');
 
            switch($config){
             
@@ -83,7 +84,6 @@ class Mail extends EncryptToken
                     /*
                         Enviando correo a todos los usuarios de la plataforma
                     */
-
                     $this->mail->addAddress($key['email'], $key['usuario']); // Añadir destinatario
                     $template = $this->plantilla_correo_masivo();
                     $this->mail->Subject = $subject;
@@ -93,7 +93,7 @@ class Mail extends EncryptToken
     
                 }
 
-        
+                
             break;
 
             
