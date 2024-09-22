@@ -140,6 +140,8 @@ let btn_join = document.getElementById('btn_join');
         
           //  alertify.message(data.data);
           //alert(data.data);
+
+            console.log(data.data);
           boton.disabled = false;
           let resp = data.data.trim();
 

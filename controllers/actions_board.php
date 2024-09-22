@@ -320,8 +320,18 @@
             $correo->mensaje = $_POST['mensaje'];
             $asunto = $_POST['asunto'];
             $username = $_POST['usuario'];
-            $correo->EnviarCorreo($username ,$asunto,'send_mail_all');
+            $correo->EnviarCorreo(0,$asunto,'send_mail_all');
 
+         break;
+
+         case 'send_mail_to_user':
+
+            $correo = new Mail();      
+            $correo->mensaje = $_POST['mensaje'];
+            $asunto = $_POST['asunto'];
+            $id_user = $_POST['usuario'];
+            $correo->EnviarCorreo($username ,$asunto,'send_mail_all');
+            
          break;
 
          case 'all_mails':
