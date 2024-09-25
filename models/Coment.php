@@ -135,17 +135,51 @@ Class Coment extends EncryptToken{
 
 		}
 
+		function cargar_1_comentario_hijo($id,$config='json'){
+
+			$sql = "select ch.text_coment,ch.user_id,ch.id_reply_id,
+			ch.fecha_creacion,ch.estado,ch.user_id,us.usuario,
+			us.foto_url from reply_coment as ch inner join user us
+			on ch.user_id=us.id_user where rp.id_reply_id=?";
+
+			try{
+
+				$cargar =$this->conection->prepare($sql);
+				$cargar->bind_param('i',$id);
+				$cargar->execute();
+				$data = $cargar->get_result();
+				$data = mysqli_fetch_object($data);
+
+				if($config=='json'){
+
+					echo json_encode($data);
+
+				}else{
+
+					return $data;
+				}
+			}catch(Exception $e){
+
+				$this->TrackingLog(date('y-m-d h:i:s').'No se pudo cargar el comentario hijo'.$e,'errores');
+
+			}
+
+		}
+
+
 		function reply_coment($id_coment,$id_user,$text_coment){
 
 			$estado = $this->enable();
 			$fecha = date('Ymdhis');
-			$sql = "insert into reply_coment (coment_id,user_id,text_coment,fecha_creacion)VALUES(?,?,?,?,?)";
+			$sql = "insert into reply_coment (coment_id,user_id,text_coment,fecha_creacion,estado)VALUES(?,?,?,?,?)";
 			
 			try{
 				
 				$insertar = $this->conection->prepare($sql);	
 				$insertar->bind_param('iisss',$id_coment,$id_user,$text_coment,$fecha,$estado);
-				$insertar->execute() or die('error saving coment');
+				$insertar->execute();
+				$id_child_c = $this->conection->insert_id;
+				$this->cargar_1_comentario_hijo($id_child_c);
 
 			}catch(Exception $e){
 
@@ -153,7 +187,7 @@ Class Coment extends EncryptToken{
 
 			}
 
-			$this->TrackingLog(date('y-m-d h:i:s').'El usuario ID:'.$id_user.' Respondio comentario'.$e,'eventos');
+			$this->TrackingLog(date('y-m-d h:i:s').'El usuario ID:'.$id_user.' Respondio comentario','eventos');
 
 
 		}
@@ -164,9 +198,9 @@ Class Coment extends EncryptToken{
 			
 			$sql = "select ch.text_coment,ch.user_id,ch.id_reply_id,
 			ch.fecha_creacion,ch.estado,ch.user_id,us.usuario,us.foto_url from
-			reply_coment as ch
-				inner join user us on ch.user_id=us.id_user
+			reply_coment as ch inner join user us on ch.user_id=us.id_user
 			where ch.coment_id=? and ch.estado=? order by ch.fecha_creacion desc";
+			
 			$load = $this->conection->prepare($sql);	
 
 
@@ -228,8 +262,6 @@ Class Coment extends EncryptToken{
 
 
 		}
-
-
 
 
 }

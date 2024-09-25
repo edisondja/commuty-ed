@@ -70,3 +70,38 @@
 24-09-22 03:51:20Inicio de sesion usaurio edisondja
 24-09-22 03:51:38 Cerrando sesion LinkRey
 24-09-22 03:52:09Inicio de sesion usaurio edbellaco
+24-09-22 02:36:29El usuario ID:2 Respondio comentario
+24-09-22 02:37:42El usuario ID:2 Respondio comentario
+24-09-22 02:37:50 Comentario del user ID:2
+24-09-22 02:38:28El usuario ID:2 Respondio comentario
+24-09-22 02:38:46El usuario ID:2 Respondio comentario
+24-09-22 02:40:16El usuario ID:2 Respondio comentario
+24-09-22 02:40:51Comentario hijo eliminado con exito ID:20
+24-09-22 02:40:53Comentario hijo eliminado con exito ID:19
+24-09-22 02:41:05El usuario ID:2 Respondio comentario
+24-09-22 02:41:15 Comentario del user ID:2
+24-09-22 02:41:23El usuario ID:2 Respondio comentario
+24-09-22 03:07:46El usuario ID:2 Respondio comentario
+24-09-22 03:08:13El usuario ID:2 Respondio comentario
+24-09-22 03:08:21El usuario ID:2 Respondio comentario
+24-09-22 03:13:42El usuario ID:2 Respondio comentario
+24-09-22 03:14:10El usuario ID:2 Respondio comentario
+24-09-22 03:14:13Comentario hijo eliminado con exito ID:27
+24-09-22 03:14:22Comentario hijo eliminado con exito ID:26
+24-09-22 03:14:35El usuario ID:2 Respondio comentario
+24-09-22 03:14:43El usuario ID:2 Respondio comentario
+24-09-22 03:14:54Comentario hijo eliminado con exito ID:28
+24-09-22 03:14:57Comentario hijo eliminado con exito ID:29
+24-09-22 03:15:00Comentario hijo eliminado con exito ID:24
+24-09-22 03:15:02Comentario hijo eliminado con exito ID:22
+24-09-22 06:44:40El usuario ID:2 Respondio comentario
+24-09-22 06:46:12 Comentario del user ID:2
+24-09-22 06:46:24 Comentario del user ID:2
+24-09-22 06:46:35 Comentario eliminado con exito 
+24-09-22 06:46:37 Comentario eliminado con exito 
+24-09-22 06:46:45El usuario ID:2 Respondio comentario
+24-09-22 06:46:53El usuario ID:2 Respondio comentario
+24-09-25 03:27:12Inicio de sesion usaurio edbellaco
+24-09-25 03:27:33El usuario ID:2 Respondio comentario
+24-09-25 02:01:53 Comentario del user ID:2
+24-09-25 02:31:12El usuario ID:2 Respondio comentario

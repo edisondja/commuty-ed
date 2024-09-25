@@ -5,6 +5,39 @@ var id_coment = 0;
 
 
 
+function Component_child_c(data){
+
+    /*
+        esta function se encarga de insertar los comentarios hijos
+        al padre correspondiente, recibiendo el id del comentario maestro.
+    */
+
+    if(id_usuario==data.user_id){
+
+        console.log(id_usuario+' '+key.user_id);
+        btn_eliminar=`<i id="${key.id_reply_id}" class="fa-solid fa-delete-left" style="cursor:pointer;float:right" ></i>`;
+    
+    }else{
+
+        btn_eliminar ='';    
+    }
+
+     let child_c=`<li class="list-group-item comments box_comment" id="child_coment${data.id_reply_id}">
+            <img src="${dominio}/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
+            <strong class='fontUserComent'>${data.usuario} <span class='fechaText' style='float: right;'>${data.fecha_creacion}</span></strong><br/>
+            &nbsp;<span class='fontComent'>${data.text_coment}</span>
+            ${btn_eliminar}
+        </li>
+    `;
+
+
+    document.querySelector(`comments_child4${id_coment_master}`).innerHTML='';
+
+
+}
+
+
+
 function reply_coment(id_coment,text_coment,id_user){
 
     let FormDatas = new FormData();
@@ -15,7 +48,10 @@ function reply_coment(id_coment,text_coment,id_user){
 
     axios.post(`${dominio}/controllers/actions_board.php`,FormDatas).then(data=>{
 
-        //alert(data.data);
+            let btn_eliminar ='';
+            console.log(data.data);
+ 
+
 
     }).catch(error=>{
 

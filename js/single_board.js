@@ -87,6 +87,7 @@
                                             */
                                             Borrar_comentario.append('action','delete_comment_child');
 
+
                                         }
                                        
                                         Borrar_comentario.append('id_comentario',id_comentario);
@@ -107,16 +108,16 @@
                     }
 
 
-                    function interface_comentarios_hijos(data){
+                    function interface_comentarios_hijos(data,id_coment_master){
 
-                        let child_comments = '<ul>';
+                        let child_comments = `<ul id='comments_child${id_coment_master}'>`;
                         let btn_eliminar;
                         data.forEach(key=>{
 
 
                             if(id_usuario==key.user_id){
 
-                                console.log(id_usuario+' '+data.user_id);
+                                console.log(id_usuario+' '+key.user_id);
                                 btn_eliminar=`<i id="${key.id_reply_id}" class="fa-solid fa-delete-left" style="cursor:pointer;float:right" ></i>`;
                             
                             }else{
@@ -135,7 +136,7 @@
                               </li>`;
                         });
 
-                        return child_comments+='</ul>';
+                        return child_comments+=`</ul>`;
                         
                     }
 
@@ -179,7 +180,7 @@
                                 info.data.forEach(data => {
 
                           
-                                    let childs_comments = interface_comentarios_hijos(data.comentarios_hijos);
+                                    let childs_comments = interface_comentarios_hijos(data.comentarios_hijos,data.id_comentario);
 
                                     if (data.data_og !== "[]") {
                                         data_ogs = JSON.parse(data.data_og);
@@ -296,7 +297,7 @@
                                // cargar_comentarios(id_tablero,'board');
 
                                 if(action_comment=='reply'){
-                                         // add_reply_comment(id_usuario);
+                                         //add_reply_comment(id_usuario);
                                         let  text_coment = document.querySelector('.textComent').value;
 
                                          reply_coment(id_coment,text_coment,id_usuario);
