@@ -96,6 +96,7 @@ CREATE TABLE likes (
   FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
   id_tablero int,
   FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero),
+  estado VARCHAR(50),
   fecha_like DATETIME
 );
 

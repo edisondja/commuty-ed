@@ -105,3 +105,112 @@
 24-09-25 03:27:33El usuario ID:2 Respondio comentario
 24-09-25 02:01:53 Comentario del user ID:2
 24-09-25 02:31:12El usuario ID:2 Respondio comentario
+24-09-25 08:14:42Inicio de sesion usaurio edbellaco
+24-09-25 08:17:47El usuario ID:2 Respondio comentario
+24-09-25 08:18:08El usuario ID:2 Respondio comentario
+24-09-25 08:18:32Comentario hijo eliminado con exito ID:23
+24-09-25 08:18:34Comentario hijo eliminado con exito ID:38
+24-09-25 08:18:39Comentario hijo eliminado con exito ID:37
+24-09-25 08:20:13El usuario ID:2 Respondio comentario
+24-09-25 08:20:34Comentario hijo eliminado con exito ID:39
+24-09-25 08:20:43El usuario ID:2 Respondio comentario
+24-09-25 08:21:00El usuario ID:2 Respondio comentario
+24-09-25 08:21:13Comentario hijo eliminado con exito ID:41
+24-09-25 08:21:15Comentario hijo eliminado con exito ID:40
+24-09-25 08:22:01El usuario ID:2 Respondio comentario
+24-09-25 08:22:26El usuario ID:2 Respondio comentario
+24-09-25 08:25:44Comentario hijo eliminado con exito ID:43
+24-09-25 08:25:49Comentario hijo eliminado con exito ID:42
+24-09-25 08:26:01El usuario ID:2 Respondio comentario
+24-09-25 08:26:34 Comentario del user ID:2
+24-09-25 08:26:52El usuario ID:2 Respondio comentario
+24-09-25 08:27:06 Comentario eliminado con exito 
+24-09-25 08:27:10Comentario hijo eliminado con exito ID:45
+24-09-25 08:27:12Comentario hijo eliminado con exito ID:44
+24-09-25 08:28:30El usuario ID:2 Respondio comentario
+24-09-25 08:28:39Comentario hijo eliminado con exito ID:46
+24-09-25 08:29:13 Comentario del user ID:2
+24-09-25 08:29:19El usuario ID:2 Respondio comentario
+24-09-25 08:29:28El usuario ID:2 Respondio comentario
+24-09-25 08:30:13Comentario hijo eliminado con exito ID:48
+24-09-25 08:30:20Comentario hijo eliminado con exito ID:47
+24-09-25 08:30:31El usuario ID:2 Respondio comentario
+24-09-25 08:31:15El usuario ID:2 Respondio comentario
+24-09-25 08:31:34El usuario ID:2 Respondio comentario
+24-09-25 08:32:07El usuario ID:2 Respondio comentario
+24-09-25 08:32:27El usuario ID:2 Respondio comentario
+24-09-25 08:33:27El usuario ID:2 Respondio comentario
+24-09-25 08:34:31El usuario ID:2 Respondio comentario
+24-09-25 08:35:07El usuario ID:2 Respondio comentario
+24-09-25 08:35:58El usuario ID:2 Respondio comentario
+24-09-25 08:36:08Comentario hijo eliminado con exito ID:56
+24-09-25 08:36:14Comentario hijo eliminado con exito ID:55
+24-09-25 08:36:15Comentario hijo eliminado con exito ID:54
+24-09-25 08:36:18Comentario hijo eliminado con exito ID:53
+24-09-25 08:36:19Comentario hijo eliminado con exito ID:52
+24-09-25 08:36:24Comentario hijo eliminado con exito ID:51
+24-09-25 08:36:26Comentario hijo eliminado con exito ID:50
+24-09-25 08:38:24El usuario ID:2 Respondio comentario
+24-09-25 08:38:35El usuario ID:2 Respondio comentario
+24-09-25 08:38:48Comentario hijo eliminado con exito ID:58
+24-09-25 08:39:11Comentario hijo eliminado con exito ID:59
+24-09-25 08:39:28El usuario ID:2 Respondio comentario
+24-09-25 08:39:38 Comentario del user ID:2
+24-09-25 08:39:45El usuario ID:2 Respondio comentario
+24-09-25 08:39:53El usuario ID:2 Respondio comentario
+24-09-25 08:41:03El usuario ID:2 Respondio comentario
+24-09-25 08:47:54El usuario ID:2 Respondio comentario
+24-09-25 08:48:01Comentario hijo eliminado con exito ID:64
+24-09-25 08:48:12El usuario ID:2 Respondio comentario
+24-09-25 08:48:15Comentario hijo eliminado con exito ID:65
+24-09-27 03:00:53Inicio de sesion usaurio edbellaco
+24-09-27 03:01:09El usuario ID:2 Respondio comentario
+24-09-27 03:01:20 Comentario del user ID:2
+24-09-27 03:01:30El usuario ID:2 Respondio comentario
+24-09-27 03:06:44El usuario ID:2 Respondio comentario
+24-09-27 03:06:53 Comentario del user ID:2
+24-09-27 03:07:00El usuario ID:2 Respondio comentario
+24-09-27 03:07:04Comentario hijo eliminado con exito ID:68
+24-09-27 03:07:06Comentario hijo eliminado con exito ID:67
+24-09-27 03:11:42Comentario hijo eliminado con exito ID:66
+24-09-27 03:11:44Comentario hijo eliminado con exito ID:60
+24-09-27 03:19:07El usuario ID:2 Respondio comentario
+24-09-27 03:19:51El usuario ID:2 Respondio comentario
+24-09-27 03:19:59El usuario ID:2 Respondio comentario
+24-09-27 03:37:14El usuario ID:2 Respondio comentario
+24-09-27 03:48:24El usuario ID:2 Respondio comentario
+24-09-27 03:49:18El usuario ID:2 Respondio comentario
+24-09-27 03:49:52El usuario ID:2 Respondio comentario
+24-09-27 03:50:11Comentario hijo eliminado con exito ID:76
+24-09-27 03:50:13Comentario hijo eliminado con exito ID:75
+24-09-27 03:50:21El usuario ID:2 Respondio comentario
+24-09-27 03:51:37El usuario ID:2 Respondio comentario
+24-09-27 03:52:07El usuario ID:2 Respondio comentario
+24-09-27 03:52:32El usuario ID:2 Respondio comentario
+24-09-27 03:54:24Comentario hijo eliminado con exito ID:78
+24-09-27 03:54:26Comentario hijo eliminado con exito ID:74
+24-09-27 03:54:28Comentario hijo eliminado con exito ID:69
+24-09-27 03:54:32Comentario hijo eliminado con exito ID:77
+24-09-27 03:55:05El usuario ID:2 Respondio comentario
+24-09-27 03:55:22El usuario ID:2 Respondio comentario
+24-09-27 03:55:35Comentario hijo eliminado con exito ID:79
+24-09-27 03:55:36Comentario hijo eliminado con exito ID:61
+24-09-27 03:55:43Comentario hijo eliminado con exito ID:73
+24-09-27 03:55:48El usuario ID:2 Respondio comentario
+24-09-27 03:56:16El usuario ID:2 Respondio comentario
+24-09-27 03:57:25 Comentario eliminado con exito 
+24-09-27 03:57:27 Comentario eliminado con exito 
+24-09-27 03:57:30 Comentario eliminado con exito 
+24-09-27 03:57:36Comentario hijo eliminado con exito ID:16
+24-09-27 03:57:39Comentario hijo eliminado con exito ID:32
+24-09-27 03:57:41Comentario hijo eliminado con exito ID:25
+24-09-27 03:58:10El usuario ID:2 Respondio comentario
+24-09-27 03:59:08El usuario ID:2 Respondio comentario
+24-09-27 04:00:27El usuario ID:2 Respondio comentario
+24-09-27 04:01:51Comentario hijo eliminado con exito ID:87
+24-09-27 04:01:55El usuario ID:2 Respondio comentario
+24-09-27 04:05:33El usuario ID:2 Respondio comentario
+24-09-27 04:05:39El usuario ID:2 Respondio comentario
+24-09-27 04:05:44Comentario hijo eliminado con exito ID:90
+24-09-27 04:05:46Comentario hijo eliminado con exito ID:89
+24-09-27 04:05:48Comentario hijo eliminado con exito ID:88

@@ -6,6 +6,7 @@
   require '../models/Config.php';
   require '../models/Coment.php';
   require '../models/Mail.php';
+  require '../models/Like.php';
 
   require 'Core.php';
  // require '../modeles/Mail.php';
@@ -246,6 +247,7 @@
         break;
 
         case 'load_comments':
+
             $id_board = $_POST['id_board'];
             $read_coment = new Coment();
             $read_coment->leer_comentarios($id_board, 'board');
@@ -340,6 +342,80 @@
             $user->CargarTodosLosCorreos();
         
          break;
+
+
+        case 'save_like':
+            
+          $like = new Like();
+          $like->id_tablero = $_POST['id_tablero'];
+          $like->id_usuario = $_POST['id_usuario'];
+          $like->guardar_like();
+
+
+        break;
+
+
+        case 'cargar_likes_board':
+          
+         $like = new Like();
+         $like->id_tablero  = $_GET['id_tablero'];
+         $like->cargar_likes_board();
+
+
+        break;
+
+        
+        case 'contar_likes_board':
+
+          $like = new Like();
+          $like->id_tablero = $_GET['id_tablero'];
+          $like->contar_likes();
+
+        break;
+
+
+        //Apis de favoritos
+
+        case 'agregar_a_favorito':
+
+
+
+        break;
+
+
+        case'eliminar_de_favorito':
+
+
+        break;
+
+
+        //Api de registros de logs
+
+        
+        case 'cargar_logs':
+
+
+        break;
+
+        case 'desactivar_log_db':
+
+
+        break;
+
+
+        //Modulo de notifiaciones
+
+
+        case 'emitir_notificacion':
+
+
+        break;
+
+
+        case 'cargar_mis_notifiaciones':
+
+
+        break;
 
 
 

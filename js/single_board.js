@@ -2,44 +2,93 @@
 
 
          
-            var id_tablero = document.getElementById('id_tablero').value;
-            var usuario = document.getElementById('usuario').value;
-            var foto_url = document.getElementById('foto_url').value;
-            var token ="";
-            var id_usuario = document.getElementById('id_usuario').value;
-            var dominio = document.getElementById('dominio').value;
-            var contador_og = false;
-            var action_comment = 'normal';
-            var set_data_og ="[]";
+    var id_tablero = document.getElementById('id_tablero').value;
+    var usuario = document.getElementById('usuario').value;
+    var foto_url = document.getElementById('foto_url').value;
+    var token ="";
+    var id_usuario = document.getElementById('id_usuario').value;
+    var dominio = document.getElementById('dominio').value;
+    var contador_og = false;
+    var action_comment = 'normal';
+    var set_data_og ="[]";
+
+
+
          
-            if(id_usuario!==0){
+        if(id_usuario!==0){
          
-                 token = localStorage.getItem('token');
+            token = localStorage.getItem('token');
                  
-             }
+        }
          
 
-            var comentarios = [
+        var comentarios = [
                 {usuario:'edisondja',texto:'mantequilla se liquido y se fue mi gente',foto_url:'https://a4aa-148-255-206-48.ngrok.io/edtube/imagenes_perfil/2210022219foto.jpg'},
                 {usuario:'edisondja',texto:'no hay forma con ese hombre',foto_url:'https://thumbs.dreamstime.com/b/hombre-gris-del-placeholder-de-la-foto-persona-136701248.jpg'}
-
             ];
 
+
+        function like(id_board,id_user){
+
+            axiso.post({
+
+
+            }).then(data=>{
+
+
+            }).catch(error=>{
+
+
+            });
+
+
+        }
+
+        let likes = document.querySelector('#like');
+
+
+            likes.addEventListener('click',function(){
+
+                let FormDatas = new FormData();
+                FormDatas.append('action','save_like');
+                FormDatas.append('id_usuario',id_usuario);
+                FormDatas.append('id_tablero',id_tablero);
+
+                //  alert(action_comment);
+                axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+                                    'Content-Type': 'multipart/form-data',
+                                    'Authorization': `Bearer ${token}`}
+
+                            }).then(data=>{
+
+                                console.log(data);
+                                console.log(data.data);
+
+                            }).catch(error=>{
+
+                                console.log(error);
+
+                            });
+
+                alert('like funcionando');
+
+        });
+
             
-                function guardar_comentario(id_usuario,id_tablero,texto,tipo_post){
+        function guardar_comentario(id_usuario,id_tablero,texto,tipo_post){
 
 
-                                let FormDatas = new FormData();
-                                FormDatas.append('action','save_post');
-                                FormDatas.append('id_user',id_usuario);
-                                FormDatas.append('id_board',id_tablero);
-                                FormDatas.append('text',texto);
-                                FormDatas.append('data_og',set_data_og);
-                                FormDatas.append('type_post',tipo_post);
+                let FormDatas = new FormData();
+                FormDatas.append('action','save_post');
+                FormDatas.append('id_user',id_usuario);
+                FormDatas.append('id_board',id_tablero);
+                FormDatas.append('text',texto);
+                FormDatas.append('data_og',set_data_og);
+                FormDatas.append('type_post',tipo_post);
 
                                       //  alert(action_comment);
                         
-                                axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+                axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
                                         'Content-Type': 'multipart/form-data',
                                         'Authorization': `Bearer ${token}`
                                 }
@@ -55,52 +104,49 @@
                                 });
                     }
 
+              //  guardar_comentario(1,2,'mantequilla','board');      
 
-
-                  //  guardar_comentario(1,2,'mantequilla','board');      
-
-                  function borrar_comentario(id_comentario,config){
+            function borrar_comentario(id_comentario,config){
                        // alert('dsdsd');
                         
                         alertify.confirm('eliminar comentario','Quieres eliminar este comentario?',function(e){
                                 
 
-                                        if(config=='padre'){
+                            if(config=='padre'){
 
-                                            document.querySelector(`#comment_del${id_comentario}`).remove();
+                                 document.querySelector(`#comment_del${id_comentario}`).remove();
 
-                                        }else{
+                            }else{
 
-                                            document.querySelector(`#child_coment${id_comentario}`).remove();
-                                        }
+                                 document.querySelector(`#child_coment${id_comentario}`).remove();
+                            }
 
-                                        let Borrar_comentario = new FormData();
+                            let Borrar_comentario = new FormData();
 
-                                        if(config=='padre'){
+                                if(config=='padre'){
 
-                                            Borrar_comentario.append('action','delete_comment');
+                                      Borrar_comentario.append('action','delete_comment');
 
-                                        }else{
+                                }else{
                                             /*
                                                 Si no es el comentario padre elimina el comentario
                                                 hijo
                                             */
-                                            Borrar_comentario.append('action','delete_comment_child');
+                                    Borrar_comentario.append('action','delete_comment_child');
 
+                                }
 
-                                        }
-                                       
-                                        Borrar_comentario.append('id_comentario',id_comentario);
+                                Borrar_comentario.append('id_comentario',id_comentario);
 
-                                        axios.post(`${dominio}/controllers/actions_board.php`,Borrar_comentario).then(info=>{
+                                     axios.post(`${dominio}/controllers/actions_board.php`,Borrar_comentario).then(info=>{
 
                                                 console.log(info.data);
                                         
-                                        }).catch(error=>{-
+                                    }).catch(error=>{
 
                                                 alertify.warning('error deleting comment');
 
-                                        });
+                                    });
 
 
                                 },function(e){ console.log('no')});
@@ -108,37 +154,19 @@
                     }
 
 
-                    function interface_comentarios_hijos(data,id_coment_master){
+            function interface_comentarios_hijos(data,id_coment_master){
 
-                        let child_comments = `<ul id='comments_child${id_coment_master}'>`;
-                        let btn_eliminar;
+                    let child_comments = `<ul id='comments_child${id_coment_master}'>`;
+                    let btn_eliminar;
                         data.forEach(key=>{
 
+                            child_comments+=Component_comentario_hijo(key);
 
-                            if(id_usuario==key.user_id){
-
-                                console.log(id_usuario+' '+key.user_id);
-                                btn_eliminar=`<i id="${key.id_reply_id}" class="fa-solid fa-delete-left" style="cursor:pointer;float:right" ></i>`;
-                            
-                            }else{
-
-                                btn_eliminar ='';    
-                            }
-
-                            child_comments+=`<li class="list-group-item comments box_comment" id="child_coment${key.id_reply_id}">
-                              <img src="${dominio}/${key.foto_url}" class="rounded" style="width:38px;height:38px;">
-                                <strong class='fontUserComent'>${key.usuario} <span class='fechaText' style='float: right;'>${key.fecha_creacion}</span></strong><br/>
-                                 &nbsp;<span class='fontComent'>${key.text_coment}</span>
-                                  &nbsp;<svg style='cursor:pointer;float:right' id='${key.id_comentario}' 
-                                  onclick="borrar_comentario(${key.id_comentario})" xmlns="http://www.w3.org/2000/svg" 
-                                  width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
-                                ${btn_eliminar}
-                              </li>`;
                         });
 
-                        return child_comments+=`</ul>`;
+                return child_comments+=`</ul>`;
                         
-                    }
+            }
 
 
                     function EventEliminarChild_C(){
@@ -301,7 +329,7 @@
                                         let  text_coment = document.querySelector('.textComent').value;
 
                                          reply_coment(id_coment,text_coment,id_usuario);
-                                         cargar_comentarios(id_tablero);
+                                         //cargar_comentarios(id_tablero);
 
                                          action_comment= 'normal';
 
@@ -400,3 +428,5 @@
                 
         });
               
+
+    

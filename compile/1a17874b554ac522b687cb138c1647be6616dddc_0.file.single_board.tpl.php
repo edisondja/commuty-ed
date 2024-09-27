@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-19 05:41:25
+/* Smarty version 4.5.3, created on 2024-09-26 04:06:55
   from 'C:\xampp\htdocs\ventasrd\template\single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66eb9d65c04a40_28481680',
+  'unifunc' => 'content_66f4c1bf1259e0_12416979',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1a17874b554ac522b687cb138c1647be6616dddc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\single_board.tpl',
-      1 => 1726717284,
+      1 => 1727316282,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66eb9d65c04a40_28481680 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66f4c1bf1259e0_12416979 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row">
@@ -141,7 +141,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                     </ul>
                 </div>
 
-                <i class="fa-regular fa-heart" style="cursor:pointer"></i>
+                <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                 <span>30,400</span>
                 &nbsp;
                 <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>

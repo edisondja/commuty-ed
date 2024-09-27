@@ -137,10 +137,18 @@ Class Coment extends EncryptToken{
 
 		function cargar_1_comentario_hijo($id,$config='json'){
 
-			$sql = "select ch.text_coment,ch.user_id,ch.id_reply_id,
-			ch.fecha_creacion,ch.estado,ch.user_id,us.usuario,
-			us.foto_url from reply_coment as ch inner join user us
-			on ch.user_id=us.id_user where rp.id_reply_id=?";
+			$sql = "select ch.text_coment, 
+				ch.user_id, 
+				ch.id_reply_id, 
+				ch.fecha_creacion, 
+				ch.estado, 
+				ch.user_id, 
+				us.usuario, 
+				us.foto_url
+				from reply_coment as ch
+				inner join user as us on ch.user_id = us.id_user
+				where ch.id_reply_id = ?";
+
 
 			try{
 

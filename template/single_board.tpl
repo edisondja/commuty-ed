@@ -96,7 +96,7 @@
                     </ul>
                 </div>
 
-                <i class="fa-regular fa-heart" style="cursor:pointer"></i>
+                <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                 <span>30,400</span>
                 &nbsp;
                 <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>
