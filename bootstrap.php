@@ -11,6 +11,7 @@
 
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
+    $id_user=0;
         /*
         load cdns
     */
@@ -72,6 +73,7 @@
 
 
     if (isset($_SESSION['id_user'])) {
+        $id_user = $_SESSION['id_user'];
         $smarty->assign('id_user', $_SESSION['id_user']);
         $smarty->assign('foto_perfil', $dominio.'/'.$_SESSION['foto_url']);
         $smarty->assign('user_session', $_SESSION['usuario']);

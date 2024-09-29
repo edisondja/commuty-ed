@@ -2,6 +2,10 @@
 
 class Prop
 {
+
+
+    public date $fecha; 
+
     public function titleList($title)
     {
         $titulo_listo = str_replace(' ', '_', $title);
@@ -15,6 +19,26 @@ class Prop
         y seguimiento del programa, esta implementacion de seguimiento se utiliza
         para auditorias si es necesario.
     */
+
+
+    public function save_tracking($tracking,$tipo){
+
+        $fecha = new Date('ymdiss');
+        $sql = "intert into logs_i(fecha_log,tracking,tipo)VALUES(?,?,?)";
+
+        try{
+            $save  = $this->conection($sql);
+            $save->bind_param('sss',$fecha,$tracking,$tipo);
+            $save->execute();
+        }catch(Exception $e){
+
+            $this->TrackingLog('no se estan guardando los logs en la base de datos '.$fecha,'errores');
+        }
+
+
+    }
+
+
     public function TrackingLog($mensaje,$opcion){
 
 
@@ -24,12 +48,14 @@ class Prop
             case 'errores':
                 
                 file_put_contents("../traking/errores.txt",$mensaje.PHP_EOL,FILE_APPEND);
-            
+                $this->save_tracking($mensaje,'errores');
+
             break;
             
             case 'usuarios':
                 
                 file_put_contents("../traking/usuarios.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $this->save_tracking($mensaje,'usuarios');
 
             break;
 
@@ -37,13 +63,14 @@ class Prop
             case 'alertas':
 
                 file_put_contents("../traking/alertas.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $this->save_tracking($mensaje,'alertas');
 
             break;
 
             case 'eventos':
 
-                
                 file_put_contents("../traking/eventos.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $this->save_tracking($mensaje,'eventos');
 
             break;
             

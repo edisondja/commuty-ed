@@ -47,7 +47,7 @@
         let likes = document.querySelector('#like');
 
 
-            likes.addEventListener('click',function(){
+            likes.addEventListener('click',function(key){
 
                 let FormDatas = new FormData();
                 FormDatas.append('action','save_like');
@@ -61,9 +61,40 @@
 
                             }).then(data=>{
 
-                                console.log(data);
-                                console.log(data.data);
+                              switch(data.data.trim()){
 
+                                case '_success':
+                                /*La primera vez que se guarda el like*/
+                                    likes.classList.replace("fa-regular","fa-solid");
+                                    
+                                    console.log('entro al succes primer comentario');
+                                break;
+                                
+                                
+                                case 'inactivo_success':
+                                    
+                                    /*Si ya existe un like con este usuario  y pulsa de nuevo se desactiva 
+                                     el servidor debe de devolver este estado.
+                                    */
+                                     likes.classList.replace("fa-solid","fa-regular");
+                                                  
+                                    console.log('entro a inactivar el comentario');
+                                     
+                                break;
+
+                                case 'activo_success':
+
+
+                                    likes.classList.replace("fa-regular","fa-solid");
+                                    console.log('entro a activar el comentario');
+                                    /*
+                                     Se vuelva a activar el like del usuario luego de aquitarlo       
+                                    */
+
+                                break;
+
+
+                              }
                             }).catch(error=>{
 
                                 console.log(error);

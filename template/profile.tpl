@@ -1,5 +1,5 @@
       
-      <div class="row">
+      <div class="row"><hr/><hr/><hr/><hr/>
         <div class="col-md-3">
                 <br/>
                         {if $user_session!=''}

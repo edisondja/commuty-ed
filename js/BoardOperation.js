@@ -11,14 +11,13 @@ window.onload=function(){
     var user_update = document.querySelector(".user_update");
     var token_get = '';
     let update_user_profile = document.querySelector('#user_update');
+    let fa_pen = document.querySelectorAll('.fa-pen-to-square');
     var my_boards = document.querySelectorAll('.fa-trash');
     var files_json=[];
     var id_medias=0;
     var FormDatas_board = new FormData();
 
-   
-
-    
+       
 
 
     /*Es te fragmento de codigo es para detectar todos los tableros del usuario que inicio sesión 
@@ -75,6 +74,29 @@ window.onload=function(){
 
         console.log('no tienes publicaciones');
     }
+
+
+    if(fa_pen){
+
+        
+        fa_pen.forEach(data=>{
+
+            data.addEventListener('click',function(){
+
+
+                alert('ess');
+            })
+
+
+        })
+
+
+
+
+
+    }
+
+
 
 
     if(update_user_profile){

@@ -96,8 +96,14 @@
                     </ul>
                 </div>
 
-                <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
-                <span>30,400</span>
+                {if $estado_like=='activo'} 
+                    <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
+                    <span>{$likes}</span>
+                {else}
+                    <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
+                    <span>{$likes}</span>
+                {/if}
+  
                 &nbsp;
                 <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>
                 <span>12,300</span>

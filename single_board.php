@@ -1,8 +1,7 @@
 <?php
     require('bootstrap.php');
-
+    require('Models/Like.php');
     //solo cargar un tablero
-  
 
     $smarty->assign('content_config','single_board');
    
@@ -11,6 +10,26 @@
         $Board = new Board();   
         $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
 
+        $Verificar_like = new Like();
+        $Verificar_like->id_tablero = (int)$_GET['id'];
+        $Verificar_like->id_usuario = (int)$id_user;
+
+        if($Verificar_like->validar_like()==false){
+          /*
+            Se devuelve false es por que existe un like registro con el
+            usuario de la sesion en esta publicacion, con esta referencia
+            marcamos el like a encendido por el template de smarty.
+          */
+          $smarty->assign('estado_like','activo');
+
+        }else{
+
+           $smarty->assign('estado_like','inactivo');
+           
+
+        }
+
+        $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
         $multimedias_tableros =$Board->cargar_multimedias_de_tablero($_GET['id'],'asoc');
         $smarty->assign('board',$data_board);
         $smarty->assign('estado',$data_board['estado']);

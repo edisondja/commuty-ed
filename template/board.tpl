@@ -10,8 +10,16 @@
                               <div class='title'><strong><a href='{$url_board}/profile_user.php?user={$tablero.usuario}'> <img class='imagenPerfil' src='{$dominio}/{$tablero.foto_url}'/></a>
                                 {$tablero.nombre} {$tablero.apellido} 
                                 <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
-                                <i class="fa-solid fa-highlighter"></i></strong></div>
+                                <i class="fa-solid fa-eye"></i></strong></div>
                                 </a>
+
+                                <div style="float: right;">
+                                {if $user_session!=''}
+                                  {if $id_user==$tablero.id_user}
+                                      <i class="fa-solid fa-pen-to-square" style="cursor:pointer;"></i>
+                                  {/if}
+                                {/if}
+                                </div>
                               
                               <p style='padding-left: 10px;'>{$tablero.descripcion}​</p>
                               <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
@@ -27,6 +35,8 @@
                                   </a>
                                 {/if}
                               </a>
+
+                         
                             </div>
                             <p class='p'  style='padding:5px;'>
                               
@@ -43,7 +53,7 @@
                                       {if $user_session!=''}
                                         {if $id_user==$tablero.id_user}
                                             <i class="fa fa-trash" data-value='{$tablero.id_tablero}' style="cursor: pointer;" aria-hidden="true"></i>
-                                        {/if}
+                                          {/if}
                                         {else}
                                     {/if}
                                     </div>

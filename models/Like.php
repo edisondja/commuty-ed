@@ -9,7 +9,7 @@ Class Like extends EncryptToken{
 	public int $id_like;
 	public int $id_tablero;
 	public int $id_usuario;
-    public string $estado_lk;
+    public string $estado_lk='';
 
 	function __construct(){
 		
@@ -101,7 +101,7 @@ Class Like extends EncryptToken{
                 $guardar->execute();
                 $guardar->close();  
 
-                echo $estado."_success";
+                 echo $this->estado_lk."_success";
 
            }catch(Exception $e){
         
@@ -123,22 +123,29 @@ Class Like extends EncryptToken{
 
      }
 
-     public function contar_likes(){
+     public function contar_lk($config='json'){
 
         $estado = $this->enable();
-        $sql = "select COUNT(id_like) likes from likes where id_user=? and id_tablero=? and estado=?";
-        $data = $conction->prepare($sql);
+        $sql = "select COUNT(id_like) as likes from likes where id_tablero=? and estado=?";
+        $data = $this->conection->prepare($sql);
         
         try{
-            $data->bind_param('iis',
-                $this->id_usuario,
+            $data->bind_param('is',
                 $this->id_tablero,
                 $estado
             );
             $data->execute();
             $likes_count = $data->get_result();
             $likes_count = mysqli_fetch_object($likes_count);
-            echo json_encode($likes_count);
+
+            if($config=='json'){
+
+                echo json_encode($likes_count);
+
+            }else{
+
+                return $likes_count->likes;
+            }
 
         }catch(Exception $e){
 

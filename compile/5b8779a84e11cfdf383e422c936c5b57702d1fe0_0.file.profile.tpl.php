@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-13 04:31:49
+/* Smarty version 4.5.3, created on 2024-09-29 15:14:48
   from 'C:\xampp\htdocs\ventasrd\template\profile.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66e3a415ed9e99_94716900',
+  'unifunc' => 'content_66f952c8006ac4_58691007',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5b8779a84e11cfdf383e422c936c5b57702d1fe0' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\profile.tpl',
-      1 => 1720312247,
+      1 => 1727615682,
       2 => 'file',
     ),
   ),
@@ -21,9 +21,9 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:board.tpl' => 1,
   ),
 ),false)) {
-function content_66e3a415ed9e99_94716900 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66f952c8006ac4_58691007 (Smarty_Internal_Template $_smarty_tpl) {
 ?>      
-      <div class="row">
+      <div class="row"><hr/><hr/><hr/><hr/>
         <div class="col-md-3">
                 <br/>
                         <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
