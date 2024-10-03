@@ -50,7 +50,8 @@
                     <div class="carousel-inner fixed-size-carousel">
                         {if  $multimedias_t==[] &&  $og_imagen!==''}
 
-                        <img src="{$og_imagen}" style='' class="card-img-top fixed-size-image" alt="...">
+                        <img src="{$dominio}/{$og_imagen}" style='' class="card-img-top fixed-size-image" alt="...">
+                            
                         {/if}
                         {if $multimedias_t}
                         <div class="carousel-item active">
@@ -98,10 +99,10 @@
 
                 {if $estado_like=='activo'} 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                    <span>{$likes}</span>
+                    <span id="likes_c">{$likes->likes}</span>
                 {else}
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
-                    <span>{$likes}</span>
+                    <span id="likes_c">{$likes->likes}</span>
                 {/if}
   
                 &nbsp;

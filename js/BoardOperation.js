@@ -16,10 +16,9 @@ window.onload=function(){
     var files_json=[];
     var id_medias=0;
     var FormDatas_board = new FormData();
+    var boards = 0; //contar la cantidad de tableros para paginar.
 
        
-
-
     /*Es te fragmento de codigo es para detectar todos los tableros del usuario que inicio sesión 
         asignandole el evento de poder eliminar su publicación si lo desea.
     */
@@ -28,8 +27,9 @@ window.onload=function(){
         my_boards.forEach(board=>{
 
 
-                board.addEventListener('click',(e)=>{
+            boards+=1;
 
+            board.addEventListener('click',(e)=>{
 
                     let id_board=e.target.getAttribute('data-value');
                     
@@ -73,6 +73,59 @@ window.onload=function(){
     }else{
 
         console.log('no tienes publicaciones');
+
+        
+    }
+
+
+
+
+    function cargar_data_board() {
+        
+        // Obtener los valores necesarios
+        const id_board = id_board;
+        const action = 'cargar_un_tablero';
+    
+        // Construir la URL con los parámetros
+        const url = `${dominio}/controllers/actions_board.php?action=${action}&id_board=${id_board}`;
+    
+        // Realizar la solicitud GET
+        axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(info => {
+            console.log(info);
+            //alertify.message('Cambios guardados con exito');
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    function actualizar_board(){
+
+
+        let FormDatas = new FormData();
+        FormDatas.append('action','actualizar_tablero');
+        FormDatas.append('id_user',document.getElementById('id_usuario').value);
+        FormDatas.append('texto',document.getElementById('id_usuario').value);
+        FormDatas.append('id_board',id_board);
+
+        //board${$table.id_tablero}
+        axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }}).then(info=>{
+
+                console.log(info);
+                 //alertify.message('Cambios guardados con exito');
+        }).catch(error=>{
+
+            console.log(error);
+
+        });
+
+
+
     }
 
 
@@ -82,10 +135,12 @@ window.onload=function(){
         fa_pen.forEach(data=>{
 
             data.addEventListener('click',function(){
+                           
 
+                let id_bord = e.target.getAttribute('data-value');
+                alert(id_bord);
 
-                alert('ess');
-            })
+            });
 
 
         })
@@ -584,18 +639,20 @@ window.onload=function(){
 
                 // Obtener el valor del parámetro 'leaf'
                 const leafValue = url.searchParams.get('leaf');
-    
-                if(leafValue==null){
+                if(boards>5){
+                    if(leafValue==null){
 
-                        window.location=`${dominio}/?leaf=2`;     
-                          
-                }else{
-    
-                    let page = parseInt(leafValue) + 1;
-    
-                    window.location=`${dominio}/?leaf=${page}`;     
-    
-    
+                            window.location=`${dominio}/?leaf=2`;     
+                            
+                    }else{
+        
+                        let page = parseInt(leafValue) + 1;
+        
+                        window.location=`${dominio}/?leaf=${page}`;     
+        
+        
+                    }
+                
                 }
     
             }
@@ -616,19 +673,23 @@ window.onload=function(){
                 // Obtener el valor del parámetro 'leaf'
                 const leafValue = url.searchParams.get('leaf');
                 const UserNAME = url.searchParams.get('user');
-    
-                if(leafValue==null){
+                
+                if(boards>5){
 
-                        window.location=`${dominio}/profile_user.php?leaf=2&user=${UserNAME}`;     
-                          
-                }else{
-    
-                    let page = parseInt(leafValue) + 1;
-    
-                    window.location=`${dominio}/profile_user.php?leaf=${page}&user=${UserNAME}`;     
-    
-    
-                }
+                    if(leafValue==null){
+
+                            window.location=`${dominio}/profile_user.php?leaf=2&user=${UserNAME}`;     
+                            
+                    }else{
+        
+                        let page = parseInt(leafValue) + 1;
+        
+                        window.location=`${dominio}/profile_user.php?leaf=${page}&user=${UserNAME}`;     
+        
+        
+                    }
+
+                }   
     
             }
 

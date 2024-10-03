@@ -16,7 +16,7 @@
                                 <div style="float: right;">
                                 {if $user_session!=''}
                                   {if $id_user==$tablero.id_user}
-                                      <i class="fa-solid fa-pen-to-square" style="cursor:pointer;"></i>
+                                      <i class="fa-solid fa-pen-to-square" data-value='{$tablero.id_tablero}' style="cursor:pointer;"></i>
                                   {/if}
                                 {/if}
                                 </div>

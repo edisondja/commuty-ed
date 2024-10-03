@@ -373,6 +373,13 @@
 
         break;
 
+        
+        case 'cargar_un_tablero':
+
+            $tablero = new Tablero();
+            $tablero->cargar_solo_tablero($_GET['id_tablero'],'json');
+
+        break; 
 
         //Apis de favoritos
 

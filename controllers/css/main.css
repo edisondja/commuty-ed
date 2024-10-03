@@ -378,3 +378,14 @@
 .icon-delete:hover {
     color: #ff4757;
 }
+
+.ads_banners{
+
+    display: block;
+}
+
+@media only screen and (max-width: 768px) {
+    .ads_banners {
+        display: none;
+    }
+}

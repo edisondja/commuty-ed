@@ -174,12 +174,16 @@
         public function actualizar_tablero($id_tablero)
         {
             $fecha = date('ymdis');
+            /*
+            FormDatas.append('id_user',document.getElementById('id_usuario').value);
+            FormDatas.append('texto',document.getElementById('id_usuario').value);
+            FormDatas.append('id_board',id_board);
+            */
 
             try {
                 $sql = 'UPDATE tableros 
                         SET descripcion = ?, 
                             fecha_creacion = ?, 
-                            imagen_tablero = ?, 
                             id_usuario = ? 
                         WHERE id_tablero = ?';
                 $actualizar = $this->conection->prepare($sql);
@@ -188,7 +192,7 @@
                 }
 
                 // Bind the parameters to the SQL query
-                $bind = $actualizar->bind_param('sssii', $this->description, $fecha, $this->imagen_tablero, $this->id_usuario, $id_tablero);
+                $bind = $actualizar->bind_param('ssii', $this->description,$fecha,$this->id_usuario, $id_tablero);
                 if ($bind === false) {
                     throw new Exception('Error al vincular los parámetros: '.$actualizar->error);
                 }

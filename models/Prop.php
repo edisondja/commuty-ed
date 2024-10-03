@@ -48,14 +48,14 @@ class Prop
             case 'errores':
                 
                 file_put_contents("../traking/errores.txt",$mensaje.PHP_EOL,FILE_APPEND);
-                $this->save_tracking($mensaje,'errores');
+             //   $this->save_tracking($mensaje,'errores');
 
             break;
             
             case 'usuarios':
                 
                 file_put_contents("../traking/usuarios.txt",$mensaje.PHP_EOL,FILE_APPEND);
-                $this->save_tracking($mensaje,'usuarios');
+                //$this->save_tracking($mensaje,'usuarios');
 
             break;
 
@@ -63,14 +63,14 @@ class Prop
             case 'alertas':
 
                 file_put_contents("../traking/alertas.txt",$mensaje.PHP_EOL,FILE_APPEND);
-                $this->save_tracking($mensaje,'alertas');
+               // $this->save_tracking($mensaje,'alertas');
 
             break;
 
             case 'eventos':
 
                 file_put_contents("../traking/eventos.txt",$mensaje.PHP_EOL,FILE_APPEND);
-                $this->save_tracking($mensaje,'eventos');
+              //  $this->save_tracking($mensaje,'eventos');
 
             break;
             

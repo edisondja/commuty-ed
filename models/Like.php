@@ -126,7 +126,7 @@ Class Like extends EncryptToken{
      public function contar_lk($config='json'){
 
         $estado = $this->enable();
-        $sql = "select COUNT(id_like) as likes from likes where id_tablero=? and estado=?";
+        $sql = "select COUNT(id_like) as likes,estado from likes where id_tablero=? and estado=?";
         $data = $this->conection->prepare($sql);
         
         try{
@@ -144,7 +144,7 @@ Class Like extends EncryptToken{
 
             }else{
 
-                return $likes_count->likes;
+                return $likes_count;
             }
 
         }catch(Exception $e){

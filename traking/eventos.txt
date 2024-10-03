@@ -240,3 +240,22 @@
 2409292807Multimedia agregada con exito
 24-09-29 03:28:21 Cerrando sesion edbellaco
 24-09-29 03:28:24Inicio de sesion usaurio edbellaco
+24-10-03 02:49:51Inicio de sesion usaurio edbellaco
+24-10-03 02:50:00Inicio de sesion usaurio edbellaco
+24-10-03 02:50:19Inicio de sesion usaurio edbellaco
+24-10-03 03:08:44 Comentario del user ID:2
+24-10-03 03:08:51El usuario ID:2 Respondio comentario
+24-10-03 03:09:07El usuario ID:2 Respondio comentario
+24-10-03 03:10:00Comentario hijo eliminado con exito ID:97
+24-10-03 03:10:01Comentario hijo eliminado con exito ID:98
+24-10-03 03:10:09El usuario ID:2 Respondio comentario
+24-10-03 03:52:04 Cerrando sesion edbellaco
+24-10-03 03:54:23Inicio de sesion usaurio mistered
+2410035601Multimedia agregada con exito
+24-10-03 03:56:35 Comentario del user ID:71
+24-10-03 03:56:45El usuario ID:71 Respondio comentario
+24-10-03 04:01:52 Cerrando sesion edbellaco
+24-10-03 04:03:29Inicio de sesion usaurio mistered
+Bloqueando tablero
+24-10-03 02:37:37 Comentario del user ID:71
+24-10-03 03:21:31El usuario ID:71 Respondio comentario

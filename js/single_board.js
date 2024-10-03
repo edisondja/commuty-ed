@@ -61,12 +61,17 @@
 
                             }).then(data=>{
 
+                                //capturando los likes
+                              let like_c =  document.querySelector('#likes_c');
+                              let cantidad_likes = parseInt(like_c.innerHTML);
+
+
                               switch(data.data.trim()){
 
                                 case '_success':
                                 /*La primera vez que se guarda el like*/
                                     likes.classList.replace("fa-regular","fa-solid");
-                                    
+                                    cantidad_likes+=1;
                                     console.log('entro al succes primer comentario');
                                 break;
                                 
@@ -77,31 +82,35 @@
                                      el servidor debe de devolver este estado.
                                     */
                                      likes.classList.replace("fa-solid","fa-regular");
-                                                  
+                                     cantidad_likes-=1;
+            
                                     console.log('entro a inactivar el comentario');
                                      
                                 break;
 
                                 case 'activo_success':
 
-
+                                    cantidad_likes+=1;
                                     likes.classList.replace("fa-regular","fa-solid");
                                     console.log('entro a activar el comentario');
+                                    
                                     /*
                                      Se vuelva a activar el like del usuario luego de aquitarlo       
                                     */
 
                                 break;
-
+                                
 
                               }
+
+                              like_c.innerHTML = cantidad_likes;
+
                             }).catch(error=>{
 
                                 console.log(error);
 
                             });
 
-                alert('like funcionando');
 
         });
 

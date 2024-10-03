@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-28 17:42:47
+/* Smarty version 4.5.3, created on 2024-10-03 15:21:07
   from 'C:\xampp\htdocs\ventasrd\template\single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66f823f7125bb4_67549519',
+  'unifunc' => 'content_66fe9a43e3c135_43886523',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1a17874b554ac522b687cb138c1647be6616dddc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\single_board.tpl',
-      1 => 1727538164,
+      1 => 1727961666,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66f823f7125bb4_67549519 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66fe9a43e3c135_43886523 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row">
@@ -82,8 +82,10 @@ function content_66f823f7125bb4_67549519 (Smarty_Internal_Template $_smarty_tpl)
                     <div class="carousel-inner fixed-size-carousel">
                         <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value == array() && $_smarty_tpl->tpl_vars['og_imagen']->value !== '') {?>
 
-                        <img src="<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
+                        <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
+/<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
 " style='' class="card-img-top fixed-size-image" alt="...">
+                            
                         <?php }?>
                         <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value) {?>
                         <div class="carousel-item active">
@@ -143,11 +145,11 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
                 <?php if ($_smarty_tpl->tpl_vars['estado_like']->value == 'activo') {?> 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                    <span><?php echo $_smarty_tpl->tpl_vars['likes']->value;?>
+                    <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
 </span>
                 <?php } else { ?>
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
-                    <span><?php echo $_smarty_tpl->tpl_vars['likes']->value;?>
+                    <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
 </span>
                 <?php }?>
   

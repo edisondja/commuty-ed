@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-29 18:46:04
+/* Smarty version 4.5.3, created on 2024-09-29 21:33:29
   from 'C:\xampp\htdocs\ventasrd\template\board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66f9844c793a95_97583867',
+  'unifunc' => 'content_66f9ab8933f897_69190625',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f87906e2a4ed274b4aab38ea6c1988baa14c6320' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\board.tpl',
-      1 => 1727628362,
+      1 => 1727638406,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66f9844c793a95_97583867 (Smarty_Internal_Template $_smarty_tpl) {
+function content_66f9ab8933f897_69190625 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 
@@ -52,7 +52,8 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
                                 <div style="float: right;">
                                 <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
                                   <?php if ($_smarty_tpl->tpl_vars['id_user']->value == $_smarty_tpl->tpl_vars['tablero']->value['id_user']) {?>
-                                      <i class="fa-solid fa-pen-to-square" style="cursor:pointer;"></i>
+                                      <i class="fa-solid fa-pen-to-square" data-value='<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
+' style="cursor:pointer;"></i>
                                   <?php }?>
                                 <?php }?>
                                 </div>
