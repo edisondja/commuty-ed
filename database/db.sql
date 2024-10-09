@@ -48,7 +48,6 @@ CREATE TABLE logs_I(
 
 CREATE TABLE comentario(
   id_comentario INT PRIMARY KEY AUTO_INCREMENT,
-  id_post INT,
   id_tablero INT,
   texto TEXT,
   data_og JSON,
@@ -186,3 +185,19 @@ CREATE TABLE ads(
    link_banner VARCHAR(250)
 	 
 )	
+
+
+CREATE TABLE notificacion(
+	id_notificacion int PRIMARY KEY AUTO_INCREMENT,
+	id_tablero int,
+	id_comentario INT,
+	usuario_id int,
+	tipo VARCHAR(50),
+	estado VARCHAR(15),
+  FOREIGN KEY (usuario_id) REFERENCES user(id_user) ON DELETE CASCADE,
+ 	FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE
+ 	
+)
+
+
+CREATE TABLE

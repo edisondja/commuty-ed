@@ -126,7 +126,7 @@ Class Like extends EncryptToken{
      public function contar_lk($config='json'){
 
         $estado = $this->enable();
-        $sql = "select COUNT(id_like) as likes,estado from likes where id_tablero=? and estado=?";
+        $sql = "select COUNT(id_like) as likes,estado,id_user from likes where id_tablero=? and estado=?";
         $data = $this->conection->prepare($sql);
         
         try{
@@ -155,6 +155,38 @@ Class Like extends EncryptToken{
 
      }
 
+     public function verificar_mi_like(){
+        
+        /*
+          Esta funcion es para verificar si el usuario que inicio sesion tiene un like guardado
+          en la publicacion actual
+        */
+        $estado = $this->enable();
+        $sql = "select * from likes where id_user=? and id_tablero=? and estado=?";
+        try{
+
+            $cargar= $this->conection->prepare($sql);
+            $cargar->bind_param('iis',$this->id_usuario,$this->id_tablero,$estado);
+            $cargar->execute();
+            $data = $cargar->get_result();
+
+            if($data->num_rows >0){
+
+                return 'tiene_like';
+
+            }else{
+                return 'no_tiene_like';
+
+            }   
+    
+        }catch(Exception $e){
+
+            $this->TrackingLog(date('y-m-d h:i:s')."No se pudo cargar los like del usuario".$e,'errores');
+
+        }
+
+
+     }
 
      public function cargar_likes_board($config='json'){
 

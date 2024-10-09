@@ -9,6 +9,7 @@
         
         $Board = new Board();   
         $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
+        
 
         $Verificar_like = new Like();
         $Verificar_like->id_tablero = (int)$_GET['id'];
@@ -20,8 +21,9 @@
             usuario de la sesion en esta publicacion, con esta referencia
             marcamos el like a encendido por el template de smarty.
           */
-        $smarty->assign('estado_like',$Verificar_like->contar_lk('asoc')->estado);
+        
         $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
+        $smarty->assign('like_login_user',$Verificar_like->verificar_mi_like());
         $multimedias_tableros =$Board->cargar_multimedias_de_tablero($_GET['id'],'asoc');
         $smarty->assign('board',$data_board);
         $smarty->assign('estado',$data_board['estado']);

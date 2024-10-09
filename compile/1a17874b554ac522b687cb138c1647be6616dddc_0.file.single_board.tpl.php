@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-10-03 15:21:07
+/* Smarty version 4.5.3, created on 2024-10-06 19:10:00
   from 'C:\xampp\htdocs\ventasrd\template\single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66fe9a43e3c135_43886523',
+  'unifunc' => 'content_6702c468e77780_21114614',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1a17874b554ac522b687cb138c1647be6616dddc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\single_board.tpl',
-      1 => 1727961666,
+      1 => 1728234599,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66fe9a43e3c135_43886523 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6702c468e77780_21114614 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row">
@@ -79,14 +79,15 @@ function content_66fe9a43e3c135_43886523 (Smarty_Internal_Template $_smarty_tpl)
 
                 <img src="" class="img-fluid card-img-top" style='' />
                 <div id="carouselExampleControls" class="carousel slide" >
-                    <div class="carousel-inner fixed-size-carousel">
-                        <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value == array() && $_smarty_tpl->tpl_vars['og_imagen']->value !== '') {?>
+                  
+                    <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value == array() && $_smarty_tpl->tpl_vars['og_imagen']->value !== '') {?>
+                            <div class="carousel-inner fixed-size-carousel"> 
 
                         <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
-" style='' class="card-img-top fixed-size-image" alt="...">
+"  class="card-img-top fixed-size-image" alt="...">
                             
-                        <?php }?>
+                       
                         <?php if ($_smarty_tpl->tpl_vars['multimedias_t']->value) {?>
                         <div class="carousel-item active">
                             <img src="<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
@@ -118,7 +119,7 @@ echo $_smarty_tpl->tpl_vars['multimedia']->value['ruta_multimedia'];?>
                         <?php
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-
+                    <?php }?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -143,10 +144,10 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                     </ul>
                 </div>
 
-                <?php if ($_smarty_tpl->tpl_vars['estado_like']->value == 'activo') {?> 
+                <?php if ($_smarty_tpl->tpl_vars['like_login_user']->value == 'tiene_like') {?> 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
                     <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
-</span>
+ personas y tu le gusta esto</span>
                 <?php } else { ?>
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                     <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
@@ -154,8 +155,11 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                 <?php }?>
   
                 &nbsp;
+                <!--
                 <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>
                 <span>12,300</span>
+                                -->
+
                 <div class="card" id="coments" style="margin-top: 2%;">
                     <ul class="list-group list-group-flush" id='data_coments'>
                           

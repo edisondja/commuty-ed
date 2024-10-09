@@ -3,16 +3,12 @@
 <div class="row">
     <div class="col-md-3"></div>
 
-      <div class="col-sm-6" style='margin-bottom:15px;'>
+      <div class="col-sm-5" style='margin-bottom:15px;'>
 
                 <div class='card text-white bg-dark mb-3' id="board{$tablero.id_tablero}">
                             <div class='body' style='padding:5px'>
                               <div class='title'><strong><a href='{$url_board}/profile_user.php?user={$tablero.usuario}'> <img class='imagenPerfil' src='{$dominio}/{$tablero.foto_url}'/></a>
                                 {$tablero.nombre} {$tablero.apellido} 
-                                <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
-                                <i class="fa-solid fa-eye"></i></strong></div>
-                                </a>
-
                                 <div style="float: right;">
                                 {if $user_session!=''}
                                   {if $id_user==$tablero.id_user}
@@ -20,13 +16,16 @@
                                   {/if}
                                 {/if}
                                 </div>
-                              
+                                <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
+                                <i class="fa-solid fa-eye"></i></strong></div>
+                                </a>
+                             
                               <p style='padding-left: 10px;'>{$tablero.descripcion}​</p>
                               <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
                                 {if $tablero.imagen_tablero!==''}
                                   
                                   <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
-                                  <img src="{$dominio}/{$tablero.imagen_tablero}" class="card-img-top" alt="...">
+                                  <img src="{$dominio}/{$tablero.imagen_tablero}" style=""  class="card-img-top" alt="...">
                                   </a>
 
                                 {else}

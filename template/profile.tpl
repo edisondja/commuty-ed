@@ -18,7 +18,7 @@
                         height="100%" fill="#868e96"></rect><text x="3%" y="50%" 
                         fill="#dee2e6" dy=".3em">La publicidad sera colocada aca 200x200</text></svg>
             </div> 
-            <div class="col-md-6">
+            <div class="col-md-5">
                     <div class="card" style='padding:20px;'>
                     <div>
                         <table >

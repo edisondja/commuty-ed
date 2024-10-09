@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-29 15:14:48
+/* Smarty version 4.5.3, created on 2024-10-06 21:54:26
   from 'C:\xampp\htdocs\ventasrd\template\profile.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66f952c8006ac4_58691007',
+  'unifunc' => 'content_6702eaf2224c63_56575928',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5b8779a84e11cfdf383e422c936c5b57702d1fe0' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\profile.tpl',
-      1 => 1727615682,
+      1 => 1728244464,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:board.tpl' => 1,
   ),
 ),false)) {
-function content_66f952c8006ac4_58691007 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6702eaf2224c63_56575928 (Smarty_Internal_Template $_smarty_tpl) {
 ?>      
       <div class="row"><hr/><hr/><hr/><hr/>
         <div class="col-md-3">
@@ -45,7 +45,7 @@ function content_66f952c8006ac4_58691007 (Smarty_Internal_Template $_smarty_tpl)
                         height="100%" fill="#868e96"></rect><text x="3%" y="50%" 
                         fill="#dee2e6" dy=".3em">La publicidad sera colocada aca 200x200</text></svg>
             </div> 
-            <div class="col-md-6">
+            <div class="col-md-5">
                     <div class="card" style='padding:20px;'>
                     <div>
                         <table >

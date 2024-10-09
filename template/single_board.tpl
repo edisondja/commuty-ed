@@ -32,13 +32,12 @@
             <div class="card-body" style=''>
                 <input type='hidden' value='{$id_tablero}' id='id_tablero'/>
                 {if $user_session!=''}
-
-                <input type='hidden' value='{$user_session}' id='usuario'/>
-                <input type='hidden' value='{$foto_perfil}' id='foto_url'/>
+                    <input type='hidden' value='{$user_session}' id='usuario'/>
+                    <input type='hidden' value='{$foto_perfil}' id='foto_url'/>
                 {else}
-                <input type='hidden' value='0' id='id_usuario'/>
-                <input type='hidden' value='0' id='usuario'/>
-                <input type='hidden' value='0' id='foto_url'/>
+                    <input type='hidden' value='0' id='id_usuario'/>
+                    <input type='hidden' value='0' id='usuario'/>
+                    <input type='hidden' value='0' id='foto_url'/>
                 {/if}
                 <img src="{$foto_usuario}" alt="{$usuario}" style="border-radius:100px;width:50px;height:50px;margin:5px;">
                 <strong>{$usuario}</strong>
@@ -47,12 +46,13 @@
 
                 <img src="" class="img-fluid card-img-top" style='' />
                 <div id="carouselExampleControls" class="carousel slide" >
-                    <div class="carousel-inner fixed-size-carousel">
-                        {if  $multimedias_t==[] &&  $og_imagen!==''}
+                  
+                    {if  $multimedias_t==[] &&  $og_imagen!==''}
+                            <div class="carousel-inner fixed-size-carousel"> 
 
-                        <img src="{$dominio}/{$og_imagen}" style='' class="card-img-top fixed-size-image" alt="...">
+                        <img src="{$dominio}/{$og_imagen}"  class="card-img-top fixed-size-image" alt="...">
                             
-                        {/if}
+                       
                         {if $multimedias_t}
                         <div class="carousel-item active">
                             <img src="{$og_imagen}" class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
@@ -72,7 +72,7 @@
                         {/if}
 
                         {/foreach}
-
+                    {/if}
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -97,17 +97,20 @@
                     </ul>
                 </div>
 
-                {if $estado_like=='activo'} 
+                {if $like_login_user=='tiene_like'} 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                    <span id="likes_c">{$likes->likes}</span>
+                    <span id="likes_c">{$likes->likes} personas y tu le gusta esto</span>
                 {else}
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">{$likes->likes}</span>
                 {/if}
   
                 &nbsp;
+                <!--
                 <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>
                 <span>12,300</span>
+                                -->
+
                 <div class="card" id="coments" style="margin-top: 2%;">
                     <ul class="list-group list-group-flush" id='data_coments'>
                           

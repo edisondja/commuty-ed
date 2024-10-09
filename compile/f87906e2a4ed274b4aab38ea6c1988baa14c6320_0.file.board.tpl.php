@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-29 21:33:29
+/* Smarty version 4.5.3, created on 2024-10-06 20:58:18
   from 'C:\xampp\htdocs\ventasrd\template\board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66f9ab8933f897_69190625',
+  'unifunc' => 'content_6702ddcaeaa8f0_31839851',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f87906e2a4ed274b4aab38ea6c1988baa14c6320' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\board.tpl',
-      1 => 1727638406,
+      1 => 1728241097,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_66f9ab8933f897_69190625 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6702ddcaeaa8f0_31839851 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 
@@ -29,7 +29,7 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
 <div class="row">
     <div class="col-md-3"></div>
 
-      <div class="col-sm-6" style='margin-bottom:15px;'>
+      <div class="col-sm-5" style='margin-bottom:15px;'>
 
                 <div class='card text-white bg-dark mb-3' id="board<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
 ">
@@ -42,13 +42,6 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
                                 <?php echo $_smarty_tpl->tpl_vars['tablero']->value['nombre'];?>
  <?php echo $_smarty_tpl->tpl_vars['tablero']->value['apellido'];?>
  
-                                <a href="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
-/single_board.php?id=<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
-/<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['tablero']->value['titulo']," ","_");?>
-">
-                                <i class="fa-solid fa-eye"></i></strong></div>
-                                </a>
-
                                 <div style="float: right;">
                                 <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
                                   <?php if ($_smarty_tpl->tpl_vars['id_user']->value == $_smarty_tpl->tpl_vars['tablero']->value['id_user']) {?>
@@ -57,7 +50,13 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
                                   <?php }?>
                                 <?php }?>
                                 </div>
-                              
+                                <a href="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
+/single_board.php?id=<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
+/<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['tablero']->value['titulo']," ","_");?>
+">
+                                <i class="fa-solid fa-eye"></i></strong></div>
+                                </a>
+                             
                               <p style='padding-left: 10px;'><?php echo $_smarty_tpl->tpl_vars['tablero']->value['descripcion'];?>
 ​</p>
                               <a href="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
@@ -72,7 +71,7 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
 ">
                                   <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /<?php echo $_smarty_tpl->tpl_vars['tablero']->value['imagen_tablero'];?>
-" class="card-img-top" alt="...">
+" style=""  class="card-img-top" alt="...">
                                   </a>
 
                                 <?php } else { ?>

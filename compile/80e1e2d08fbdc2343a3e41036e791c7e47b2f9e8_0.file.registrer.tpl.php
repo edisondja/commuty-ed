@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-20 03:57:30
+/* Smarty version 4.5.3, created on 2024-10-09 20:00:24
   from 'C:\xampp\htdocs\ventasrd\template\registrer.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66ecd68a7dcc17_44122115',
+  'unifunc' => 'content_6706c4b8372a78_57096741',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '80e1e2d08fbdc2343a3e41036e791c7e47b2f9e8' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\registrer.tpl',
-      1 => 1724121758,
+      1 => 1728496821,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_66ecd68a7dcc17_44122115 (Smarty_Internal_Template $_smarty_tpl) {
-?><div class="row">
+function content_6706c4b8372a78_57096741 (Smarty_Internal_Template $_smarty_tpl) {
+?><div class="row"><hr/><hr/><hr/><hr/>
     <div class="col-md-3"></div>
 
     <div class="col-md-6 form-container" id="form_reg">

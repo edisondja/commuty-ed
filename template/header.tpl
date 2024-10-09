@@ -119,7 +119,6 @@
                         </div>
                         <div class="modal-body">
                                   <table>
-                                  
                                       <tr>
                                           <td><img src='{$foto_perfil}' style='height:50px;width:50px;border-radius:100px;'>&nbsp;</td>
                                           <td>{$user_session}</td>
@@ -133,7 +132,7 @@
                                       <strong style="margin-top: -3.4px; display:none" id="porcentaje">&nbsp;0%</strong>
                                   </div>
                                   <div id='multimedia_view' class='flex-container'>
-                                    
+                            
                                   </div>  
                         </div>
                         <div class="modal-footer">
@@ -168,12 +167,12 @@
                     {include file='menu.tpl'}
 
                    {/if}
+               
 
                     {if $content_config=='boards'}
-                
-
+                        <br/><br/><br/><br/>
                     {foreach from=$tableros item=tablero}
-                           
+            
                         {include file="board.tpl"}
                         {assign var="counter" value=false}
                         

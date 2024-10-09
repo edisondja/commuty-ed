@@ -38,7 +38,6 @@
             datos se cargaran en lugar de tomarse desde el archivo
             de cofiguracion estatico /config/congfig.php.
         */
-
         $config_data = $configuracion->Cargar_configuracion('asoc');
         $name_site = $config_data->nombre_sitio;
 
@@ -78,9 +77,14 @@
         $smarty->assign('foto_perfil', $dominio.'/'.$_SESSION['foto_url']);
         $smarty->assign('user_session', $_SESSION['usuario']);
         $smarty->assign('type_user', $_SESSION['type_user']);
+        $smarty->assign('nombre',$_SESSION['nombre']);
+        $smarty->assign('apellido',$_SESSION['apellido']);
+
     } else {
         $smarty->assign('type_user', '');
         $smarty->assign('id_user', '');
         $smarty->assign('foto_perfil', '');
         $smarty->assign('user_session', '');
+        $smarty->assign('nombre','');
+        $smarty->assign('apellido','');
     }

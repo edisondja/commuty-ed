@@ -563,7 +563,7 @@ window.onload=function(){
                     `;
                     
                  console.log(post_ready);
-                 document.querySelector('.col-sm-6').insertAdjacentHTML('afterbegin', post_ready);
+                 document.querySelector('.col-sm-5').insertAdjacentHTML('afterbegin', post_ready);
                 
                 // Aquí puedes redirigir o actualizar la página según tus necesidades
                 // location.href = dominio;

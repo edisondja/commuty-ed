@@ -259,3 +259,27 @@
 Bloqueando tablero
 24-10-03 02:37:37 Comentario del user ID:71
 24-10-03 03:21:31El usuario ID:71 Respondio comentario
+24-10-03 03:47:09 Comentario del user ID:71
+24-10-03 03:47:19El usuario ID:71 Respondio comentario
+24-10-03 03:51:11 Cerrando sesion edbellaco
+24-10-03 03:51:47Inicio de sesion usaurio edisondja
+24-10-03 03:52:52El usuario ID:1 Respondio comentario
+24-10-03 03:53:07El usuario ID:1 Respondio comentario
+Bloqueando tablero
+24-10-03 04:46:05 Activando usaurio ID: 71
+Bloqueando tablero
+Bloqueando tablero
+Bloqueando tablero
+Bloqueando tablero
+Bloqueando tablero
+24-10-05 11:00:10Inicio de sesion usaurio edbellaco
+24-10-05 11:01:33El usuario ID:72 Respondio comentario
+24-10-06 07:01:30Inicio de sesion usaurio edbellaco
+24-10-06 08:51:45 Comentario del user ID:72
+24-10-06 08:51:55El usuario ID:72 Respondio comentario
+2410060143Multimedia agregada con exito
+24-10-06 09:16:27 Cerrando sesion edbellaco
+24-10-06 09:16:52Inicio de sesion usaurio edbellaco
+24-10-06 09:38:02El usuario ID:72 Respondio comentario
+24-10-06 09:38:10 Comentario del user ID:72
+24-10-06 09:49:04 Comentario del user ID:72

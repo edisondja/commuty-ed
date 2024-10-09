@@ -1,6 +1,6 @@
 
 
-<div class="col-sm-3" style="position: fixed; top: 20px; right: 20px; z-index: 10; padding-top:70px;">
+<div class="col-sm-3 ads_banners" style=" position: fixed; top: 20px; right: 20px; z-index: 10; padding-top:70px;">
     <!-- Tarjeta estilo Carbon Ads -->
     <div class="card text-center" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
         <div class="card-body d-flex align-items-center">

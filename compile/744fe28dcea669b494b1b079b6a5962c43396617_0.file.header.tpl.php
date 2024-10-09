@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-09-21 15:51:32
+/* Smarty version 4.5.3, created on 2024-10-06 23:47:25
   from 'C:\xampp\htdocs\ventasrd\template\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_66eecf641f6443_14755400',
+  'unifunc' => 'content_6703056d755547_32856524',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '744fe28dcea669b494b1b079b6a5962c43396617' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\header.tpl',
-      1 => 1726926690,
+      1 => 1728251243,
       2 => 'file',
     ),
   ),
@@ -30,7 +30,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_66eecf641f6443_14755400 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6703056d755547_32856524 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -188,7 +188,6 @@ function content_66eecf641f6443_14755400 (Smarty_Internal_Template $_smarty_tpl)
                         </div>
                         <div class="modal-body">
                                   <table>
-                                  
                                       <tr>
                                           <td><img src='<?php echo $_smarty_tpl->tpl_vars['foto_perfil']->value;?>
 ' style='height:50px;width:50px;border-radius:100px;'>&nbsp;</td>
@@ -204,7 +203,7 @@ function content_66eecf641f6443_14755400 (Smarty_Internal_Template $_smarty_tpl)
                                       <strong style="margin-top: -3.4px; display:none" id="porcentaje">&nbsp;0%</strong>
                                   </div>
                                   <div id='multimedia_view' class='flex-container'>
-                                    
+                            
                                   </div>  
                         </div>
                         <div class="modal-footer">
@@ -240,17 +239,17 @@ function content_66eecf641f6443_14755400 (Smarty_Internal_Template $_smarty_tpl)
 ?>
 
                    <?php }?>
+               
 
                     <?php if ($_smarty_tpl->tpl_vars['content_config']->value == 'boards') {?>
-                
-
+                        <br/><br/><br/><br/>
                     <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['tableros']->value, 'tablero');
 $_smarty_tpl->tpl_vars['tablero']->do_else = true;
 if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['tablero']->value) {
 $_smarty_tpl->tpl_vars['tablero']->do_else = false;
 ?>
-                           
+            
                         <?php $_smarty_tpl->_subTemplateRender("file:board.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, true);
 ?>
                         <?php $_smarty_tpl->_assignInScope('counter', false);?>
