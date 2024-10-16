@@ -134,7 +134,7 @@ window.onload=function(){
         
         fa_pen.forEach(data=>{
 
-            data.addEventListener('click',function(){
+            data.addEventListener('click',function(e){
                            
 
                 let id_bord = e.target.getAttribute('data-value');
@@ -143,7 +143,7 @@ window.onload=function(){
             });
 
 
-        })
+        });
 
 
 

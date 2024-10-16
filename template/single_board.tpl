@@ -99,7 +99,14 @@
 
                 {if $like_login_user=='tiene_like'} 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                    <span id="likes_c">{$likes->likes} personas y tu le gusta esto</span>
+                <span id="likes_c">
+                        {if $likes->likes>1}
+                            {$likes->likes} personas y tu le gusta esto
+                        {else}
+                            {$likes->likes} Te gusta esto
+
+                        {/if}
+                </span>
                 {else}
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">{$likes->likes}</span>

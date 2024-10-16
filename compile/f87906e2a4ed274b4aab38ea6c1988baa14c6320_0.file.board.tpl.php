@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-10-06 20:58:18
+/* Smarty version 4.5.3, created on 2024-10-12 18:33:14
   from 'C:\xampp\htdocs\ventasrd\template\board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_6702ddcaeaa8f0_31839851',
+  'unifunc' => 'content_670aa4cae99e30_81572097',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f87906e2a4ed274b4aab38ea6c1988baa14c6320' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\board.tpl',
-      1 => 1728241097,
+      1 => 1728750707,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_6702ddcaeaa8f0_31839851 (Smarty_Internal_Template $_smarty_tpl) {
+function content_670aa4cae99e30_81572097 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 
@@ -45,7 +45,7 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
                                 <div style="float: right;">
                                 <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
                                   <?php if ($_smarty_tpl->tpl_vars['id_user']->value == $_smarty_tpl->tpl_vars['tablero']->value['id_user']) {?>
-                                      <i class="fa-solid fa-pen-to-square" data-value='<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
+                                      <i class="fa-solid fa-pen-to-square"  data-bs-toggle="modal" data-bs-target="#modal_update"   data-value='<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
 ' style="cursor:pointer;"></i>
                                   <?php }?>
                                 <?php }?>
@@ -57,7 +57,8 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\xampp\\htdocs\\ventasrd\
                                 <i class="fa-solid fa-eye"></i></strong></div>
                                 </a>
                              
-                              <p style='padding-left: 10px;'><?php echo $_smarty_tpl->tpl_vars['tablero']->value['descripcion'];?>
+                              <p style='padding-left: 10px;' id="text<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
+"><?php echo $_smarty_tpl->tpl_vars['tablero']->value['descripcion'];?>
 ​</p>
                               <a href="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /single_board.php?id=<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>

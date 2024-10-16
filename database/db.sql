@@ -190,13 +190,14 @@ CREATE TABLE ads(
 CREATE TABLE notificacion(
 	id_notificacion int PRIMARY KEY AUTO_INCREMENT,
 	id_tablero int,
-	id_comentario INT,
-	usuario_id int,
+	id_usuario_receptor int,
+  id_usuario_emisor int,
+  fecha datetime,
 	tipo VARCHAR(50),
 	estado VARCHAR(15),
-  FOREIGN KEY (usuario_id) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario_emisor) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario_receptor) REFERENCES user(id_user) ON DELETE CASCADE,
  	FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE
- 	
 )
 
 

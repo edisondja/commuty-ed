@@ -4,6 +4,7 @@
   require '../models/User.php';
   require '../models/Board.php'; 
   require '../models/Config.php';
+  require '../models/Notificacion.php';
   require '../models/Coment.php';
   require '../models/Mail.php';
   require '../models/Like.php';

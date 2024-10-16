@@ -212,10 +212,12 @@
 
         public function cargar_solo_tablero($id_tablero,$config='asoc')
         {
+         
             // Asumimos que $this->conection es una instancia válida de mysqli
             $this->conection;
             $estado = $this->disable();
             $sql = 'SELECT 
+            u.id_user,
             t.descripcion,
             t.titulo,
             t.id_tablero,
@@ -228,8 +230,6 @@
             ON t.id_usuario = u.id_user
             WHERE t.id_tablero = ? AND  t.estado <> ? 
             ';
-
-
             try{
 
                 $cargar = $this->conection->prepare($sql);
@@ -577,4 +577,8 @@
                 return $datos;
             }
         }
+
+
+ 
+
     }

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-10-06 19:10:00
+/* Smarty version 4.5.3, created on 2024-10-12 18:04:46
   from 'C:\xampp\htdocs\ventasrd\template\single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_6702c468e77780_21114614',
+  'unifunc' => 'content_670a9e1e6f8a90_90059098',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1a17874b554ac522b687cb138c1647be6616dddc' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\single_board.tpl',
-      1 => 1728234599,
+      1 => 1728749084,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_6702c468e77780_21114614 (Smarty_Internal_Template $_smarty_tpl) {
+function content_670a9e1e6f8a90_90059098 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row">
@@ -57,15 +57,14 @@ function content_6702c468e77780_21114614 (Smarty_Internal_Template $_smarty_tpl)
                 <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['id_tablero']->value;?>
 ' id='id_tablero'/>
                 <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
-
-                <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['user_session']->value;?>
+                    <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['user_session']->value;?>
 ' id='usuario'/>
-                <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['foto_perfil']->value;?>
+                    <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['foto_perfil']->value;?>
 ' id='foto_url'/>
                 <?php } else { ?>
-                <input type='hidden' value='0' id='id_usuario'/>
-                <input type='hidden' value='0' id='usuario'/>
-                <input type='hidden' value='0' id='foto_url'/>
+                    <input type='hidden' value='0' id='id_usuario'/>
+                    <input type='hidden' value='0' id='usuario'/>
+                    <input type='hidden' value='0' id='foto_url'/>
                 <?php }?>
                 <img src="<?php echo $_smarty_tpl->tpl_vars['foto_usuario']->value;?>
 " alt="<?php echo $_smarty_tpl->tpl_vars['usuario']->value;?>
@@ -146,8 +145,16 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
                 <?php if ($_smarty_tpl->tpl_vars['like_login_user']->value == 'tiene_like') {?> 
                     <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                    <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
- personas y tu le gusta esto</span>
+                <span id="likes_c">
+                        <?php if ($_smarty_tpl->tpl_vars['likes']->value->likes > 1) {?>
+                            <?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
+ personas y tu le gusta esto
+                        <?php } else { ?>
+                            <?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
+ Te gusta esto
+
+                        <?php }?>
+                </span>
                 <?php } else { ?>
                     <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
                     <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>

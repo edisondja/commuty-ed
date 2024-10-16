@@ -12,7 +12,7 @@
                                 <div style="float: right;">
                                 {if $user_session!=''}
                                   {if $id_user==$tablero.id_user}
-                                      <i class="fa-solid fa-pen-to-square" data-value='{$tablero.id_tablero}' style="cursor:pointer;"></i>
+                                      <i class="fa-solid fa-pen-to-square"  data-bs-toggle="modal" data-bs-target="#modal_update"   data-value='{$tablero.id_tablero}' style="cursor:pointer;"></i>
                                   {/if}
                                 {/if}
                                 </div>
@@ -20,7 +20,7 @@
                                 <i class="fa-solid fa-eye"></i></strong></div>
                                 </a>
                              
-                              <p style='padding-left: 10px;'>{$tablero.descripcion}​</p>
+                              <p style='padding-left: 10px;' id="text{$tablero.id_tablero}">{$tablero.descripcion}​</p>
                               <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
                                 {if $tablero.imagen_tablero!==''}
                                   
