@@ -1,6 +1,7 @@
 <?php
 require('bootstrap.php');
 
+
 $Board = new Board();
 $tableros = [];
 $pagina = 0;
@@ -18,8 +19,6 @@ if (!isset($_GET['leaf']) && !isset($_GET['search']) ) {
 
     $tableros =$Board->paginar_tableros($_GET['leaf']);
 }
-
-
 
 // Asignar variables a Smarty
 $smarty->assign([

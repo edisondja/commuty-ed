@@ -8,6 +8,7 @@
     require_once 'Models/Board.php';
     require_once 'Models/Config.php';
     require_once 'Models/Mail.php';
+    require_once 'Models/Notificacion.php';
 
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
@@ -58,7 +59,6 @@
             estatico.
         */
         $name_site = NAME_SITE;
-
         $smarty->assign('name', $name_site);
         $smarty->assign('logosite', LOGOSITE);
         $smarty->assign('copyright', COPYRIGHT_DESCRIPTION);
@@ -67,11 +67,14 @@
     }
 
 
-
-
-
-
     if (isset($_SESSION['id_user'])) {
+
+        //Cargando las notifiaciones de este usuario
+        $notifiaciones = new Notificacion();
+        $data = $notifiaciones->cargar_mis_notificaciones($_SESSION['id_user']);
+        $smarty->assign('notificaciones',$data);
+        $smarty->assign('cantidad_notificacion',count($data));
+        
         $id_user = $_SESSION['id_user'];
         $smarty->assign('id_user', $_SESSION['id_user']);
         $smarty->assign('foto_perfil', $dominio.'/'.$_SESSION['foto_url']);
