@@ -8,7 +8,7 @@
   require '../models/Coment.php';
   require '../models/Mail.php';
   require '../models/Like.php';
-
+  use setasign\Fpdi\Fpdi;
   require 'Core.php';
  // require '../modeles/Mail.php';
 
@@ -425,6 +425,65 @@
 
         break;
 
+            
+        case 'create_pdf':
 
+            // Asegúrate de que el autoload de Composer esté incluido
+        
+            // Verifica si se han recibido archivos
+            if (!empty($_FILES['images']['name'][0])) {
+                // Crear instancia de FPDF
+                $pdf = new Fpdi();
+        
+                // Directorio donde se guardará el PDF final
+                $pdfDir = '../uploads/';
+                if (!is_dir($pdfDir)) {
+                    mkdir($pdfDir, 0777, true);
+                }
+        
+                // Procesa cada imagen recibida
+                foreach ($_FILES['images']['tmp_name'] as $index => $tmpName) {
+                    $fileType = mime_content_type($tmpName);
+        
+                    // Solo procesar si el archivo es una imagen
+                    if (strpos($fileType, 'image') !== false) {
+                        // Añade una nueva página al PDF
+                        $pdf->AddPage();
+        
+                        // Mueve la imagen al directorio temporal
+                        $imgPath = $pdfDir . basename($_FILES['images']['name'][$index]);
+                        move_uploaded_file($tmpName, $imgPath);
+        
+                        // Obtén las dimensiones de la imagen
+                        list($width, $height) = getimagesize($imgPath);
+        
+                        // Ajusta la imagen al tamaño de la página
+                        $pdf->Image($imgPath, 10, 10, 190, 0);
+        
+                        // Elimina la imagen temporal después de usarla
+                        unlink($imgPath);
+                    }
+                }
+        
+                // Define la ruta para el PDF generado
+                $pdfOutputPath = $pdfDir . 'Generado_' . time() . '.pdf';
+        
+                // Guarda el PDF en el servidor
+                $pdf->Output('F', $pdfOutputPath);
+        
+                // Devuelve la respuesta en JSON con el enlace al PDF
+                echo json_encode([
+                    'success' => true,
+                    'pdfUrl' => $pdfOutputPath
+                ]);
+            } else {
+                // No se recibieron archivos, devuelve un error
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'No se recibieron imágenes.'
+                ]);
+            }
+        
+            break;
 
        }

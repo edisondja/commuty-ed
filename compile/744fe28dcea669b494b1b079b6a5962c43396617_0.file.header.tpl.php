@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.5.3, created on 2024-10-26 22:51:22
+/* Smarty version 4.5.3, created on 2024-11-06 05:09:37
   from 'C:\xampp\htdocs\ventasrd\template\header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.5.3',
-  'unifunc' => 'content_671d564ad5d736_89686419',
+  'unifunc' => 'content_672aec0136dfd8_98208565',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '744fe28dcea669b494b1b079b6a5962c43396617' => 
     array (
       0 => 'C:\\xampp\\htdocs\\ventasrd\\template\\header.tpl',
-      1 => 1729975878,
+      1 => 1730866176,
       2 => 'file',
     ),
   ),
@@ -29,10 +29,11 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:registrer.tpl' => 1,
     'file:backoffice.tpl' => 1,
     'file:active_account.tpl' => 1,
+    'file:pdf_convert.tpl' => 1,
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_671d564ad5d736_89686419 (Smarty_Internal_Template $_smarty_tpl) {
+function content_672aec0136dfd8_98208565 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -294,6 +295,11 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
   
                         <?php $_smarty_tpl->_subTemplateRender("file:active_account.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>   
+
+                    <?php } elseif ($_smarty_tpl->tpl_vars['content_config']->value == 'convert_pdf') {?>
+
+                        <?php $_smarty_tpl->_subTemplateRender("file:pdf_convert.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
 
                     <?php } else { ?>
                   <?php }?>

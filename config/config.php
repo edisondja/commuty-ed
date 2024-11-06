@@ -7,7 +7,7 @@
     define("HOST_BD","localhost");
     define("USER_BD","root");
     define("PASSWORD_BD","");
-    define("NAME_DB","VentasRD");
+    define("NAME_DB","edcommunity");
     #Config with scope complete used for the site tube
     define("NAME_SITE","Ventas RD");
     define("DESCRIPTION_SLOGAN","El mejor lugar para comprar tus articulos");

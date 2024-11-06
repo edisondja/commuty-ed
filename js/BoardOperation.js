@@ -287,7 +287,6 @@ window.onload=function(){
     document.querySelector('#update_changes').addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the default form submission
        
-                
                 // alertify.message('Leyo el evento que mas desea hacer');
                 // Gather form data
                 let usuario = document.querySelector('#usuario_form').value;
@@ -320,7 +319,8 @@ window.onload=function(){
                             'Authorization': `Bearer ${token_get}`
 
                 }}).then(info=>{
-        
+
+                        console.log(info);
                         alertify.message('Cambios guardados con exito');
                 
                 }).catch(error=>{
@@ -563,6 +563,8 @@ window.onload=function(){
                     `;
                     
                  console.log(post_ready);
+
+                 
                  document.querySelector('.col-sm-5').insertAdjacentHTML('afterbegin', post_ready);
                 
                 // Aquí puedes redirigir o actualizar la página según tus necesidades

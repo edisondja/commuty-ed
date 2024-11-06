@@ -132,37 +132,68 @@ Class User extends EncryptToken{
         }
 
         public function updateUser() {
-           
-
-            $fecha = date('y-m-d h:i:s');
-            $sql = "update user
-            set
-                usuario = ?,
-                sexo = ?,
-                foto_url = ?,
-                fecha_creacion = ?,
-                nombre = ?,
-                apellido = ?,
-                bio = ?
-            where
-                id_user = ?;";
-
-            $ready = $this->conection->prepare($sql);
-            $ready->bind_param('sssssssi',
-            $this->usuario,
-            $this->sexo,
-            $this->foto_url,
-            $fecha,
-            $this->nombre,
-            $this->apellido,
-            $this->bio,
-            $this->id_user
-            );
-            $ready->execute();
-
-
-
+            // Log de la foto actual
+            echo "foto_actual: " . $this->foto_url;
+        
+            // Obtener la fecha actual
+            $fecha = date('Y-m-d H:i:s');
+        
+            // Consulta SQL de actualización
+            $sql = "UPDATE user SET
+                        usuario = ?,
+                        sexo = ?,
+                        foto_url = ?,
+                        fecha_creacion = ?,
+                        nombre = ?,
+                        apellido = ?,
+                        bio = ?
+                    WHERE id_user = ?;";
+        
+            try {
+                // Preparar la consulta
+                if (!$stmt = $this->conection->prepare($sql)) {
+                    throw new Exception("Error al preparar la consulta: " . $this->conection->error);
+                }
+        
+                // Vincular los parámetros
+                $stmt->bind_param('sssssssi', 
+                    $this->usuario,
+                    $this->sexo,
+                    $this->foto_url,
+                    $fecha,
+                    $this->nombre,
+                    $this->apellido,
+                    $this->bio,
+                    $this->id_user
+                );
+        
+                // Ejecutar la consulta
+                if (!$stmt->execute()) {
+                    throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
+                }
+        
+                // Verificar si la actualización fue exitosa
+                if ($stmt->affected_rows > 0) {
+                    echo "Usuario actualizado: $this->id_user";
+                } else {
+                    echo "No se encontró ningún usuario con el id: $this->id_user";
+                }
+                
+            } catch (Exception $e) {
+                // Registrar el error
+                $this->TrackingLog("Error al actualizar el usuario: " . $e->getMessage(), 'errores');
+                echo "Ocurrió un error al actualizar el usuario. Intenta nuevamente.";
+            } finally {
+                // Asegurarse de cerrar la declaración
+                if (isset($stmt)) {
+                    $stmt->close();
+                }
+                // Cerrar la conexión si no se usará más
+                $this->conection->close();
+            }
         }
+        
+        
         function LoadConfigPayUser(){
 
 
@@ -171,8 +202,8 @@ Class User extends EncryptToken{
        public function uploadImage($file, $targetDir = "../images/", $maxFileSize = 5 * 1024 * 1024, $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif']) {
             // Verificar si el archivo existe en la solicitud
           
-            file_put_contents('logs/logs.txt','entro informacion realmente');
-
+          //  file_put_contents('logs/logs.txt','entro informacion realmente');
+            echo "entro aqui y subio la imagen";
             if (!isset($file) || $file['error'] == UPLOAD_ERR_NO_FILE) {
                 return $file["tmp_name"];
             }
@@ -207,7 +238,7 @@ Class User extends EncryptToken{
             if (move_uploaded_file($file["tmp_name"], $targetFile)) {
                // return "El archivo " . htmlspecialchars(basename($file["name"])) . " ha sido subido exitosamente.";
                
-               file_put_contents('../logs/logs.txt','entro informacion realmente');
+             //  file_put_contents('../logs/logs.txt','entro informacion realmente');
                return str_replace('..','',$targetFile); 
 
             } else {

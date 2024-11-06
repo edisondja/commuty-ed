@@ -207,6 +207,10 @@
   
                         {include file="active_account.tpl"}   
 
+                    {elseif $content_config=='convert_pdf'}
+
+                        {include file="pdf_convert.tpl"}
+
                     {else}
                   {/if}
 

@@ -22,3 +22,37 @@
 24-10-26 09:36:22Inicio de sesion usaurio edisondja
 2024-10-26 23:11:57 - Notificación guardada correctamente
 24-10-26 11:11:57 Comentario del user ID: 1
+24-11-03 07:19:39Inicio de sesion usaurio edisondja
+24-11-03 07:20:31 Cerrando sesion edbellaco
+24-11-03 07:20:38Inicio de sesion usaurio edisondja
+24-11-03 07:28:24 Cerrando sesion edbellaco
+24-11-03 07:28:32Inicio de sesion usaurio edisondja
+24-11-03 07:29:25 Cerrando sesion edbellaco
+24-11-03 07:29:33Inicio de sesion usaurio edisondja
+24-11-04 12:54:16Inicio de sesion usaurio edisondja
+24-11-04 01:28:01 Cerrando sesion edbellaco
+24-11-04 01:31:27Inicio de sesion usaurio edisondja
+24-11-04 01:41:33 Cerrando sesion edbellaco
+24-11-04 01:41:40Inicio de sesion usaurio edbellaco
+24-11-04 01:41:40 Cerrando sesion edbellaco
+24-11-04 01:41:56Inicio de sesion usaurio edbellaco
+24-11-04 01:47:09 Cerrando sesion edbellaco
+24-11-04 01:47:12Inicio de sesion usaurio edbellaco
+24-11-04 02:18:19 Cerrando sesion edbellaco
+24-11-04 02:18:33Inicio de sesion usaurio edisondja
+24-11-04 05:46:35 Cerrando sesion edbellaco
+24-11-04 05:46:38Inicio de sesion usaurio edbellaco
+24-11-04 10:06:23Inicio de sesion usaurio edbellaco
+2024-11-04 22:16:51 - Notificación guardada correctamente
+24-11-04 10:16:51 Comentario del user ID: 2
+24-11-04 10:19:07 Cerrando sesion edbellaco
+24-11-04 10:19:11Inicio de sesion usaurio edbellaco
+24-11-05 11:54:03Inicio de sesion usaurio edbellaco
+2024-11-06 04:04:46 - Notificación guardada correctamente
+24-11-06 04:04:46 Comentario del user ID: 2
+24-11-06 04:05:01 El usuario ID: 2 Respondió comentario
+24-11-06 04:44:30 Cerrando sesion edbellaco
+24-11-06 04:44:57Inicio de sesion usaurio edisondja
+24-11-06 04:45:34 Cerrando sesion edbellaco
+24-11-06 04:45:41Inicio de sesion usaurio edisondja
+24-11-06 04:48:52 El usuario ID: 1 Respondió comentario

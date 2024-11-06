@@ -64,21 +64,22 @@
         {
             $fecha = date('ymdis');
             $estado = $this->enable();
-
             //inactivo es cuando no se pueden ver para los usuarios
-
             $this->conection;
 
-            $sql = 'insert into tableros(descripcion,fecha_creacion,imagen_tablero,id_usuario,estado)values(?,?,?,?,?)';
+            //echo "$this->description,$fecha,$this->imagen_tablero,$this->id_usuario,$estado";
+            $sql = 'INSERT INTO tableros(descripcion,fecha_creacion,
+            imagen_tablero,id_usuario,estado)values(?,?,?,?,?)';
             $guardar = $this->conection->prepare($sql);
-            $guardar->bind_param('sssis', $this->description, $fecha, $this->imagen_tablero, $this->id_usuario, $estado);
+            $guardar->bind_param('sssis', $this->description, $fecha, $this->imagen_tablero,
+             $this->id_usuario, $estado);
+
             $guardar->execute() or exit('no se puedo guardar el tablero');
             $last_id = $this->conection->insert_id;
             $guardar->close();
 
             if (isset($_FILES['media']['tmp_name'])) {
                 $tipo_archivo = '';
-
                 //Verificar la primera imagen paraq usarla de portada
                 // Verifica si es un array (múltiples archivos) o una cadena (un solo archivo)
                 if (is_array($_FILES['media']['tmp_name'])) {
