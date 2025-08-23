@@ -2,13 +2,13 @@
 
 class Notificacion extends EncryptToken {
 
-    public int $id_notificacion;
-    public int $id_tablero;
-    public int $id_comentario = 0;
-    public int $id_usuario_emisor = 0;
-    public int $id_usuario_receptor = 0;
-    public string $tipo;
-    public string $estado;
+    public $id_notificacion;
+    public $id_tablero;
+    public $id_comentario = 0;
+    public $id_usuario_emisor = 0;
+    public $id_usuario_receptor = 0;
+    public $tipo;
+    public $estado;
 
     function __construct() {
         $this->SetConection(); // Conectar a base de datos

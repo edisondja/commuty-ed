@@ -1,5 +1,5 @@
 
-<div class="col-md-8 col-12 content-container mx-auto tabla_buscar">
+<div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
     <input type="hidden" id="modulo_select" value="config"/>
     <h2>Configuración del Sitio <i class="fa-solid fa-gears"></i></h2>
@@ -133,17 +133,81 @@
 
 
 <style>
+
+.content-container_s {
+    background-color: #495057; /* Gris del menú */
+    color: #ffffff; /* Texto blanco */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Body general */
 body {
-    background-color: #e6e6e6; /* Dark background */
-    color: white; /* White text */
+    background-color: #e6e6e6; /* Gris muy claro */
+    color: #333333;
 }
+
+/* Inputs y textarea */
 .form-control {
-    background-color: #e7ecf0;
-    color: rgb(88, 87, 87);
+    background-color: #ffffff; /* Fondo blanco limpio */
+    color: #333333;            /* Texto oscuro */
+    border: 2px solid #009688; /* Verde azulado */
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.3s;
 }
+
 .form-control::placeholder {
-    color: #707070;
+    color: #707070; /* Placeholder gris suave */
 }
+
+.form-control:focus {
+    border-color: #FF6F61; /* Coral al enfocar */
+    box-shadow: 0 0 5px rgba(255,111,97,0.3);
+}
+
+/* Botones */
+.btn-dark {
+    background-color: #009688; /* Verde azulado */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-dark:hover {
+    background-color: #00796b; /* Verde azulado oscuro al hover */
+    transform: translateY(-2px);
+}
+
+/* Títulos y encabezados */
+h2, h3 {
+    color: #009688; /* Verde azulado */
+}
+
+/* Tabs de Bootstrap personalizados */
+.nav-tabs .nav-link {
+    color: #ffffff; /* Texto blanco en tabs */
+    background-color: #495057;
+    border: 1px solid #6c757d;
+    border-radius: 8px 8px 0 0;
+    margin-right: 5px;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #009688; /* Verde azulado en tab activo */
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #00796b; /* Verde azulado oscuro al hover */
+    color: #ffffff;
+}
+
 </style>
 
 <script src="{$dominio}/js/bk_modulo_configuracion.js"></script>

@@ -5,13 +5,13 @@ use PHPMailer\PHPMailer\Exception;
 
 class Mail extends EncryptToken
 {
-    public int $id_mail;
-    public string $host;
-    public string $mensaje;
-    public string $resector;
-    public PHPMailer $mail;
-    public Config $configuracion;
-    public User $usuario;
+    public  $id_mail;
+    public  $host;
+    public  $mensaje;
+    public  $resector;
+    public  $mail;
+    public  $configuracion;
+    public  $usuario;
 
 
     /*  

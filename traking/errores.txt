@@ -27,3 +27,4 @@ No se pudo actualizar el usuario: Error al ejecutar la consulta: Data too long f
 No se pudo actualizar el usuario: Error al ejecutar la consulta: Data too long for column 'sexo' at row 1
 No se pudo actualizar el usuario: Error al ejecutar la consulta: Data too long for column 'sexo' at row 1
 Error al actualizar el usuario: Error al ejecutar la consulta: Data too long for column 'sexo' at row 1
+25-08-23 10:13:17Error Enviando mail tipo: registrer

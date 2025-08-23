@@ -2,7 +2,7 @@
    
     //define("DOMAIN","https://943b-152-166-176-57.ngrok.io/edtube");
     //define("DOMAIN","https://ventasrd.com");
-    define("DOMAIN","http://localhost/ventasrd");
+    define("DOMAIN","http://localhost:100/commuty-ed");
     #These are the data for the connection of the database 
     define("HOST_BD","localhost");
     define("USER_BD","root");

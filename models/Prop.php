@@ -4,7 +4,7 @@ class Prop
 {
 
 
-    public date $fecha; 
+    public  $fecha; 
 
     public function titleList($title)
     {

@@ -1,5 +1,3 @@
-
-
 <div class="row">
 
     <div class="col-md-3">
@@ -11,25 +9,25 @@
             height="100%" fill="#868e96"></rect><text x="3%" y="50%"
             fill="#dee2e6" dy=".3em">La publicidad sera colocada aca 200x200</text></svg>
     </div>
-    <div class="col-md-6">
-        <br/>
-        <br/><br/>
-        {if $estado!=='baneado'}
-        <div class="card text-white bg-dark mb-3">
-        <div style="position: absolute; right: 10px; top: 10px;">
-        <div class="dropdown custom-dropdown">
-        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-align-justify"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Reportar</a></li>
-            <li><a class="dropdown-item" href="#">Agregar a favorito</a></li>
-            <li><a class="dropdown-item" href="#">Puntear</a></li>
-        </ul>
-    </div>
-    </div>
 
-            <div class="card-body" style=''>
+    <div class="col-md-6">
+        <br/><br/><br/>
+        {if $estado!=='baneado'}
+        <div class="card mb-3 card-custom">
+        <div style="position: absolute; right: 10px; top: 10px;">
+            <div class="dropdown custom-dropdown">
+                <button class="btn btn-custom dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Reportar</a></li>
+                    <li><a class="dropdown-item" href="#">Agregar a favorito</a></li>
+                    <li><a class="dropdown-item" href="#">Puntear</a></li>
+                </ul>
+            </div>
+        </div>
+
+            <div class="card-body">
                 <input type='hidden' value='{$id_tablero}' id='id_tablero'/>
                 {if $user_session!=''}
                     <input type='hidden' value='{$user_session}' id='usuario'/>
@@ -39,55 +37,45 @@
                     <input type='hidden' value='0' id='usuario'/>
                     <input type='hidden' value='0' id='foto_url'/>
                 {/if}
-                <img src="{$foto_usuario}" alt="{$usuario}" style="border-radius:100px;width:50px;height:50px;margin:5px;">
-                <strong>{$usuario}</strong>
-                <h5 class="card-title">{$titulo}</h5>
-                <p class="card-text" style='margin-top:3px;' id='descripcion'>{$descripcion}</p>
+                <img src="{$foto_usuario}" alt="{$usuario}" class="profile-img">
+                <strong class="username-text">{$usuario}</strong>
+                <h5 class="card-title title-text">{$titulo}</h5>
+                <p class="card-text description-text" id='descripcion'>{$descripcion}</p>
 
-                <img src="" class="img-fluid card-img-top" style='' />
-                <div id="carouselExampleControls" class="carousel slide" >
-                  
-                    {if  $multimedias_t==[] &&  $og_imagen!==''}
-                            <div class="carousel-inner fixed-size-carousel"> 
-
-                        <img src="{$dominio}/{$og_imagen}"  class="card-img-top fixed-size-image" alt="...">
-                            
-                       
-                        {if $multimedias_t}
-                        <div class="carousel-item active">
-                            <img src="{$og_imagen}" class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                <div id="carouselExampleControls" class="carousel slide">
+                    {if $multimedias_t==[] &&  $og_imagen!==''}
+                        <div class="carousel-inner fixed-size-carousel">
+                            <img src="{$dominio}/{$og_imagen}" class="card-img-top fixed-size-image" alt="...">
+                            {if $multimedias_t}
+                                <div class="carousel-item active">
+                                    <img src="{$og_imagen}" class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                                </div>
+                                {foreach from=$multimedias_t item=multimedia}
+                                    {if $multimedia.tipo_multimedia=='imagen'}
+                                        <div class="carousel-item">
+                                            <img src="{$dominio}{$multimedia.ruta_multimedia}" class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                                        </div>
+                                    {else}
+                                        <div class="carousel-item">
+                                            <video src="{$dominio}{$multimedia.ruta_multimedia}" class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                                        </div>
+                                    {/if}
+                                {/foreach}
+                            {/if}
                         </div>
-
-                        {foreach from=$multimedias_t item=multimedia}
-
-                        {if $multimedia.tipo_multimedia=='imagen'}
-
-                        <div class="carousel-item">
-                            <img src="{$dominio}{$multimedia.ruta_multimedia}" class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
-                        </div>
-                        {else}
-                        <div class="carousel-item">
-                            <video src="{$dominio}{$multimedia.ruta_multimedia}" class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
-                        </div>
-                        {/if}
-
-                        {/foreach}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     {/if}
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
 
-                <div class="card" style="margin-top: 2%;background: #2e3633;">
+                <div class="card card-comments">
                     <ul class="list-group list-group-flush">
-                        {/if}
-                        
                         <li class="list-group-item" style='margin-left:85%; display:none;' id='cerrar_comentarios'>
                             <svg style='color:#515151;' xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -98,56 +86,43 @@
                 </div>
 
                 {if $like_login_user=='tiene_like'} 
-                    <i class="fa-solid fa-heart" style="cursor:pointer" id="like"></i>
-                <span id="likes_c">
+                    <i class="fa-solid fa-heart heart-liked" style="cursor:pointer" id="like"></i>
+                    <span id="likes_c">
                         {if $likes->likes>1}
                             {$likes->likes} personas y tu le gusta esto
                         {else}
                             {$likes->likes} Te gusta esto
-
                         {/if}
-                </span>
+                    </span>
                 {else}
-                    <i class="fa-regular fa-heart" style="cursor:pointer" id="like"></i>
+                    <i class="fa-regular fa-heart heart-default" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">{$likes->likes}</span>
                 {/if}
-  
-                &nbsp;
-                <!--
-                <i class="fa-regular fa-bookmark" style="cursor:pointer"></i>
-                <span>12,300</span>
-                                -->
 
-                <div class="card" id="coments" style="margin-top: 2%;">
+                <div class="card card-comments" id="coments">
                     <ul class="list-group list-group-flush" id='data_coments'>
-                          
                     </ul>
                 </div>
-                <div class="card" style="margin-top: 2%;">
 
+                <div class="card card-comment-input">
                     <ul class="list-group list-group-flush">
                         {if $id_user!=''}
-                        <div id="interface_og " style=""></div>
-                        <div class="list-group-item flex-container barContentComent fixed-bottom">
-
-                            <img src="{$foto_perfil}" class="rounded" style="margin: 2px;width:34px;height:38px;">
-
-
-                            <textarea id="text_coment" class='textComent' style="width:65%;" rows='1' cols='25' placeholder='write a comment'></textarea>
-                            <svg style='height: 35px;margin: 2px;' id='send_coment' xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
-                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
-                            </svg>
-                        </div>
+                            <div id="interface_og"></div>
+                            <div class="list-group-item flex-container barContentComent fixed-bottom">
+                                <img src="{$foto_perfil}" class="rounded comment-profile-img">
+                                <textarea id="text_coment" class='textComent' rows='1' cols='25' placeholder='write a comment'></textarea>
+                                <svg style='height: 35px;margin: 2px;' id='send_coment' xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </div>
                         {else}
-                        <li class="list-group-item">
-                            <a href=''>i want comment need a account now</a>
-                            <div id='send_coment' style='display:none' ></div>
+                            <li class="list-group-item">
+                                <a href=''>i want comment need a account now</a>
+                                <div id='send_coment' style='display:none'></div>
                             {/if}
                         </li>
                     </ul>
                 </div>
-
-
             </div>
         </div>
         <br/>
@@ -155,15 +130,106 @@
         <p class="h3 title_block">Contenido bloqueado por los administradores</p>
         <div class="card">
             <div class="card-body">
-                <img  class="card-img-top fixed-size-image" src="{$dominio}/assets/block_content.png"/>
+                <img class="card-img-top fixed-size-image" src="{$dominio}/assets/block_content.png"/>
             </div>
         </div>
     {/if}
    </div>
-<!--Componente de publicidad -->
+   <!--Componente de publicidad -->
    {include file='ads.tpl'}
 </div>
+
 {literal}
 <script type="text/javascript" src='js/single_board.js'></script>
 <script type="text/javascript" src='js/action_coments.js'></script>
 {/literal}
+
+<style>
+.card-custom {
+    background-color: #1f2a2f;
+    color: white;
+    border-radius: 10px;
+}
+
+.btn-custom {
+    background-color: #20c997;
+    color: white;
+    border: none;
+}
+
+.btn-custom:hover {
+    background-color: #17a589;
+}
+
+.profile-img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+.username-text {
+    color: #20c997;
+    margin-left: 5px;
+}
+
+.title-text {
+    color: #ffffff;
+}
+
+.description-text {
+    color: #cfd8dc;
+}
+
+.card-comments {
+    background-color: #243537;
+    color: white;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.card-comment-input {
+    background-color: #243537;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.comment-profile-img {
+    width: 34px;
+    height: 38px;
+    margin: 2px;
+}
+
+.textComent {
+    width: 65%;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #20c997;
+    background-color: #1f2a2f;
+    color: white;
+}
+
+.fixed-size-carousel {
+    height: 300px;
+}
+
+.fixed-size-image {
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+}
+
+.fixed-size-video {
+    height: 300px;
+    width: 100%;
+}
+
+.heart-liked {
+    color: #20c997;
+}
+
+.heart-default {
+    color: white;
+}
+</style>

@@ -4,11 +4,11 @@
    // session_destroy();
     require_once 'vendor/autoload.php';
     require_once 'config/config.php';
-    require_once 'Models/User.php';
-    require_once 'Models/Board.php';
-    require_once 'Models/Config.php';
-    require_once 'Models/Mail.php';
-    require_once 'Models/Notificacion.php';
+    require_once 'models/User.php';
+    require_once 'models/Board.php';
+    require_once 'models/Config.php';
+    require_once 'models/Mail.php';
+    require_once 'models/Notificacion.php';
 
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
@@ -52,7 +52,7 @@
             $smarty->assign('dominio', DOMAIN);
         }
 
-    }else{
+    }else{ 
 
         /*
             Cargando configuracion desde archivo 

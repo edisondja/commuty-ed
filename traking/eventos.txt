@@ -56,3 +56,18 @@
 24-11-06 04:45:34 Cerrando sesion edbellaco
 24-11-06 04:45:41Inicio de sesion usaurio edisondja
 24-11-06 04:48:52 El usuario ID: 1 Respondió comentario
+25-08-23 10:19:55Inicio de sesion usaurio mistered 
+25-08-23 10:19:56 Cerrando sesion mistered
+25-08-23 10:20:12Inicio de sesion usaurio mistered 
+2025-08-23 22:41:51 - Notificación guardada correctamente
+25-08-23 10:41:51 Comentario del user ID: 3
+25-08-23 10:42:01 El usuario ID: 3 Respondió comentario
+25-08-23 10:59:43 Cerrando sesion 
+25-08-23 10:59:56Inicio de sesion usaurio mistered 
+25-08-23 11:00:13 Cerrando sesion 
+25-08-23 11:00:19Inicio de sesion usaurio mistered 
+25-08-23 11:50:19 Cerrando sesion 
+25-08-23 11:50:38Inicio de sesion usaurio mistered 
+2025-08-23 23:58:25 - Notificación guardada correctamente
+25-08-23 11:58:25 Comentario del user ID: 3
+25-08-23 11:58:31 El usuario ID: 3 Respondió comentario

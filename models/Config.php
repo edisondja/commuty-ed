@@ -2,26 +2,26 @@
 
 class Config extends EncryptToken
 {
-    public int $configuracion_id;
-    public string $dominio;
-    public string $nombre_sitio;
-    public string $descripcion_slogan;
-    public string $descripcion_sitio;
-    public string $favicon_url;
-    public string $sitio_logo_url;
-    public string $copyright_descripcion;
-    public string $email_sitio;
-    public string $busqueda_descripcion;
-    public string $pagina_descripcion;
-    public string $titulo_descripcion;
-    public string $busqueda_hastag;
-    public string $email_remitente;
-    public string $nombre_remitente;
-    public string $servidor_smtp;
-    public string $puerto_smtp;
-    public string $usuario_smtp;
-    public string $clave_smtp;
-    public string $autenticacion_ssl;
+    public  $configuracion_id;
+    public  $dominio;
+    public  $nombre_sitio;
+    public  $descripcion_slogan;
+    public  $descripcion_sitio;
+    public  $favicon_url;
+    public  $sitio_logo_url;
+    public  $copyright_descripcion;
+    public  $email_sitio;
+    public  $busqueda_descripcion;
+    public  $pagina_descripcion;
+    public  $titulo_descripcion;
+    public  $busqueda_hastag;
+    public  $email_remitente;
+    public  $nombre_remitente;
+    public  $servidor_smtp;
+    public  $puerto_smtp;
+    public  $usuario_smtp;
+    public  $clave_smtp;
+    public  $autenticacion_ssl;
 
 
 

@@ -35,11 +35,11 @@
         {$libs_cdn}
 
   </head>
-  <body style='background:#1e1e23;'>
+  <body style='background:#F8FAFC;'>
   
     <input type='hidden' value='{$dominio}' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='{$paginador_scroll}'/>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#18171f; position: fixed; top: 0; width: 100%; z-index: 999;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#008080; position: fixed; top: 0; width: 100%; z-index: 999;">
       
     <div class="container-fluid">
 
@@ -125,7 +125,7 @@
                  
                     
                     <!-- Si existe sesion de un usuario entonces carga sus notifiaciones si tiene disponibles  -->
-                    <i class="fa-solid fa-envelope" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#notificacionModal" style="cursor:pointer; padding-top: 8%;font-size: 24px;color: #ff0909; display: inline-flex;">
+                    <i class="fa-solid fa-envelope" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#notificacionModal" style="cursor:pointer; padding-top: 8%;font-size: 24px;color: #e9e7e7ff; display: inline-flex;">
                             <p style="font-size: 10px;">
                                 {if $cantidad_notificacion!=''} 
                                     &nbsp;+{$cantidad_notificacion}

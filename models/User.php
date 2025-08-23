@@ -4,17 +4,18 @@ require('EncryptToken.php');
 
 Class User extends EncryptToken{
 
-    public int $id_user;
-    public string $usuario;
-    public string $sexo;
-    public string $nombre;
-    public string $apellido;
-    public string $clave;
-    public string $email;
-    public string $bio;
-    public string $foto_url;
-    public Mail $correo;
+    public $id_user;
+    public $usuario;
+    public $sexo;
+    public $nombre;
+    public $apellido;
+    public $clave;
+    public $email;
+    public $bio;
+    public $foto_url;
+    public $correo; // Mail $correo → quitar tipo
     public $conection;
+
 
         function __construct(){
 
@@ -42,8 +43,8 @@ Class User extends EncryptToken{
 
                 $clave = md5($this->clave);
                 $fecha = date('y-m-d h:i:s');
-                $sql="INSERT INTO
-                    USER (usuario,clave,
+                $sql="insert into
+                    user (usuario,clave,
                          email,sexo,
                          foto_url,
                          fecha_creacion,
@@ -425,7 +426,7 @@ Class User extends EncryptToken{
             /*00
                 Cargar todos los correos electronicos para enviarles mensajes
             */
-            $SQL = "SELECT DISTINCT email,usuario,nombre FROM USER WHERE estado=?";
+            $SQL = "select distinct email,usuario,nombre from user where estado=?";
             try {
                 $estado = $this->enable();
                 
@@ -473,7 +474,7 @@ Class User extends EncryptToken{
 
         public function BuscarUsuarios($context, $config) {
             
-            $sql = "SELECT * FROM user WHERE nombre LIKE ? OR usuario LIKE ? limit 50";
+            $sql = "select * from user where nombre LIKE ? OR usuario LIKE ? limit 50";
             $cargar = $this->conection->prepare($sql);
             
             if (!$cargar) {

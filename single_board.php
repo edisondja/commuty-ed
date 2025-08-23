@@ -1,6 +1,6 @@
 <?php
     require('bootstrap.php');
-    require('Models/Like.php');
+    require('models/Like.php');
     //solo cargar un tablero
 
     $smarty->assign('content_config','single_board');

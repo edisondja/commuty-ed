@@ -2,15 +2,15 @@
 
 class Coment extends EncryptToken {
 
-    public int $id_post;
-    public int $id_user;
-    public string $comentario;
-    public string $tipo_post;
-    public string $data_og;
-    public string $estado;
+    public  $id_post;
+    public  $id_user;
+    public  $comentario;
+    public  $tipo_post;
+    public  $data_og;
+    public  $estado;
     public $conection;
-    public Notificacion $notifacar;
-    public Board $tablero;
+    public $notifacar;
+    public $tablero;
 
     function __construct() {
         $this->SetConection();

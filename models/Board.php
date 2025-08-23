@@ -2,13 +2,13 @@
 
     class Board extends EncryptToken
     {
-        public int $board_id;
-        public string $title;
-        public string $description;
-        public string $imagen_tablero;
-        public string $id_usuario;
-        public bool $portada_board = false;
-        public User $CapturarUsuario;
+        public  $board_id;
+        public  $title;
+        public  $description;
+        public  $imagen_tablero;
+        public  $id_usuario;
+        public  $portada_board = false;
+        public  $CapturarUsuario;
 
         public $conection;
 
@@ -60,65 +60,66 @@
             }
         }
 
-        public function guardar_tablero()
-        {
-            $fecha = date('ymdis');
+    public function guardar_tablero()
+    {
+        try {
+            // Fecha en formato MySQL
+            $fecha = date('Y-m-d H:i:s');
             $estado = $this->enable();
-            //inactivo es cuando no se pueden ver para los usuarios
-            $this->conection;
 
-            //echo "$this->description,$fecha,$this->imagen_tablero,$this->id_usuario,$estado";
-            $sql = 'INSERT INTO tableros(descripcion,fecha_creacion,
-            imagen_tablero,id_usuario,estado)values(?,?,?,?,?)';
-            $guardar = $this->conection->prepare($sql);
-            $guardar->bind_param('sssis', $this->description, $fecha, $this->imagen_tablero,
-             $this->id_usuario, $estado);
-
-            $guardar->execute() or exit('no se puedo guardar el tablero');
+            // Insertar tablero en la base de datos
+            $sql = "insert into tableros(descripcion, fecha_creacion, imagen_tablero, id_usuario, estado)
+                    VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->conection->prepare($sql);
+            $stmt->bind_param('sssis', $this->description, $fecha, $this->imagen_tablero, $this->id_usuario, $estado);
+            $stmt->execute();
             $last_id = $this->conection->insert_id;
-            $guardar->close();
+            $stmt->close();
 
+            // Procesar archivos subidos si existen
             if (isset($_FILES['media']['tmp_name'])) {
-                $tipo_archivo = '';
-                //Verificar la primera imagen paraq usarla de portada
-                // Verifica si es un array (múltiples archivos) o una cadena (un solo archivo)
-                if (is_array($_FILES['media']['tmp_name'])) {
-                    // Si es un array, cuenta el número de archivos
-                    $archivos = count($_FILES['media']['tmp_name']);
+                $archivos = is_array($_FILES['media']['tmp_name']) 
+                            ? count($_FILES['media']['tmp_name']) 
+                            : 1;
 
-                    for ($i = 0; $i < $archivos; ++$i) {
-                        //echo "asignando imagen$i";
+                for ($i = 0; $i < $archivos; ++$i) {
+                    // Obtener info del archivo
+                    $tmp_name = is_array($_FILES['media']['tmp_name']) ? $_FILES['media']['tmp_name'][$i] : $_FILES['media']['tmp_name'];
+                    $type     = is_array($_FILES['media']['type']) ? $_FILES['media']['type'][$i] : $_FILES['media']['type'];
 
-                        $tipo_archivo = $this->detectar_archivo($_FILES['media']['type'][$i]);
-                        $this->detectar_imagen_portada($tipo_archivo, $last_id, $_FILES['media']['tmp_name'][$i]);
+                    // Validar tipo de archivo permitido
+                    $allowed_types = ['image/jpeg', 'image/png', 'video/mp4'];
+                    if (!in_array($type, $allowed_types)) continue;
 
-                        $this->asignador_de_multimedia_tablero(
-                            $last_id,
-                            $_FILES['media']['tmp_name'][$i],
-                            $_FILES['media']['type'][$i],
-                            $this->limitarTexto($this->description)
-                        );
-                    }
-                } else {
-                   // echo 'asignando una sola imagen';
-                    // Si es una cadena, hay un solo archivo
-                    $tipo_archivo = $this->detectar_archivo($_FILES['media']['type']);
-                    $this->detectar_imagen_portada($tipo_archivo, $last_id, $_FILES['media']['tmp_name']);
+                    $tipo_archivo = $this->detectar_archivo($type);
+
+                    // Detectar portada
+                    $this->detectar_imagen_portada($tipo_archivo, $last_id, $tmp_name);
+
+                    // Asignar multimedia al tablero
                     $this->asignador_de_multimedia_tablero(
                         $last_id,
-                        $_FILES['media']['tmp_name'],
-                        $_FILES['media']['type'],
+                        $tmp_name,
+                        $type,
                         $this->limitarTexto($this->description)
                     );
                 }
             }
 
-            if($last_id!==null){
-                
-               $this->cargar_solo_tablero($last_id,'json');
+            // Retornar tablero creado en JSON
+            if ($last_id !== null) {
+                $this->cargar_solo_tablero($last_id, 'json');
             }
 
+        } catch (Exception $e) {
+            // Manejo de errores
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
         }
+    }
+
 
         private function actualizar_estado_board($estado)
         {
@@ -559,10 +560,12 @@
         {
             $this->conection;
             $estado = $this->enable();
-            $sql = 'SELECT * FROM tableros AS t 
-                INNER JOIN asignar_multimedia_t AS m
-                ON t.id_tablero=m.id_tablero WHERE t.id_tablero=? 
-                AND T.estado=?';
+
+
+            $sql = 'select * from tableros AS t 
+                inner join asignar_multimedia_t as m
+                on t.id_tablero=m.id_tablero where t.id_tablero=? 
+                and t.estado=?';
             $cargar = $this->conection->prepare($sql);
             $cargar->bind_param('is', $id_tablero, $estado);
             $cargar->execute();
