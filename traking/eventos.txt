@@ -82,3 +82,5 @@
 25-08-24 09:18:38Inicio de sesion usaurio mistered 
 25-08-24 11:31:16 Cerrando sesion mistered
 25-08-24 11:31:20Inicio de sesion usaurio mistered 
+25-08-25 12:20:06 Cerrando sesion mistered
+25-08-25 12:20:09Inicio de sesion usaurio mistered 

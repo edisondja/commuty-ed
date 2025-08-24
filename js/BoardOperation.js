@@ -459,16 +459,17 @@ window.onload=function(){
             return;
         }
 
-        //visualizando barra de subida de archivos
-
-        document.querySelector('.progress').style.display = 'block';
-        document.querySelector('#porcentaje').style.display = 'block';
 
         // Agrega los datos del formulario a FormDatas_board
         FormDatas_board.append('action', 'create_board');
         FormDatas_board.append('description', document.querySelector('#board_title').value);
         FormDatas_board.append('user_id', document.querySelector('#id_usuario').value);
-    
+        
+
+        //visualizando barra de subida de archivos
+
+        document.querySelector('.progress').style.display = 'block';
+        document.querySelector('#porcentaje').style.display = 'block';
         // Configuración para el progreso de carga del archivo
         const config = {
             headers: {
