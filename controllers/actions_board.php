@@ -190,7 +190,7 @@
             $tablero->description = $_POST['description'];
             $tablero->imagen_tablero = 'imagen_actualizada.jpg';
             $tablero->id_usuario = $_POST['user_id'];
-            $id_tablero = $_POST['bord_id'];
+            $id_tablero = (int)$_POST['bord_id'];
             $tablero->actualizar_tablero($id_tablero);
 
         break;
@@ -216,17 +216,25 @@
 
         break;
 
-        case 'update_user':
+        case 'update_user':   
+
             $image_path = '';
             $usuario = new User();
             $usuario->usuario = $_POST['username'];
             $usuario->nombre = $_POST['name'];
-            $usuario->sexo = $_POST['sex'];
-            $image_path = $usuario->uploadImage($_FILES['image']);
+            $usuario->sexo = $_POST['sex'];             
+            // Verificar si se envió un archivo
+            if (isset($_FILES['image']['tmp_name'])) {
+                $image_path = $usuario->uploadImage($_FILES['image']);
+            }else{
+
+                $image_path = $_POST['imagen_actual'];
+            }
             $usuario->foto_url = $image_path;
+            // Si no se subió nueva imagen, mantener la foto actual
             $usuario->apellido = $_POST['last_name'];
             $usuario->bio = $_POST['bio'];
-            $usuario->id_user = $_POST['user_id'];
+            $usuario->id_user = (int)$_POST['user_id'];
             $usuario->updateUser();
         break;
 
@@ -260,8 +268,8 @@
 
         case 'reply_coment':
 
-            $id_coment = $_POST['id_coment'];
-            $id_user = $_POST['id_user'];
+            $id_coment =(int)$_POST['id_coment'];
+            $id_user = (int)$_POST['id_user'];
             $text_coment = $_POST['text_coment'];
             $reply_coment = new Coment();
             $reply_coment->reply_coment($id_coment, $id_user, $text_coment);

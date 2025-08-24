@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 19:47:31
+/* Smarty version 3.1.48, created on 2025-08-25 00:03:08
   from '/opt/lampp/htdocs/commuty-ed/template/update_user.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68a9feb31c8ae8_36088069',
+  'unifunc' => 'content_68ab8c1ce3ae78_66597178',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a59074260162860d38d95f4a7a09bd6a256e237e' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/update_user.tpl',
-      1 => 1755969815,
+      1 => 1756072142,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68a9feb31c8ae8_36088069 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68ab8c1ce3ae78_66597178 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!-- Modal -->
 <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -32,6 +32,8 @@ function content_68a9feb31c8ae8_36088069 (Smarty_Internal_Template $_smarty_tpl)
             <div class="modal-body">
                 <form id="updateUserForm">
                     <!-- Otros Datos -->
+                    <input value="<?php echo $_smarty_tpl->tpl_vars['foto_perfil']->value;?>
+"  type="hidden" name="imagen_actual">
                     <fieldset class="mb-3">
                         <legend>Foto y Biografia</legend>
                         <div class="mb-3">
@@ -62,8 +64,8 @@ function content_68a9feb31c8ae8_36088069 (Smarty_Internal_Template $_smarty_tpl)
                         <div class="mb-3">
                             <label for="sexo" class="form-label">Sexo</label>
                             <select class="form-control" id="sexo" name="sexo" required>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
+                                <option value="F">Masculino</option>
+                                <option value="M">Femenino</option>
                             </select>
                         </div>
                     </fieldset>

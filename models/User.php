@@ -132,120 +132,158 @@ Class User extends EncryptToken{
             
         }
 
-        public function updateUser() {
-            // Log de la foto actual
-            echo "foto_actual: " . $this->foto_url;
-        
-            // Obtener la fecha actual
-            $fecha = date('Y-m-d H:i:s');
-        
-            // Consulta SQL de actualización
-            $sql = "UPDATE user SET
-                        usuario = ?,
-                        sexo = ?,
-                        foto_url = ?,
-                        fecha_creacion = ?,
-                        nombre = ?,
-                        apellido = ?,
-                        bio = ?
-                    WHERE id_user = ?;";
-        
+       public function updateUser() {
             try {
-                // Preparar la consulta
-                if (!$stmt = $this->conection->prepare($sql)) {
-                    throw new Exception("Error al preparar la consulta: " . $this->conection->error);
+                    $sql = "update user set
+                                usuario = ?,
+                                sexo = ?,
+                                foto_url = ?,
+                                nombre = ?,
+                                apellido = ?,
+                                bio = ?
+                            where id_user = ?;";
+
+                    $stmt = $this->conection->prepare($sql);
+                    if (!$stmt) {
+                        throw new Exception("Error al preparar la consulta: " . $this->conection->error);
+                    }
+                    
+                    if (empty($this->foto_url)) {
+                        $this->foto_url = $_POST['imagen_actual'] ?? null;
+                    }
+
+                    $stmt->bind_param(
+                        'ssssssi',
+                        $this->usuario,
+                        $this->sexo,
+                        $this->foto_url,
+                        $this->nombre,
+                        $this->apellido,
+                        $this->bio,
+                        $this->id_user
+                    );
+
+                    $stmt->execute();
+
+                    // 🔹 Debug: imprimir lo que se envió
+                    $debug = [
+                        'usuario'  => $this->usuario,
+                        'sexo'     => $this->sexo,
+                        'foto_url' => $this->foto_url,
+                        'nombre'   => $this->nombre,
+                        'apellido' => $this->apellido,
+                        'bio'      => $this->bio,
+                        'id_user'  => $this->id_user
+                    ];
+
+                    if ($stmt->affected_rows > 0) {
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Usuario actualizado correctamente',
+                            'id_user' => $this->id_user,
+                            'debug'   => $debug
+                        ];
+                    } else {
+                        // 🔹 Verificar si el usuario existe
+                        $check = $this->conection->prepare("SELECT COUNT(*) as total FROM user WHERE id_user = ?");
+                        $check->bind_param('i', $this->id_user);
+                        $check->execute();
+                        $result = $check->get_result()->fetch_assoc();
+                        $check->close();
+
+                        if ($result['total'] > 0) {
+                            $response = [
+                                'status' => 'warning',
+                                'message' => 'No hubo cambios en los datos',
+                                'id_user' => $this->id_user,
+                                'debug'   => $debug
+                            ];
+                        } else {
+                            $response = [
+                                'status' => 'error',
+                                'message' => 'Usuario no encontrado',
+                                'id_user' => $this->id_user,
+                                'debug'   => $debug
+                            ];
+                        }
+                    }
+
+                } catch (Exception $e) {
+                    $this->TrackingLog("Error al actualizar el usuario: " . $e->getMessage(), 'errores');
+                    $response = [
+                        'status' => 'error',
+                        'message' => 'Ocurrió un error al actualizar el usuario'
+                    ];
+                } finally {
+                    if (isset($stmt) && $stmt instanceof mysqli_stmt) $stmt->close();
+                    if (isset($this->conection)) $this->conection->close();
                 }
-        
-                // Vincular los parámetros
-                $stmt->bind_param('sssssssi', 
-                    $this->usuario,
-                    $this->sexo,
-                    $this->foto_url,
-                    $fecha,
-                    $this->nombre,
-                    $this->apellido,
-                    $this->bio,
-                    $this->id_user
-                );
-        
-                // Ejecutar la consulta
-                if (!$stmt->execute()) {
-                    throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
-                }
-        
-                // Verificar si la actualización fue exitosa
-                if ($stmt->affected_rows > 0) {
-                    echo "Usuario actualizado: $this->id_user";
-                } else {
-                    echo "No se encontró ningún usuario con el id: $this->id_user";
-                }
-                
-            } catch (Exception $e) {
-                // Registrar el error
-                $this->TrackingLog("Error al actualizar el usuario: " . $e->getMessage(), 'errores');
-                echo "Ocurrió un error al actualizar el usuario. Intenta nuevamente.";
-            } finally {
-                // Asegurarse de cerrar la declaración
-                if (isset($stmt)) {
-                    $stmt->close();
-                }
-                // Cerrar la conexión si no se usará más
-                $this->conection->close();
-            }
+
+                header('Content-Type: application/json');
+                echo json_encode($response);
         }
-        
+                
         
         function LoadConfigPayUser(){
 
 
         }
 
-       public function uploadImage($file, $targetDir = "../images/", $maxFileSize = 5 * 1024 * 1024, $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif']) {
-            // Verificar si el archivo existe en la solicitud
-          
-          //  file_put_contents('logs/logs.txt','entro informacion realmente');
-            echo "entro aqui y subio la imagen";
-            if (!isset($file) || $file['error'] == UPLOAD_ERR_NO_FILE) {
-                return $file["tmp_name"];
+       public function uploadImage(
+            $file = null, 
+            $targetDir = "../images/", 
+            $maxFileSize = 5242880, // 5 MB
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
+        ) {
+            // Verificar que $file sea un array válido
+            if (!isset($file) || !is_array($file) || !isset($file['tmp_name'])) {
+                return null;
             }
-        
-            // Verificar si hay algún error en la subida
-            if ($file['error'] != UPLOAD_ERR_OK) {
-                return $file["tmp_name"];
+
+            // Si no se seleccionó archivo
+            if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+                return null;
             }
-        
-            // Verificar el tamaño del archivo
-            if ($file["size"] > $maxFileSize) {
-                return $file["tmp_name"];
+
+            // Si hubo un error en la subida
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return null;
             }
-        
-            // Verificar el tipo MIME del archivo
+
+            // Verificar tamaño
+            if ($file['size'] > $maxFileSize) {
+                return null;
+            }
+
+            // Verificar tipo MIME
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($finfo, $file["tmp_name"]);
+            $mimeType = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
+
             if (!in_array($mimeType, $allowedMimeTypes)) {
-                return $file["tmp_name"];
+                return null;
             }
-        
-            // Crear el directorio de subida si no existe
+
+            // Crear directorio si no existe
             if (!file_exists($targetDir)) {
                 mkdir($targetDir, 0777, true);
             }
-        
-            // Generar un nombre único para el archivo
-            $targetFile = $targetDir . uniqid() . '.' . pathinfo($file["name"], PATHINFO_EXTENSION);
-        
-            // Mover el archivo a la ubicación deseada
-            if (move_uploaded_file($file["tmp_name"], $targetFile)) {
-               // return "El archivo " . htmlspecialchars(basename($file["name"])) . " ha sido subido exitosamente.";
-               
-             //  file_put_contents('../logs/logs.txt','entro informacion realmente');
-               return str_replace('..','',$targetFile); 
 
-            } else {
-                return $file["tmp_name"];
+            // Generar nombre único
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $targetFile = $targetDir . uniqid('', true) . '.' . $extension;
+
+            // Mover el archivo
+            if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+                // Devolver ruta relativa para base de datos
+
+                $this->foto_url =str_replace('..', '', $targetFile);
+                return str_replace('..', '', $targetFile);
             }
+
+            return null;
         }
+
         
         public function Login($user,$clave)
         {       

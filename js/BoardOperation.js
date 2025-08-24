@@ -298,6 +298,7 @@ window.onload=function(){
                 // Create FormData object and append form values
                 let formDatas = new FormData();
                 formDatas.append('action', 'update_user');
+                formDatas.append('imagen_actual',document.querySelector('#imagen_actual').value);
                 formDatas.append('user_id', document.querySelector('#id_usuario').value);
                 formDatas.append('image', fotoUrl);
                 formDatas.append('username',usuario);

@@ -9,6 +9,7 @@
             <div class="modal-body">
                 <form id="updateUserForm">
                     <!-- Otros Datos -->
+                    <input value="{$foto_perfil}"  type="hidden" name="imagen_actual">
                     <fieldset class="mb-3">
                         <legend>Foto y Biografia</legend>
                         <div class="mb-3">
@@ -39,8 +40,8 @@
                         <div class="mb-3">
                             <label for="sexo" class="form-label">Sexo</label>
                             <select class="form-control" id="sexo" name="sexo" required>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
+                                <option value="F">Masculino</option>
+                                <option value="M">Femenino</option>
                             </select>
                         </div>
                     </fieldset>
