@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <form id="updateUserForm">
                     <!-- Otros Datos -->
-                    <input value="{$foto_perfil}"  type="hidden" name="imagen_actual">
+                    <input value="{$foto_perfil}"  type="hidden" name="imagen_actual" id="imagen_actual">
                     <fieldset class="mb-3">
                         <legend>Foto y Biografia</legend>
                         <div class="mb-3">
