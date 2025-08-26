@@ -73,7 +73,7 @@
         </div>
 
           <a class="navbar-brand" style="color: #09b9e1;" href="{$dominio}">
-              <img src='{$dominio}/{$logosite}' />
+              <img src='{$dominio}/{$logosite}' style="width:230px; height:50px;" />
               <strong style='color:#ebebeb; font-size:15px;'>{$user_session}</strong>
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">

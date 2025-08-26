@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 23:41:38
+/* Smarty version 3.1.48, created on 2025-08-26 04:20:45
   from '/opt/lampp/htdocs/commuty-ed/template/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68aa3592359b73_21713828',
+  'unifunc' => 'content_68ad19fd80d741_36709872',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f410541cc83663bf194cbd4ea38a86a9e4888eea' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/header.tpl',
-      1 => 1755985296,
+      1 => 1756174843,
       2 => 'file',
     ),
   ),
@@ -33,7 +33,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_68aa3592359b73_21713828 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68ad19fd80d741_36709872 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -134,7 +134,7 @@ function content_68aa3592359b73_21713828 (Smarty_Internal_Template $_smarty_tpl)
 ">
               <img src='<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /<?php echo $_smarty_tpl->tpl_vars['logosite']->value;?>
-' />
+' style="width:230px; height:50px;" />
               <strong style='color:#ebebeb; font-size:15px;'><?php echo $_smarty_tpl->tpl_vars['user_session']->value;?>
 </strong>
           </a>
