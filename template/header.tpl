@@ -35,11 +35,11 @@
         {$libs_cdn}
 
   </head>
-  <body style='background:#F8FAFC;'>
+  <body style='background:#151c1b;'>
   
     <input type='hidden' value='{$dominio}' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='{$paginador_scroll}'/>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#008080; position: fixed; top: 0; width: 100%; z-index: 999;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#034a4b; position: fixed; top: 0; width: 100%; z-index: 999;">
       
     <div class="container-fluid">
 

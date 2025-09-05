@@ -4,24 +4,24 @@
     <ul class="list-group" style="color:black; background: transparent;">
 
         {if $foto_perfil!==''}
-            <li class="list-group-item" style="color:black; background: transparent;">
+            <li class="list-group-item" style="color:white; background: transparent;">
               <img src="{$foto_perfil}" class="rounded" style="background:white; margin:2px; width:50px; height:50px;">
               {$nombre} {$apellido}
             </li>
-            <li class="list-group-item" style="color:black; background: transparent;">
+            <li class="list-group-item" style="color:white; background: transparent;">
               <i class="fa-solid fa-book"></i> Posts 850
             </li>
-            <li class="list-group-item" style="color:black; background: transparent;">
+            <li class="list-group-item" style="color:white; background: transparent;">
               <i class="fa-solid fa-heart"></i> Likes 500
             </li>
         {else}
-            <li class="list-group-item" style="color:black; background: transparent;">
+            <li class="list-group-item" style="color:white; background: transparent;">
               <i class="fa-solid fa-book"></i> 
-              <a href="registrer.php" style="text-decoration: none; color:black;">Registrate</a>
+              <a href="registrer.php" style="text-decoration: none; color:white;">Registrate</a>
             </li>
-            <li class="list-group-item" style="color:black; background: transparent;">
+            <li class="list-group-item" style="color:white; background: transparent;">
               <i class="fa-solid fa-book"></i> 
-              <a href="contactar.php" style="text-decoration: none; color:black;">Contactanos</a>
+              <a href="contactar.php" style="text-decoration: none; color:white;">Contactanos</a>
             </li>
         {/if}
     </ul>

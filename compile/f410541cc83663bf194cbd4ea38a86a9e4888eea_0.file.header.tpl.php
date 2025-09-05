@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-26 04:20:45
+/* Smarty version 3.1.48, created on 2025-09-05 04:53:59
   from '/opt/lampp/htdocs/commuty-ed/template/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68ad19fd80d741_36709872',
+  'unifunc' => 'content_68ba50c781d470_79034206',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f410541cc83663bf194cbd4ea38a86a9e4888eea' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/header.tpl',
-      1 => 1756174843,
+      1 => 1757040837,
       2 => 'file',
     ),
   ),
@@ -33,7 +33,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_68ad19fd80d741_36709872 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68ba50c781d470_79034206 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -91,13 +91,13 @@ function content_68ad19fd80d741_36709872 (Smarty_Internal_Template $_smarty_tpl)
 
 
   </head>
-  <body style='background:#F8FAFC;'>
+  <body style='background:#151c1b;'>
   
     <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 ' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='<?php echo $_smarty_tpl->tpl_vars['paginador_scroll']->value;?>
 '/>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#008080; position: fixed; top: 0; width: 100%; z-index: 999;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#034a4b; position: fixed; top: 0; width: 100%; z-index: 999;">
       
     <div class="container-fluid">
 
