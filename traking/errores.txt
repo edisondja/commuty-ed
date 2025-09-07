@@ -39,3 +39,4 @@
                             inner join tableros t on r.i' at line 2
 25-09-07 05:59:24 Error preparando la consulta SQL: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 't.estado as estado_reporte
                             inner join tableros t on ' at line 2
+25-09-08 12:41:45 Error preparando la consulta SQL: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'order by r.fecha_creacion desc' at line 9

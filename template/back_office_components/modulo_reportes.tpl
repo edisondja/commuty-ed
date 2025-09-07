@@ -67,20 +67,19 @@ h3 {
     <h3>Lista de reportes de usuarios <i class="fa-solid fa-photo-film"></i></h3>
 
     <input type="hidden" id="modulo_select" value="boards">
-    <input type="search" class="form-control mb-4" id="search" placeholder="Busca lo que deseas">
+    <input type="search" class="form-control mb-4" id="search_report" placeholder="Busca lo que deseas">
 
-    <table class="table table-custom table-float-header">
-        <thead>
+    <table class="table">
             <tr>
                 <th>Titulo</th>
                 <th>Razon</th>
                 <th>Fecha publicacion</th>
                 <th>Usuario</th>
-                <th>Foto</th>
-
+                <th>Media</th>
+                <th>Estado</th>
             </tr>
         </thead>
-        <tbody id="data_boards" class="tabla_buscar">
+        <tbody id="data_reports" class="tabla_buscar">
         </tbody>
     </table>
 </div>

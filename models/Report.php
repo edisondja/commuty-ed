@@ -98,17 +98,24 @@ Class Report extends EncryptToken{
 
             $sql = "select r.descripcion as razon,
                           r.fecha_creacion,t.descripcion,
+                          t.id_tablero,
                           u.usuario,t.imagen_tablero,
                           r.estado as estado_reporte,
                           t.estado as estado_tablero from reportes r 
                           inner join tableros t on r.id_board=t.id_tablero
                           inner join user u on r.id_usuario=u.id_user
-                          where r.estado = ?";
+                          where r.estado = ? order by r.fecha_creacion desc limit 100 ";
         }else{
 
-            $sql = "select r.descripcion as razon,r.fecha_creacion,t.descripcion,t.imagen_tablero from reportes r 
+            $sql = "select r.descripcion as razon,
+                          r.fecha_creacion,t.descripcion,
+                          t.id_tablero,
+                          u.usuario,t.imagen_tablero,
+                          r.estado as estado_reporte,
+                          t.estado as estado_tablero from reportes r 
                           inner join tableros t on r.id_board=t.id_tablero
-                          where r.id_usuario = ? and r.estado = ?";
+                          inner join user u on r.id_usuario=u.id_user
+                          where r.id_usuario=? and r.estado = ? order by r.fecha_creacion desc limit 100";
         }
         // Preparamos la consulta
         $data = $this->conection->prepare($sql);
@@ -157,7 +164,62 @@ Class Report extends EncryptToken{
      }
 
     
+     public function buscar_reportes($texto) {
+        /*
+            Este metodo es utilizado para buscar los reportes
+            que hacen los usuarios a las publicaciones
+        */
 
+        $texto = "%".$texto."%";
+        $this->estado_rp = $this->enable();
+        $sql = "select r.descripcion as razon,
+                       r.fecha_creacion,t.descripcion,
+                       t.id_tablero,
+                       u.usuario,t.imagen_tablero,
+                       r.estado as estado_reporte,
+                       t.estado as estado_tablero from reportes r 
+                       inner join tableros t on r.id_board=t.id_tablero
+                       inner join user u on r.id_usuario=u.id_user
+                       where (t.descripcion LIKE ? or u.usuario LIKE ? or r.descripcion LIKE ?)
+                       and r.estado = ? limit 100";
 
+        // Preparamos la consulta
+        $data = $this->conection->prepare($sql);
+    
+        if ($data === false) {
+            // Si no se pudo preparar la consulta, lanzamos un error
+            $this->TrackingLog(date('y-m-d h:i:s') . " Error preparando la consulta SQL: " . $this->conection->error, 'errores');
+            return false;
+        }
+    
+        // Asignamos los parámetros
+        $data->bind_param('ssss', $texto, $texto, $texto, $this->estado_rp);
+    
+        try {
+            // Ejecutamos la consulta
+            if (!$data->execute()) {
+                // Si falla la ejecución, lanzamos un error
+                $this->TrackingLog(date('y-m-d h:i:s') . " Error ejecutando la consulta SQL: " . $data->error, 'errores');
+                return false;
+            }
+    
+            // Obtenemos el resultado correctamente
+            $result = $data->get_result();
+    
+            if ($result === false) {
+                // Si falla al obtener el resultado
+                $this->TrackingLog(date('y-m-d h:i:s') . " Error obteniendo resultados: " . $data->error, 'errores');
+                return false;
+            }
+    
+            // Retornamos todos los reportes del usuario
+            
+            echo json_encode($result->fetch_all(MYSQLI_ASSOC));
+            
+        } catch (Exception $e) {
+            $this->TrackingLog('No se están cargando los reportes en la base de datos ' . ' Error: ' . $e->getMessage(), 'errores');
+            return false; // Error al cargar los reportes
+        }
+    }
 
 }

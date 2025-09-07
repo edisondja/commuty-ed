@@ -15,13 +15,7 @@
 
  //$_POST = json_decode(file_get_contents("php://input"),true);
 
-
-       $report = new Report();
-            $report->cargar_reportes_usuario('admin');
-
-    return;
- 
-  if (isset($_POST['action'])) {
+if (isset($_POST['action'])) {
       $action = $_POST['action'];
   } else {
       $action = $_GET['action'];
@@ -285,6 +279,12 @@
             $report->id_usuario = $_POST['id_user'];
             $report->cargar_reportes_usuario();
 
+        break;
+
+        case 'buscar_reporte':
+            $texto = $_POST['texto'];
+            $report = new Report();
+            $report->buscar_reportes($texto);
         break;
 
         case 'load_report_admin':

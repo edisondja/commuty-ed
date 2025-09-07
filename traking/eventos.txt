@@ -100,3 +100,4 @@ Bloqueando tablero
 2025-09-06 18:03:07 - Notificación guardada correctamente
 25-09-06 06:03:07 Comentario del user ID: 3
 25-09-06 09:35:23 El usuario ID: 3 Respondió comentario
+Bloqueando tablero
