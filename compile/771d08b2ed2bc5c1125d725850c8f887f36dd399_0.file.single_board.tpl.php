@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-05 04:23:12
+/* Smarty version 3.1.48, created on 2025-09-06 18:28:37
   from '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68ba4990645883_61045694',
+  'unifunc' => 'content_68bc61353cbbd6_68992798',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d08b2ed2bc5c1125d725850c8f887f36dd399' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl',
-      1 => 1757038766,
+      1 => 1757176115,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_68ba4990645883_61045694 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68bc61353cbbd6_68992798 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <div class="row">
@@ -37,6 +37,32 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
     </div>
 
     <div class="col-md-6">
+      <!-- Modal Reportar Publicación -->
+        <div class="modal fade" id="report_modal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">Reportar Publicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <div class="mb-3">
+                <label for="razon_reporte" class="form-label">Razón del reporte</label>
+                <textarea class="form-control" id="razon_reporte" rows="3" placeholder="Escribe la razón del reporte..."></textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="enviar_rpt">Enviar Reporte</button>
+            </div>
+            </div>
+        </div>
+        </div>
         <br/><br/><br/>
         <?php if ($_smarty_tpl->tpl_vars['estado']->value !== 'baneado') {?>
         <div class="card mb-3 card-custom">
@@ -46,9 +72,9 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                     <i class="fas fa-align-justify"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Reportar</a></li>
-                    <li><a class="dropdown-item" href="#">Agregar a favorito</a></li>
-                    <li><a class="dropdown-item" href="#">Puntear</a></li>
+                    <li id="reportar_publicacion"><a class="dropdown-item" href="#">Reportar</a></li>
+                    <li id="agregar_a_favorito"><a class="dropdown-item" href="#">Agregar a favorito</a></li>
+                    <li id="agregar_calificacion"><a class="dropdown-item" href="#">Puntear</a></li>
                 </ul>
             </div>
         </div>
@@ -299,6 +325,74 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 .heart-default {
     color: white;
 }
+
+
+/* Fondo del modal (semi-transparente) */
+#report_modal .modal-content {
+    background-color: #008080; /* Verde azulado */
+    color: #fff; /* Texto blanco para contraste */
+    border-radius: 12px;
+    border: 2px solid #4d6857ff; /* Amarillo dorado */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Header */
+#report_modal .modal-header {
+    border-bottom: 2px solid #546e51ff;
+}
+
+/* Botón cerrar */
+#report_modal .btn-close {
+    filter: invert(1); /* Hace que la "x" blanca se vea en fondo oscuro */
+}
+
+/* Body */
+#report_modal .modal-body {
+    background-color: #006666; /* Verde más oscuro */
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* Footer */
+#report_modal .modal-footer {
+    border-top: 2px solid #487255ff;
+}
+
+/* Botones */
+#report_modal .btn-primary {
+    background-color: #20c997; /* Verde azulado brillante */
+    border-color: #20c997;
+}
+
+#report_modal .btn-primary:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+#report_modal .btn-secondary {
+    background-color: #ffd700; /* Amarillo */
+    color: #000;
+    border-color: #064935ff;
+}
+
+#report_modal .btn-secondary:hover {
+    background-color: #e6c200;
+    border-color: #2c4d40ff;
+}
+
+/* Textarea */
+#report_modal textarea.form-control {
+    background-color: #0c2e2eff; /* Verde clarito */
+    color: white;
+    border: 1px solid #063d3fff;
+    border-radius: 6px;
+}
+
+
+
+
 </style>
+
+
 <?php }
 }

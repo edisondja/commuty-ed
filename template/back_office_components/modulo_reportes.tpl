@@ -1,27 +1,5 @@
-<?php
-/* Smarty version 3.1.48, created on 2025-09-06 22:14:45
-  from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl' */
-
-/* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
-  'version' => '3.1.48',
-  'unifunc' => 'content_68bc963533b8a4_24728112',
-  'has_nocache_code' => false,
-  'file_dependency' => 
-  array (
-    '454bf4ec76871704a9040e003910a74186c22e19' => 
-    array (
-      0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl',
-      1 => 1757189683,
-      2 => 'file',
-    ),
-  ),
-  'includes' => 
-  array (
-  ),
-),false)) {
-function content_68bc963533b8a4_24728112 (Smarty_Internal_Template $_smarty_tpl) {
-?><style>
+{* archivo: search_component.tpl *}
+<style>
 .content-container_s {
     margin-top: 50px;
     padding: 30px;
@@ -86,7 +64,7 @@ h3 {
 
 
 <div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
-    <h3>Buscar publicaciones <i class="fa-solid fa-photo-film"></i></h3>
+    <h3>Lista de reportes de usuarios <i class="fa-solid fa-photo-film"></i></h3>
 
     <input type="hidden" id="modulo_select" value="boards">
     <input type="search" class="form-control mb-4" id="search" placeholder="Busca lo que deseas">
@@ -95,12 +73,11 @@ h3 {
         <thead>
             <tr>
                 <th>Titulo</th>
-                <th>Portada</th>
+                <th>Razon</th>
                 <th>Fecha publicacion</th>
-                <th>Estado</th>
-                <th>Foto</th>
                 <th>Usuario</th>
-                <th>Block</th>
+                <th>Foto</th>
+
             </tr>
         </thead>
         <tbody id="data_boards" class="tabla_buscar">
@@ -108,9 +85,5 @@ h3 {
     </table>
 </div>
 
-<?php echo '<script'; ?>
- src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
-/js/back_office.js"><?php echo '</script'; ?>
->
-<?php }
-}
+<script src="{$dominio}/js/back_office.js"></script>
+<script src="{$dominio}/js/bk_reportes.js"></script>

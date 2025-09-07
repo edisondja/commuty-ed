@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-06 22:14:45
-  from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl' */
+/* Smarty version 3.1.48, created on 2025-09-07 17:11:02
+  from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_reportes.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68bc963533b8a4_24728112',
+  'unifunc' => 'content_68bda086f3dbb3_70046426',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '454bf4ec76871704a9040e003910a74186c22e19' => 
+    'efca8a8d065712109fa19e615dc5b27e7d71ebf0' => 
     array (
-      0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl',
-      1 => 1757189683,
+      0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_reportes.tpl',
+      1 => 1757257861,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68bc963533b8a4_24728112 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68bda086f3dbb3_70046426 (Smarty_Internal_Template $_smarty_tpl) {
 ?><style>
 .content-container_s {
     margin-top: 50px;
@@ -86,7 +86,7 @@ h3 {
 
 
 <div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
-    <h3>Buscar publicaciones <i class="fa-solid fa-photo-film"></i></h3>
+    <h3>Lista de reportes de usuarios <i class="fa-solid fa-photo-film"></i></h3>
 
     <input type="hidden" id="modulo_select" value="boards">
     <input type="search" class="form-control mb-4" id="search" placeholder="Busca lo que deseas">
@@ -95,12 +95,11 @@ h3 {
         <thead>
             <tr>
                 <th>Titulo</th>
-                <th>Portada</th>
+                <th>Razon</th>
                 <th>Fecha publicacion</th>
-                <th>Estado</th>
-                <th>Foto</th>
                 <th>Usuario</th>
-                <th>Block</th>
+                <th>Foto</th>
+
             </tr>
         </thead>
         <tbody id="data_boards" class="tabla_buscar">
@@ -112,5 +111,8 @@ h3 {
  src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /js/back_office.js"><?php echo '</script'; ?>
 >
-<?php }
+<?php echo '<script'; ?>
+ src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
+/js/bk_reportes.js"><?php echo '</script'; ?>
+><?php }
 }

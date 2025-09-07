@@ -26,6 +26,8 @@
             
             {include file='back_office_components/modulo_banner.tpl'}
 
+        {else if $option=='reportes'}    
+            {include file='back_office_components/modulo_reportes.tpl'}
         {/if}
 
 </div>

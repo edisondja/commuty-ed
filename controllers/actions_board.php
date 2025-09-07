@@ -8,12 +8,19 @@
   require '../models/Coment.php';
   require '../models/Mail.php';
   require '../models/Like.php';
+  require '../models/Report.php';
   use setasign\Fpdi\Fpdi;
   require 'Core.php';
  // require '../modeles/Mail.php';
 
  //$_POST = json_decode(file_get_contents("php://input"),true);
 
+
+       $report = new Report();
+            $report->cargar_reportes_usuario('admin');
+
+    return;
+ 
   if (isset($_POST['action'])) {
       $action = $_POST['action'];
   } else {
@@ -263,7 +270,43 @@
 
         break;
 
-        case 'add_favorit':
+        case 'public_report':
+
+            $report = new Report();
+            $report->id_tablero = $_POST['id_tablero'];
+            $report->id_usuario = $_POST['id_user'];
+            $report->descripcion = $_POST['descripcion'];
+            $report->save_report();
+
+
+        case 'load_report_user':
+            //Carga los reportes que ha hecho un usuario en particular
+            $report = new Report();
+            $report->id_usuario = $_POST['id_user'];
+            $report->cargar_reportes_usuario();
+
+        break;
+
+        case 'load_report_admin':
+            //Carga todo los reportes de lo usuarios en el panel del admin
+            $report = new Report();
+            $report->cargar_reportes_usuario('admin');
+
+        break;
+        case 'anular_report':
+
+            $report = new Report();
+            $report->id_usuario = $_POST['id_user'];
+            $report->id_report = $_POST['id_report'];
+            $report->anular_report();
+
+        break;
+
+        case 'add_favorite':
+            $favorite = new Favorite();
+            $favorite->id_tablero = $_POST['id_board'];
+            $favorite->id_usuario = $_POST['id_user'];
+            $favorite->agregar_a_favorito();
         break;
 
         case 'reply_coment':

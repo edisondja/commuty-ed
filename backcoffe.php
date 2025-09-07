@@ -44,6 +44,13 @@
                     case 'banners':
 
                         $smarty->assign('option','adm_banners');
+                        
+                    break;
+
+                    case 'reports':
+
+                        $smarty->assign('option','reportes');
+
                     break;
 
                     default:
@@ -51,6 +58,7 @@
                      $smarty->assign('option','usuarios');
                             
                     break;
+
 
                 } 
             }else{

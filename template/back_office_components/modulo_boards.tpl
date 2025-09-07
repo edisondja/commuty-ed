@@ -72,7 +72,7 @@ h3 {
     <table class="table table-custom table-float-header">
         <thead>
             <tr>
-                <th>Descripcion</th>
+                <th>Titulo</th>
                 <th>Portada</th>
                 <th>Fecha publicacion</th>
                 <th>Estado</th>

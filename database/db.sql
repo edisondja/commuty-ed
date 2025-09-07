@@ -159,6 +159,7 @@ CREATE TABLE reportes (
   id_report INT PRIMARY KEY AUTO_INCREMENT,
   descripcion TEXT,
   fecha_creacion DATETIME,
+  estado VARCHAR(15),
   id_usuario INT, 
   id_board INT,
   FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE,

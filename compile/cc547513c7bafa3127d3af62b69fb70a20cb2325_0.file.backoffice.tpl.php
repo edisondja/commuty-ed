@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 23:00:22
+/* Smarty version 3.1.48, created on 2025-09-07 17:03:44
   from '/opt/lampp/htdocs/commuty-ed/template/backoffice.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68aa2be6f18f57_34335202',
+  'unifunc' => 'content_68bd9ed019bc61_59967861',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cc547513c7bafa3127d3af62b69fb70a20cb2325' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/backoffice.tpl',
-      1 => 1755969815,
+      1 => 1757257422,
       2 => 'file',
     ),
   ),
@@ -24,9 +24,10 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:back_office_components/modulo_configuracion.tpl' => 1,
     'file:back_office_components/enviar_correo.tpl' => 1,
     'file:back_office_components/modulo_banner.tpl' => 1,
+    'file:back_office_components/modulo_reportes.tpl' => 1,
   ),
 ),false)) {
-function content_68aa2be6f18f57_34335202 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68bd9ed019bc61_59967861 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <div class="row"> 
@@ -61,6 +62,9 @@ function content_68aa2be6f18f57_34335202 (Smarty_Internal_Template $_smarty_tpl)
             <?php $_smarty_tpl->_subTemplateRender('file:back_office_components/modulo_banner.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
+        <?php } elseif ($_smarty_tpl->tpl_vars['option']->value == 'reportes') {?>    
+            <?php $_smarty_tpl->_subTemplateRender('file:back_office_components/modulo_reportes.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
         <?php }?>
 
 </div>
