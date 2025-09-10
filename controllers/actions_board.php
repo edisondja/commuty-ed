@@ -103,6 +103,8 @@ if (isset($_POST['action'])) {
                 $config->usuario_smtp = $_POST['usuario_smtp'];
                 $config->clave_smtp =$_POST['clave_smtp'];
                 $config->autenticacion_ssl=$_POST['autenticacion_ssl'];
+                $config->publicar_sin_revision = $_POST['publicar_sin_revision'];
+                $config->verificar_cuenta = $_POST['verificar_cuenta'];
 
                 if ($config->VerificarConfiguracion()>0){
 

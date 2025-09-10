@@ -23,7 +23,8 @@ CREATE TABLE configuracion (
   usuario_smtp VARCHAR(250),
   clave_smtp VARCHAR(250),
   autenticacion_ssl VARCHAR(2),
-  revision_publicacion VARCHAR(2)
+  publicar_sin_revision VARCHAR(2),
+  verificar_cuenta VARCHAR(2)
 );
 
 -- Tabla de usuarios

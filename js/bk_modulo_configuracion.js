@@ -36,7 +36,24 @@
             let usuario_smtp = document.getElementById('usuario_smtp').value;
             let clave_smtp = document.getElementById('contrasena_smtp').value;
             let autenticacion_ssl = document.getElementById('autenticacion_ssl').value;
-            
+       
+            let publicar_sin_revision = '';
+            if(document.getElementById('publicar_sin_revision').checked==true){
+                 publicar_sin_revision = 'SI';
+                alertify.message('Los nuevos articulos se publicaran sin revision');
+            }else{
+                publicar_sin_revision = 'NO';
+                alertify.message('Los nuevos articulos se publicaran con revision');
+            }
+            let verificar_cuenta = '';
+            if(document.getElementById('verificar_cuenta').checked==true){
+                verificar_cuenta = 'SI';
+                alertify.message('Los nuevos usuarios deberan verificar su cuenta');
+            }else{
+                verificar_cuenta = 'NO';
+                alertify.message('Los nuevos usuarios no deberan verificar su cuenta');
+            }
+
 
             let FormDatas = new FormData();
             FormDatas.append('action','config_site_text');
@@ -60,6 +77,8 @@
             FormDatas.append('usuario_smtp',usuario_smtp);
             FormDatas.append('clave_smtp',clave_smtp);
             FormDatas.append('autenticacion_ssl',autenticacion_ssl);
+            FormDatas.append('publicar_sin_revision',publicar_sin_revision);
+            FormDatas.append('verificar_cuenta',verificar_cuenta);
 
             axios.post(api_config,
                 FormDatas,
@@ -126,6 +145,17 @@
                         document.getElementById('usuario_smtp').value = data.data.usuario_smtp;
                         document.getElementById('contrasena_smtp').value = data.data.clave_smtp;
                         document.getElementById('autenticacion_ssl').value = data.data.autenticacion_ssl;
+                        if(data.data.publicar_sin_revision=='SI'){
+                            document.getElementById('publicar_sin_revision').checked=true;
+                        }else{
+                            document.getElementById('publicar_sin_revision').checked=false;
+                        }
+
+                        if(data.data.verificar_cuenta=='SI'){
+                            document.getElementById('verificar_cuenta').checked=true;
+                        }else{
+                            document.getElementById('verificar_cuenta').checked=false;
+                        }
 
                 }).catch(error=>{
 

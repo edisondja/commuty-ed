@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-08 01:14:21
+/* Smarty version 3.1.48, created on 2025-09-10 06:24:24
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68be11cd4bdc48_35481569',
+  'unifunc' => 'content_68c0fd78800216_94742121',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9b20980f0ed37acea50d44739fc0bb3445c05dbf' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl',
-      1 => 1757286859,
+      1 => 1757478263,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68be11cd4bdc48_35481569 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68c0fd78800216_94742121 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
@@ -96,6 +96,19 @@ function content_68be11cd4bdc48_35481569 (Smarty_Internal_Template $_smarty_tpl)
                 <label for="email_sitio">Email del Sitio</label>
                 <input type="email" class="form-control" id="email_sitio" name="email_sitio" maxlength="180" placeholder="Ingrese el email del sitio">
             </div>
+            <hr/>
+            <div class="form-group form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="publicar_sin_revision" name="publicar_sin_revision">
+            <label class="form-check-label" for="publicar_sin_revision">Publicar sin revisión ( Al activar esta opcion las publicaciones deben ser 
+            verificadas por el administrador, antes de ser publicas. )</label>
+            </div>
+            <hr/>
+            <hr/>
+                <div class="form-group form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="verificar_cuenta" name="publicar_sin_revision">
+                <label class="form-check-label" for="publicar_sin_revision">Verificar cuenta ( Si se activa esta opcion las cuentas creadas deben de ser verificadas por email. )</label>
+                </div>
+            <hr/>
             <div class="form-group">
                 <label for="busqueda_descripcion">Descripción de Búsqueda</label>
                 <textarea class="form-control" id="busqueda_descripcion" name="busqueda_descripcion" rows="3" placeholder="Ingrese la descripción de búsqueda"></textarea>

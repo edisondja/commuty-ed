@@ -10,6 +10,7 @@ class Config extends EncryptToken
     public  $favicon_url;
     public  $sitio_logo_url;
     public  $copyright_descripcion;
+    public  $publicar_sin_revision;
     public  $email_sitio;
     public  $busqueda_descripcion;
     public  $pagina_descripcion;
@@ -22,6 +23,7 @@ class Config extends EncryptToken
     public  $usuario_smtp;
     public  $clave_smtp;
     public  $autenticacion_ssl;
+    public  $verificar_cuenta;
 
 
 
@@ -92,7 +94,8 @@ class Config extends EncryptToken
                 $this->email_sitio = $data->email_sitio;
                 $this->autenticacion_ssl = $data->autenticacion_ssl;
                 $this->dominio = $data->dominio;
-                
+                $this->publicar_sin_revision = $data->publicar_sin_revision;
+                $this->verificar_cuenta = $data->verificar_cuenta;
                 return $data;
             }
         }
@@ -146,15 +149,17 @@ class Config extends EncryptToken
                 puerto_smtp,
                 usuario_smtp,
                 clave_smtp,
-                autenticacion_ssl
-            )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                autenticacion_ssl,
+                publicar_sin_revision,
+                verificar_cuenta
+            )VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
         $guardar = $this->conection->prepare($sql);
 
         try {
 
 
-            $guardar->bind_param('sssssssssssssssssss',
+            $guardar->bind_param('sssssssssssssssssssss',
                 $this->dominio,
                 $this->nombre_sitio,
                 $this->descripcion_slogan,
@@ -173,7 +178,9 @@ class Config extends EncryptToken
                 $this->puerto_smtp,
                 $this->usuario_smtp,
                 $this->clave_smtp,
-                $this->autenticacion_ssl
+                $this->autenticacion_ssl,
+                $this->publicar_sin_revision,
+                $this->verificar_cuenta
             );
             $guardar->execute();
             $guardar->close();
@@ -210,7 +217,9 @@ class Config extends EncryptToken
                     puerto_smtp = ?,
                     usuario_smtp = ?,
                     clave_smtp = ?,
-                    autenticacion_ssl = ?
+                    autenticacion_ssl = ?,
+                    publicar_sin_revision = ?,
+                    verificar_cuenta = ?
                     ";
 
         $actualizar = $this->conection->prepare($sql);
@@ -220,7 +229,7 @@ class Config extends EncryptToken
 
 
             $actualizar->bind_param(
-                'sssssssssssssssssss',
+                'sssssssssssssssssssss',
                 $this->dominio,
                 $this->nombre_sitio,
                 $this->descripcion_slogan,
@@ -239,7 +248,9 @@ class Config extends EncryptToken
                 $this->puerto_smtp,
                 $this->usuario_smtp,
                 $this->clave_smtp,
-                $this->autenticacion_ssl
+                $this->autenticacion_ssl,
+                $this->publicar_sin_revision,
+                $this->verificar_cuenta
             );
 
             $actualizar->execute();
