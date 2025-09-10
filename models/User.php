@@ -15,11 +15,12 @@ Class User extends EncryptToken{
     public $foto_url;
     public $correo; // Mail $correo → quitar tipo
     public $conection;
+    public $config;
 
 
         function __construct(){
 
-        
+            $this->config = new Config();
            $this->SetConection();
 
         }
@@ -35,7 +36,12 @@ Class User extends EncryptToken{
                 return;
             }
 
-            $estado = $this->disable();
+            $configuracion = $this->config->cargar_configuracion('asoc');
+            if ($configuracion->verificar_cuenta == 'SI') {
+                $estado = $this->disable();
+            } else {
+                $estado = $this->enable();
+            }
             $tipo_usuario = 'normal';
             //$this->SendMailActivedAccount($this->usuario);
             //return;

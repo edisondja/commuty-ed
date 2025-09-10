@@ -9,12 +9,13 @@
         public  $id_usuario;
         public  $portada_board = false;
         public  $CapturarUsuario;
-
-        public $conection;
+        public  $config;
+        public  $conection;
 
         public function __construct()
         {
             $this->CapturarUsuario = new User();
+            $this->config = new Config();
             $this->SetConection();
         }
 
@@ -65,7 +66,14 @@
         try {
             // Fecha en formato MySQL
             $fecha = date('Y-m-d H:i:s');
-            $estado = $this->enable();
+
+            $configuracion = $this->config->cargar_configuracion('asoc');
+
+            if ($configuracion->publicar_sin_revision == 'SI') {
+                $estado = $this->enable();
+            } else {
+                $estado = $this->disable();
+            }
 
             // Insertar tablero en la base de datos
             $sql = "insert into tableros(descripcion, fecha_creacion, imagen_tablero, id_usuario, estado)
@@ -112,6 +120,7 @@
             }
 
         } catch (Exception $e) {
+            $this->TrackingLog(date('Y-m-d H:i:s') . ' No se pudo guardar el tablero: ' . $e->getMessage(), 'errores');
             // Manejo de errores
             echo json_encode([
                 'status' => 'error',
@@ -381,7 +390,8 @@
                     FROM tableros as t
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE t.titulo LIKE ? OR t.descripcion LIKE ?
-                    LIMIT 5
+                    order by fecha_creacion desc
+                    LIMIT 8
                 ');
                 $data->bind_param('ss', $texto, $texto);
             } else {
@@ -390,7 +400,7 @@
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE (t.titulo LIKE ? OR t.descripcion LIKE ?) 
                     AND t.estado = ? 
-                    LIMIT 20
+                    LIMIT 8
                 ');
 
                 $data->bind_param('sss', $texto, $texto, $estado);

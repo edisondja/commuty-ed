@@ -358,7 +358,7 @@ var config = {
        
         let Row = `
                 <tr>  
-                    <td>${data.descripcion.substring(0,10)}..</td>
+                    <td>${data.descripcion.substring(0,80)}..</td>
                     <td><img class="imagenPerfil" 
                         src="${get_domain}/${data.imagen_tablero}" 
                          onerror="this.onerror=null; this.src='${get_domain}/assets/no_found.png'"/>
@@ -428,6 +428,7 @@ var config = {
 
 
     function ActivarTablero(id_tablero){
+
 
         let FormDatas = new FormData();
         FormDatas.append('action','active_board');

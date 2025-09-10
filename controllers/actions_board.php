@@ -147,7 +147,7 @@ if (isset($_POST['action'])) {
             $board = new Board();
             $board->board_id = (int) $_POST['id_board'];
             $board->id_usuario = $_POST['id_usuario'];
-            $board->bloquear_tablero();
+            $board->activar_tablero();
 
         break;
 
