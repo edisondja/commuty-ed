@@ -140,11 +140,13 @@ CREATE TABLE favoritos (
 );
 
 -- Tabla de visualizaciones
-CREATE TABLE view (
+CREATE TABLE views (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  id_video INT,
-  views INT DEFAULT NULL,
-  FOREIGN KEY (id_video) REFERENCES tableros(id_tablero) ON DELETE CASCADE -- Corrige si el id_video no es un tablero
+  id_tablero INT,
+  id_usuario INT,
+  cantidad INT DEFAULT NULL,
+  FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE
 );
 
 -- Tabla de botones de menú

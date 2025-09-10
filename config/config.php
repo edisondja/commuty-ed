@@ -36,20 +36,4 @@
     // Cuando termines, no olvides cerrar la conexión
     $conexion->close();
 
-
-    
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
 ?>

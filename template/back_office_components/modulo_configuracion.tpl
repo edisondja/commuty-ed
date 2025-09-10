@@ -16,6 +16,14 @@
         <li class="nav-item">
             <a class="nav-link" id="configuracion-correo-tab" data-toggle="tab" href="#configuracion-correo" role="tab" aria-controls="configuracion-correo" aria-selected="false">Configuración de Correo <i class="fa-solid fa-envelope"></i></a>
         </li>
+           <li class="nav-item">
+            <a class="nav-link" id="configuracion-reglas-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Reglas <i class="fa-solid fa-photo-film""></i></a>
+        </li>
+
+         </li>
+           <li class="nav-item">
+            <a class="nav-link" id="configuracion-correso-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Cambiar colores <i class="fa-solid fa-photo-film""></i></a>
+        </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
@@ -127,6 +135,7 @@
         </div>
             </div>
         </div>
+
     </div>
     
 </div>

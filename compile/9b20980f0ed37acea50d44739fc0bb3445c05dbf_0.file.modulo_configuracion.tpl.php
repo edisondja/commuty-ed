@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 23:32:01
+/* Smarty version 3.1.48, created on 2025-09-08 01:14:21
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68aa335139cf70_53298136',
+  'unifunc' => 'content_68be11cd4bdc48_35481569',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9b20980f0ed37acea50d44739fc0bb3445c05dbf' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl',
-      1 => 1755984719,
+      1 => 1757286859,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68aa335139cf70_53298136 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68be11cd4bdc48_35481569 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
@@ -38,6 +38,14 @@ function content_68aa335139cf70_53298136 (Smarty_Internal_Template $_smarty_tpl)
         </li>
         <li class="nav-item">
             <a class="nav-link" id="configuracion-correo-tab" data-toggle="tab" href="#configuracion-correo" role="tab" aria-controls="configuracion-correo" aria-selected="false">Configuración de Correo <i class="fa-solid fa-envelope"></i></a>
+        </li>
+           <li class="nav-item">
+            <a class="nav-link" id="configuracion-reglas-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Reglas <i class="fa-solid fa-photo-film""></i></a>
+        </li>
+
+         </li>
+           <li class="nav-item">
+            <a class="nav-link" id="configuracion-correso-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Cambiar colores <i class="fa-solid fa-photo-film""></i></a>
         </li>
     </ul>
 
@@ -150,6 +158,7 @@ function content_68aa335139cf70_53298136 (Smarty_Internal_Template $_smarty_tpl)
         </div>
             </div>
         </div>
+
     </div>
     
 </div>

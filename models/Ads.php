@@ -6,13 +6,13 @@ Class Ads extends EncryptToken{
 
     
 
-	public int $ads_id;
-    public string $titulo;
-    public string $desripcion;
-    public string $imagen_ruta;
-    public string $tipo;
-    public string $scrip_banner;
-    public int $posicion;
+	public $ads_id;
+    public $titulo;
+    public $descripcion;
+    public $imagen_ruta;
+    public $tipo;
+    public $scrip_banner;
+    public $posicion;
 
 
 
