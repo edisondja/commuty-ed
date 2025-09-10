@@ -22,7 +22,8 @@ CREATE TABLE configuracion (
   puerto_smtp VARCHAR(50),
   usuario_smtp VARCHAR(250),
   clave_smtp VARCHAR(250),
-  autenticacion_ssl VARCHAR(2)
+  autenticacion_ssl VARCHAR(2),
+  revision_publicacion VARCHAR(2)
 );
 
 -- Tabla de usuarios

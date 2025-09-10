@@ -44,11 +44,13 @@ h3 {
     box-shadow: 0 0 5px rgba(255,111,97,0.3);
 }
 
+
 /* Tabla personalizada */
 .table-custom th {
     background-color: #009688; /* Verde azulado */
     color: #ffffff;            /* Texto blanco */
     border: none;
+
 }
 
 .table-custom td {
@@ -60,6 +62,10 @@ h3 {
 .table-custom tr:hover td {
     background-color: #f1fdfb; /* Hover verde azulado suave */
 }
+
+
+
+
 </style>
 
 
@@ -69,7 +75,7 @@ h3 {
     <input type="hidden" id="modulo_select" value="boards">
     <input type="search" class="form-control mb-4" id="search" placeholder="Busca lo que deseas">
 
-    <table class="table table-custom table-float-header">
+    <table class="table table-custom table-scroll">
         <thead>
             <tr>
                 <th>Titulo</th>
@@ -79,6 +85,7 @@ h3 {
                 <th>Foto</th>
                 <th>Usuario</th>
                 <th>Block</th>
+                <th>Editar<th>
             </tr>
         </thead>
         <tbody id="data_boards" class="tabla_buscar">

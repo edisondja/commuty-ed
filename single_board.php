@@ -1,6 +1,7 @@
 <?php
     require('bootstrap.php');
     require('models/Like.php');
+    require('models/View.php');
     //solo cargar un tablero
 
     $smarty->assign('content_config','single_board');
@@ -22,9 +23,15 @@
             marcamos el like a encendido por el template de smarty.
           */
         
+        $View = new View();
+        $View->id_tablero = $_GET['id'];
+        $View->id_usuario = $id_user;
+        $View->guardar_view();
+        
         $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
         $smarty->assign('like_login_user',$Verificar_like->verificar_mi_like());
         $multimedias_tableros =$Board->cargar_multimedias_de_tablero($_GET['id'],'asoc');
+        $smarty->assign('total_views',$View->contar_views());
         $smarty->assign('board',$data_board);
         $smarty->assign('estado',$data_board['estado']);
         $smarty->assign('titulo',$data_board['titulo']);

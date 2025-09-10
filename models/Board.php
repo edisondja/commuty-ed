@@ -273,7 +273,7 @@
             $sql = 'SELECT * FROM tableros INNER JOIN user
              ON tableros.id_usuario = user.id_user 
             WHERE id_tablero = ? AND  tableros.estado = ?
-            OR tableros.estado=?
+            OR tableros.estado=? 
             ';
             $cargado = $this->conection->prepare($sql);
 
@@ -381,7 +381,7 @@
                     FROM tableros as t
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE t.titulo LIKE ? OR t.descripcion LIKE ?
-                    LIMIT 20
+                    LIMIT 5
                 ');
                 $data->bind_param('ss', $texto, $texto);
             } else {

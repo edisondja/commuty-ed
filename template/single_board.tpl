@@ -134,6 +134,8 @@
                     <i class="fa-regular fa-heart heart-default" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">{$likes->likes}</span>
                 {/if}
+                    <i class="fa fa-eye"></i>
+                    <span>{$total_views}</span>
 
                 <div class="card card-comments" id="coments">
                     <ul class="list-group list-group-flush" id='data_coments'>

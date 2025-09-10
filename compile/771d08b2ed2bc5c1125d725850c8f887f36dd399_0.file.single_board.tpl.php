@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-06 18:28:37
+/* Smarty version 3.1.48, created on 2025-09-10 05:23:19
   from '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68bc61353cbbd6_68992798',
+  'unifunc' => 'content_68c0ef27b9d625_48327330',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d08b2ed2bc5c1125d725850c8f887f36dd399' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl',
-      1 => 1757176115,
+      1 => 1757474597,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_68bc61353cbbd6_68992798 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68c0ef27b9d625_48327330 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <div class="row">
@@ -184,6 +184,9 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                     <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
 </span>
                 <?php }?>
+                    <i class="fa fa-eye"></i>
+                    <span><?php echo $_smarty_tpl->tpl_vars['total_views']->value;?>
+</span>
 
                 <div class="card card-comments" id="coments">
                     <ul class="list-group list-group-flush" id='data_coments'>

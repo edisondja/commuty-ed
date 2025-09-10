@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-06 22:14:45
+/* Smarty version 3.1.48, created on 2025-09-10 03:45:16
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68bc963533b8a4_24728112',
+  'unifunc' => 'content_68c0d82c335883_47047506',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '454bf4ec76871704a9040e003910a74186c22e19' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_boards.tpl',
-      1 => 1757189683,
+      1 => 1757468714,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68bc963533b8a4_24728112 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68c0d82c335883_47047506 (Smarty_Internal_Template $_smarty_tpl) {
 ?><style>
 .content-container_s {
     margin-top: 50px;
@@ -66,11 +66,13 @@ h3 {
     box-shadow: 0 0 5px rgba(255,111,97,0.3);
 }
 
+
 /* Tabla personalizada */
 .table-custom th {
     background-color: #009688; /* Verde azulado */
     color: #ffffff;            /* Texto blanco */
     border: none;
+
 }
 
 .table-custom td {
@@ -82,6 +84,10 @@ h3 {
 .table-custom tr:hover td {
     background-color: #f1fdfb; /* Hover verde azulado suave */
 }
+
+
+
+
 </style>
 
 
@@ -91,7 +97,7 @@ h3 {
     <input type="hidden" id="modulo_select" value="boards">
     <input type="search" class="form-control mb-4" id="search" placeholder="Busca lo que deseas">
 
-    <table class="table table-custom table-float-header">
+    <table class="table table-custom table-scroll">
         <thead>
             <tr>
                 <th>Titulo</th>
@@ -101,6 +107,7 @@ h3 {
                 <th>Foto</th>
                 <th>Usuario</th>
                 <th>Block</th>
+                <th>Editar<th>
             </tr>
         </thead>
         <tbody id="data_boards" class="tabla_buscar">

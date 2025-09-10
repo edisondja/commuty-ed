@@ -393,6 +393,9 @@ var config = {
             
             Row += `</div>
                     </td>
+                    <td>
+                       <button class="btn btn-primary btn-sm" value="${data.id_tablero}">Editar</button>
+                    </td>
                 </tr>`;
             
         return Row;

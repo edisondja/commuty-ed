@@ -9,6 +9,7 @@
   require '../models/Mail.php';
   require '../models/Like.php';
   require '../models/Report.php';
+  require '../models/View.php';
   use setasign\Fpdi\Fpdi;
   require 'Core.php';
  // require '../modeles/Mail.php';
@@ -365,6 +366,13 @@ if (isset($_POST['action'])) {
              Core::GetGrapth($url);
 
          break;
+
+         case 'guardar_view':
+
+            $view = new View();
+            $view->id_tablero = $_POST['id_tablero'];
+            $view->id_usuario = $_POST['id_usuario']; // Puede ser 0 para usuarios anónimos
+            $view->guardar_view();
 
 
          case 'send_mail_all':
