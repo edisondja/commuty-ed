@@ -6,6 +6,24 @@
 
 }
 
+/* Opcional: estilo más elegante */
+.search-bar {
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 5px 10px;
+}
+
+/* Media query para ocultar en móviles (<768px) */
+@media (max-width: 767px) {
+    .search-bar {
+        display: none !important;
+    }
+}
+
+
+
 .Miniatura{
     border-radius: 5px;
     margin:2px;

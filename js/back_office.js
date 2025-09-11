@@ -30,7 +30,84 @@ var config = {
         Modulo usuarios
     
     */
+   function EditarTablero(id_tablero) {
+        // Asignamos el ID al input hidden
+        document.getElementById("idTablero").value = id_tablero;
 
+        // Aquí podrías hacer un fetch/axios para cargar la info actual del tablero
+        // Ejemplo:
+        // axios.get(`/api/tableros/${id_tablero}`).then(response => {
+        //     document.getElementById("descripcionTablero").value = response.data.descripcion;
+        // });
+
+         cargarInfoTablero(id_tablero)
+        // Abrimos el modal
+        let modal = new bootstrap.Modal(document.getElementById('modalActualizarTablero'));
+        modal.show();
+    }
+
+
+    function cargarInfoTablero(id_tablero) {
+       
+
+        // Aquí podrías hacer un fetch/axios para cargar la info actual del tablero
+        // Ejemplo:
+        document.getElementById("idTablero").value = id_tablero;
+        let FormDatas = new FormData();
+        FormDatas.append('action','load_info_board');
+        FormDatas.append('id_tablero', id_tablero);
+        let api_user = `${get_domain}/controllers/actions_board.php`;
+
+        axios.post(api_user, FormDatas, config).then(response => {
+            let data = response.data;
+            console.log(data);
+                document.getElementById("descripcionTablero").value = data.descripcion;
+            // Si tienes la URL de la imagen, podrías mostrarla en una vista previa
+             document.getElementById("vistaPreviaImagen").src = `${get_domain}/${data.imagen_tablero}`;
+        });
+
+
+    }
+
+    // Función para guardar cambios
+    function guardarCambiosTablero() {
+        let id_tablero = document.getElementById("idTablero").value;
+        let descripcion = document.getElementById("descripcionTablero").value;
+        let foto = document.getElementById("fotoPortada").files[0];
+        let id_usuario = document.getElementById("id_usuario").value;
+
+        // Aquí puedes enviar la información al backend con fetch/axios
+        console.log("ID Tablero:", id_tablero);
+        console.log("Descripción:", descripcion);
+        console.log("Foto:", foto);
+
+        let FormDatas = new FormData();
+        FormDatas.append('action','update_board');
+        FormDatas.append('id_usuario',id_usuario);
+
+        FormDatas.append('id_tablero', id_tablero);
+        FormDatas.append('descripcion', descripcion);
+        if (foto) {
+            FormDatas.append('foto', foto);
+        }else{
+
+            FormDatas.append('imagen_actual', document.getElementById("vistaPreviaImagen").src.replace(`${get_domain}/`, ''));
+        }
+
+        let api_user = `${get_domain}/controllers/actions_board.php`;
+        
+        axios.post(api_user, FormDatas, config).then(response => {
+            console.log("Respuesta del servidor:", response);
+        }).catch(error => {
+            console.error("Error al guardar cambios:", error);
+        });
+
+        // Cerrar modal después de guardar
+        let modalElement = document.getElementById('modalActualizarTablero');
+        let modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+         cargarInfoTablero(id_tablero);
+    }
 
     function BuscarUsuarios(contexto){
 
@@ -60,7 +137,7 @@ var config = {
                         document.getElementById("data_usuario").innerHTML=tabla;
                         AgregarEventoSwitch('users');
 
-            
+
                     });
             
             
@@ -159,6 +236,8 @@ var config = {
 
 
         });
+
+        
 
 
     }
@@ -394,7 +473,7 @@ var config = {
             Row += `</div>
                     </td>
                     <td>
-                       <button class="btn btn-primary btn-sm" value="${data.id_tablero}">Editar</button>
+                       <button class="btn btn-primary btn-sm" onClick="EditarTablero(${data.id_tablero})">Editar</button>
                     </td>
                 </tr>`;
             
@@ -416,7 +495,7 @@ var config = {
         axios.post(api_user,
                     FormDatas,
                     config).then(data=>{
-                        
+
                         alertify.message(data.data);
 
                     }).catch(error=>{

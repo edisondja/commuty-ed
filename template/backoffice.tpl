@@ -2,6 +2,56 @@
 
 <div class="row"> 
 
+        <!-- Modal -->
+        <div class="modal fade" id="modalActualizarTablero" tabindex="-1" aria-labelledby="modalActualizarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalActualizarLabel">Actualizar Tablero</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formActualizarTablero">
+                <input type="hidden" id="idTablero" name="id_tablero">
+                <input type="hidden" id="idUsuario" name="id_tablero">
+
+                <!-- Descripción -->
+                <div class="mb-3">
+                    <label for="descripcionTablero" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="descripcionTablero" name="descripcion" rows="3" placeholder="Escribe la nueva descripción"></textarea>
+                </div>
+
+              <!-- Foto de portada -->
+                <label for="fotoPortada" class="form-label fw-bold">Cambia a gusto la foto de portada que deseas</label>
+                <div class="mb-3 text-center p-3 border rounded shadow-sm" style="background-color:#f8f9fa;">
+                    <!-- Imagen de vista previa -->
+                    <img 
+                        src="https://via.placeholder.com/300x300?text=Vista+Previa" 
+                        alt="Vista previa" 
+                        id="vistaPreviaImagen" 
+                        class="img-fluid rounded mb-3 border" 
+                        style="max-height:300px; max-width:300px; object-fit:cover;" 
+                    />
+
+                    <!-- Label e input --><br/>
+                    <label for="fotoPortada" class="form-label fw-bold">📷 Foto de portada</label>
+                    <input class="form-control" type="file" id="fotoPortada" name="foto" accept="image/*">
+                </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarCambiosTablero()">Guardar cambios</button>
+            </div>
+
+            </div>
+        </div>
+        </div>
+
+
         {include file='back_office_components/menu_backoffice.tpl'}
         
         {if $option == 'usuarios'}  

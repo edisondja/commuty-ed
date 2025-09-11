@@ -142,7 +142,7 @@
           <form method='get' action='index.php'>
               <table style='margin-left:30px;'>
                   <tr>
-                      <td><input type='search' name='search' class='form-control' placeholder='write the name of table'/></td>
+                      <td><input type='search'   name='search' class='form-control' placeholder='write the name of table'/></td>
                       <td><button class='btn btn-dark'>Search</button></td>
                   </tr>
               </table>

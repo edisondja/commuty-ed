@@ -135,10 +135,15 @@
             /*Fragmento utilizado para cambiar los estados de los tableros */
             $sql = 'update tableros set estado=? where id_usuario=? and id_tablero=?';
             $guardar = $this->conection->prepare($sql);
-           
+ 
+
+            echo 'emtro a actualizar estado';
+
             try{
             $guardar->bind_param('sii', $estado, $this->id_usuario, $this->board_id);
             $guardar->execute();
+
+            echo 'estado actualizado con exito';
 
             }catch(Exception $e){
 
@@ -182,9 +187,9 @@
             echo 'tablero activado';
         }
 
-        public function actualizar_tablero($id_tablero)
+        public function actualizar_tablero()
         {
-            $fecha = date('ymdis');
+            $fecha = date("Y-m-d H:i:s"); 
             /*
             FormDatas.append('id_user',document.getElementById('id_usuario').value);
             FormDatas.append('texto',document.getElementById('id_usuario').value);
@@ -203,7 +208,7 @@
                 }
 
                 // Bind the parameters to the SQL query
-                $bind = $actualizar->bind_param('ssii', $this->description,$fecha,$this->id_usuario, $id_tablero);
+                $bind = $actualizar->bind_param('ssii', $this->description,$fecha,$this->id_usuario, $this->board_id);
                 if ($bind === false) {
                     throw new Exception('Error al vincular los parámetros: '.$actualizar->error);
                 }
@@ -224,52 +229,21 @@
         public function cargar_solo_tablero($id_tablero,$config='asoc')
         {
          
-            // Asumimos que $this->conection es una instancia válida de mysqli
-            $this->conection;
-            $estado = $this->disable();
-            $sql = 'SELECT 
-            u.id_user,
-            t.descripcion,
-            t.titulo,
-            t.id_tablero,
-            t.imagen_tablero,
-            t.fecha_creacion,
-            t.estado,
-            u.usuario,
-            u.foto_url
-            FROM tableros as t INNER JOIN user as u
-            ON t.id_usuario = u.id_user
-            WHERE t.id_tablero = ? AND  t.estado <> ? 
-            ';
-            try{
-
-                $cargar = $this->conection->prepare($sql);
-                $cargar->bind_param(
-                    'is',
-                    $id_tablero,
-                    $estado
-                );
-
-                $cargar->execute();
-
-            }catch(Expcetion $e){
-
-
-               $this->TrackingLog('Error al cargar tablero: '.$tablero,'errores');
-
-            }
-
-            $data = $cargar->get_result();
-
+            $sql = "SELECT * FROM tableros INNER JOIN user
+             ON tableros.id_usuario = user.id_user 
+            WHERE id_tablero = ?";
+            $cargado = $this->conection->prepare($sql);
+            $cargado->bind_param('i', $id_tablero);
+            $cargado->execute();
+            $data = $cargado->get_result();
+            $cargado->close();
+        
             $data = mysqli_fetch_object($data);
-
-            if($config=='asoc'){
-
-                return $data;
-            
-            }else if($config=='json'){
-
+         
+            if ($config == 'json') {
                 echo json_encode($data);
+            } else {
+                return $data;
             }
         }
 
@@ -399,7 +373,7 @@
                     SELECT * FROM tableros as t
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE (t.titulo LIKE ? OR t.descripcion LIKE ?) 
-                    AND t.estado = ? 
+                    AND t.estado = ? order by fecha_creacion desc
                     LIMIT 8
                 ');
 

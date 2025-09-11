@@ -190,12 +190,24 @@ if (isset($_POST['action'])) {
         break;
 
         case 'update_board':
+
             $tablero = new Board();
-            $tablero->description = $_POST['description'];
-            $tablero->imagen_tablero = 'imagen_actualizada.jpg';
-            $tablero->id_usuario = $_POST['user_id'];
-            $id_tablero = (int)$_POST['bord_id'];
-            $tablero->actualizar_tablero($id_tablero);
+            $tablero->description = $_POST['descripcion'];
+            $tablero->board_id = $_POST['id_tablero'];
+
+            if (isset($_FILES['foto']['tmp_name'])) {
+                // Si se envió una nueva imagen, subirla y actualizar la ruta
+                $tablero->asignar_portada_tablero($tablero->board_id,
+                                                   $_FILES['foto']['tmp_name'],
+                                                   '../imagenes_tablero/' . $_FILES['foto']['name']);
+
+            } else {
+                // Si no se envió una nueva imagen, mantener la imagen actual
+                $tablero->imagen_tablero = $_POST['imagen_actual'];
+            }
+
+            $tablero->id_usuario = $_POST['id_usuario'];
+            $tablero->actualizar_tablero();
 
         break;
 
@@ -211,6 +223,12 @@ if (isset($_POST['action'])) {
             $usuario->clave = $_POST['password'];
             $usuario->RegistrerUser();
 
+        break;
+
+        case 'load_info_board':
+            $board = new Board();
+            $id_tablero = (int) $_POST['id_tablero'];
+            $board->cargar_solo_tablero($id_tablero,'json');
         break;
 
         case 'user_info':

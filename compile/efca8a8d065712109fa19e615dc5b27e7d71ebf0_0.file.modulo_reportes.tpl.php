@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-08 00:37:08
+/* Smarty version 3.1.48, created on 2025-09-11 05:47:21
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_reportes.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68be091410f828_02383017',
+  'unifunc' => 'content_68c246499debd9_88400026',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'efca8a8d065712109fa19e615dc5b27e7d71ebf0' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_reportes.tpl',
-      1 => 1757284626,
+      1 => 1757562440,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68be091410f828_02383017 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68c246499debd9_88400026 (Smarty_Internal_Template $_smarty_tpl) {
 ?><style>
 .content-container_s {
     margin-top: 50px;

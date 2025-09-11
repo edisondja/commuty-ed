@@ -25,24 +25,33 @@ function loadReports_admin() {
 
             });
 
-            reportList.insertAdjacentHTML('beforeend', `<tbody>`);
 
 
     }).catch(error => {
         console.error('Error al cargar los reportes:', error);
-        alertify.error('Error al cargar los reportes');
     });
 }
 
 
     function tabla_report(data) {
-        let descripcion = data.descripcion.length > 80
-            ? data.descripcion.substring(0, 80) + ".."
-            : data.descripcion;
 
-        let razon = data.razon.length > 80
-            ? data.razon.substring(0, 80) + ".."
-            : data.razon;
+        let descripcion = "";
+        if (data.descripcion && data.descripcion.length > 0) {
+            descripcion = data.descripcion.length > 80
+                ? data.descripcion.substring(0, 80) + ".."
+                : data.descripcion;
+        } else {
+            descripcion = "Sin descripción";
+        }
+
+        let razon = "";
+        if (data.razon && data.razon.length > 0) {
+            razon = data.razon.length > 80
+                ? data.razon.substring(0, 80) + ".."
+                : data.razon;
+        } else {
+            razon = "Sin razón";
+        }
 
 
         let Row = `

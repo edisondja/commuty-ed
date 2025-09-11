@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-06 22:36:07
+/* Smarty version 3.1.48, created on 2025-09-11 06:49:46
   from '/opt/lampp/htdocs/commuty-ed/template/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68bc9b37c2c667_09856141',
+  'unifunc' => 'content_68c254eaf395f2_34555075',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f410541cc83663bf194cbd4ea38a86a9e4888eea' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/header.tpl',
-      1 => 1757190830,
+      1 => 1757566165,
       2 => 'file',
     ),
   ),
@@ -33,7 +33,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_68bc9b37c2c667_09856141 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68c254eaf395f2_34555075 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -213,7 +213,7 @@ function content_68bc9b37c2c667_09856141 (Smarty_Internal_Template $_smarty_tpl)
           <form method='get' action='index.php'>
               <table style='margin-left:30px;'>
                   <tr>
-                      <td><input type='search' name='search' class='form-control' placeholder='write the name of table'/></td>
+                      <td><input type='search'   name='search' class='form-control' placeholder='write the name of table'/></td>
                       <td><button class='btn btn-dark'>Search</button></td>
                   </tr>
               </table>
