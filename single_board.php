@@ -51,24 +51,37 @@
         $View->id_usuario = $id_user;
         $View->guardar_view();
 
-        $cached_key.='/likes';
+        $cached_key.='/likes:';
 
-        if($cached = $redis->get($cached_key)){
 
-            $smarty->assign('likes',json_decode($redis->get($cached)));
+  
+      try {
+          if ($cached = $redis->get($cached_key)) {
+              // Convertir JSON a objeto stdClass
+              $likes_obj = json_decode($cached);
+              $smarty->assign('likes', $likes_obj);
+          } else {
+              // Crear objeto con datos
+              $likes_obj = new stdClass();
+              $likes_obj->likes   = (int)$Verificar_like->contar_lk('asoc');
 
-        }else{
-            
-      
-          $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
-          $redis->setex($cached_key,5,json_encode($Verificar_like->contar_lk('asoc')));
+              // Asignar a Smarty
+              $smarty->assign('likes', $likes_obj);
 
-        }      
+              // Guardar en Redis como JSON
+              $redis->setex($cached_key, 300, json_encode($likes_obj));
+           }
+        } catch (Exception $e) {
+            // Si falla Redis
+ 
+
+            $smarty->assign('likes', (int)$Verificar_like->contar_lk('asoc'));
+        }
 
         $smarty->assign('like_login_user',$Verificar_like->verificar_mi_like());
         $multimedias_tableros =$Board->cargar_multimedias_de_tablero($_GET['id'],'asoc');
 
-        $cached_key.='/views';
+        $cached_key.='/views:';
         //Edejesusa 16/09/2025
         try{
 
