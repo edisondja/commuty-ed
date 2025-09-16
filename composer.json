@@ -1,15 +1,16 @@
 {
     "require": {
+        "firebase/php-jwt": "^5.5",
+        "nyholm/psr7": "^1.4",
+        "phpmailer/phpmailer": "^6.1",
+        "predis/predis": "^3.2",
+        "setasign/fpdf": "1.8.*",
+        "setasign/fpdi": "^2.3",
         "slim/php-view": "^2.2",
         "slim/slim": "^3.12",
         "slim/twig-view": "^2.5",
         "smarty/smarty": "^3.1",
-        "firebase/php-jwt": "^5.5",
-        "symfony/http-client": "^5.3",
-        "phpmailer/phpmailer": "^6.1",
-        "nyholm/psr7": "^1.4",
-        "setasign/fpdf": "1.8.*",
-        "setasign/fpdi": "^2.3"
+        "symfony/http-client": "^5.3"
     },
     "config": {
         "platform": {

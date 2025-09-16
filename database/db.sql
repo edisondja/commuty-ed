@@ -201,7 +201,8 @@ CREATE TABLE ads (
   script_banner TEXT,
   posicion INT,
   fecha_ads DATETIME,
-  link_banner VARCHAR(250)
+  link_banner VARCHAR(250),
+  estado VARCHAR(15)
 );
 
 -- Tabla de likes

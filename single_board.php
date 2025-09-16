@@ -6,10 +6,33 @@
 
     $smarty->assign('content_config','single_board');
    
+    $cached_key="single_post:";
+
     if(isset($_GET['id'])) {
         
+        $cached_key.="cap/".$_GET['id'];
         $Board = new Board();   
-        $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
+
+
+      try{
+          if($cached = $redis->get($cached_key)){
+
+            //Carga la cache del tablero
+              $data_board = json_decode($cached,true);
+          }else{
+
+            $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
+            $redis->setex($cached_key,300,json_encode($data_board));
+
+          }
+      
+        }catch(Exception $e){
+
+            //Carga publicacion de manera normal.
+            $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
+
+        }
+     
         
 
         $Verificar_like = new Like();
@@ -27,11 +50,47 @@
         $View->id_tablero = $_GET['id'];
         $View->id_usuario = $id_user;
         $View->guardar_view();
-        
-        $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
+
+        $cached_key.='/likes';
+
+        if($cached = $redis->get($cached_key)){
+
+            $smarty->assign('likes',json_decode($redis->get($cached)));
+
+        }else{
+            
+      
+          $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
+          $redis->setex($cached_key,5,json_encode($Verificar_like->contar_lk('asoc')));
+
+        }      
+
         $smarty->assign('like_login_user',$Verificar_like->verificar_mi_like());
         $multimedias_tableros =$Board->cargar_multimedias_de_tablero($_GET['id'],'asoc');
-        $smarty->assign('total_views',$View->contar_views());
+
+        $cached_key.='/views';
+        //Edejesusa 16/09/2025
+        try{
+
+          if($cached = $redis->get($cached_key)){
+
+            $smarty->assign('total_views',json_decode($cached));
+
+          }else{
+
+              $smarty->assign('total_views',$View->contar_views());
+
+              $redis->setext($cached_key,300,json_encode($View->contar_views()));
+
+          }
+
+       }catch(Exception $e){
+
+          //Si falla redis se cargan los views de forma directo a la base de datos.  
+          $smarty->assign('total_views',$View->contar_views());
+
+       }
+
         $smarty->assign('board',$data_board);
         $smarty->assign('estado',$data_board['estado']);
         $smarty->assign('titulo',$data_board['titulo']);

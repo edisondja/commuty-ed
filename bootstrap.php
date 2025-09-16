@@ -13,6 +13,19 @@
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
     $id_user=0;
+
+        // Inicializar Redis
+    try {
+        $redis = new Predis\Client([
+            "scheme" => "tcp",
+            "host"   => "127.0.0.1",
+            "port"   => 6379,
+        ]);
+        $redisAvailable = true;
+    } catch (Exception $e) {
+        $redisAvailable = false; // Redis no disponible, seguimos con BD
+    }
+
         /*
         load cdns
     */
