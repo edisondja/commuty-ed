@@ -156,6 +156,55 @@ if (isset($_POST['action'])) {
 
 
 
+        case 'guardar_ads':
+            
+            $publicidad = new Ads();
+            $publicidad->titulo  =$_POST['titulo'];
+            $publicidad->descripcion = $_POST['descripcion'];
+            $publicidad->posicion = $_POST['posicion'];
+            $publicidad->tipo = $_POST['tipo'];
+            $publicidad->scrip_banner =$_POST['script_banner'];
+            $publicidad->GuardarAds();
+
+
+        break;
+
+        case 'cargar_ads':
+            //cargar todas las ads
+            $publicidad = new Ads();
+            $publicidad->CargarAds();
+
+        break;
+
+        case 'cargar_ads_s':
+            //cargar la data de una sola ads con su ID
+            $publicidad = new Ads();
+            $publicidad->Cargar_1_ads();
+
+        break;
+
+        
+        case 'desactivar_ads':
+           //Desactiva la ads para no visualizada de forma publica
+           $publicidad = new Ads();
+           $publicidad->ads_id = $_POST['id_ads'];
+           $publicidad->desactivar_ads();
+        
+        break;
+    
+        
+        
+        case 'activar_ads':
+            //Activa la ads para ser visualizada de forma publica
+            $publicidad = new Ads();
+           $publicidad->ads_id = $_POST['id_ads'];
+           $publicidad->activar_ads();
+    
+        break;
+        
+
+
+
         break;
 
         case 'disable_user':

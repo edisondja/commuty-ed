@@ -8,11 +8,12 @@ Class Ads extends EncryptToken{
 
 	public $ads_id;
     public $titulo;
+    public $tipo;
     public $descripcion;
     public $imagen_ruta;
-    public $tipo;
     public $scrip_banner;
     public $posicion;
+    public $conection;
 
 
 
@@ -24,19 +25,22 @@ Class Ads extends EncryptToken{
 	 }
 
 
-     public function GardarAds(){
+     public function GuardarAds(){
 
+        $sql = "insert into ads(titulo,descripcio,imagen_ruta,posicion,fecha_ads,tipo)
+        values(?,?,?,?,?,?)";
 
-        $sql = "insert into ads(titulo,descripcio,imagen_ruta,posicion,fecha_ads)
-        values(?,?,?,?,?)
-        ";
-
-        $fecha = new date('y-m-d h:i:s');
+        $fecha = date('y-m-d h:i:s');
 
         try{
 
             $guardar = $this->conection->prepare($sql);
-            $guardar->bind_param('sssss',$this->titulo,$this->descripcion,$this->$this->imagen_ruta,$fecha);
+            $guardar->bind_param('ssssss',$this->titulo,
+                                          $this->descripcion,
+                                          $this->imagen_ruta,
+                                          $fecha,
+                                          $this->tipo
+                                        );
             $guardar->execute();
 
             
@@ -54,21 +58,27 @@ Class Ads extends EncryptToken{
      public function ActuactlizarAds(){
 
 
-         $actualizar = "update ads set titulo=?,descripcion=?,imagen_ruta=?,posicion=?,fecha_ads=? 
-          where id ads_id=?
-         ";
+         $actualizar = "update ads set titulo=?,
+                                     descripcion=?,
+                                     imagen_ruta=?,
+                                     posicion=?,
+                                     fecha_ads=?,
+                                     tipo=? 
+                                     where id ads_id=?";
 
-         $procesar = $this->conection->prepare($sql);
+         $procesar = $this->conection->prepare($actualizar);
 
 
         try{
 
-         $procesar->bind_param('sssis',
+         $procesar->bind_param('sssiss',
                 $this->titulo,
                 $this->descripcion,
                 $this->imagen_ruta,
                 $this->posicion,
-                $fecha
+                $this->tipo,
+                $fecha = date('y-m-d h:i:s')
+
             );
 
          $procesar->excute();
@@ -85,42 +95,113 @@ Class Ads extends EncryptToken{
      public function CargarAds(){
 
 
-        $sql = "select * from ads where ads_id=?";
+        $sql = "select * from ads";
 
         $cargar =  $this->conection->prepare($sql);
         $cargar->prepare($sql);
 
         try{
 
-            $cargar->bind_param('i',$this->ads_id);
             $cargar->execute();
             $cargar->get_result();   
 
         }catch(Exception $e){
 
-            $this->TrackingLog($date('y-m-d h:i:s').' Error Cargando ads '.$e,'errores');
+            $this->TrackingLog(date('y-m-d h:i:s'),' Error Cargando ads '.$e,'errores');
         }
    
 
      }
+
        
 
      public function EliminarAds(){
 
-        $sql = "delete from ads where ads_id=?";
+        $sql = "update ads set estado=? where ads_id=?";
+        $estado = $this->disable();
 
         try{
 
             $eliminar = $this->conection->prepare($sql);
-            $eliminar->bind_param('i',$this->ads_id);
+            $eliminar->bind_param('is',$this->ads_id,$estado);
             $eliminar->execute();
 
         }catch(Exception $e){
 
             
-            $this->TrackingLog($date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
+            $this->TrackingLog(date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
 
         }
+
+     }
+
+
+     public function cargar_1_ads(){
+
+
+        $sql = "select * from ads where ads_id=?";
+        $data=  $this->conection->prepare($sql);
+        $data->bind_param('i',$this->ads_id);
+
+        try{
+    
+            $data->execute();
+            $result = $data->get_result();
+        
+            echo json_encode(mysqli_fetch_object($result));
+       
+        }catch(Exception $e){
+
+
+            $this->TrackingLog(date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
+
+        }
+
+    }
+
+
+     public function desactivar_ads(){
+
+        $sql = "update ads set estado=? where ads_id=?";
+        $estado = $this->disable();
+        try{
+
+            $data = $this->conection->prepare($sql);
+            $data->bind_param('is',$this->ads_id,$estado);
+            $data->execute();
+
+       
+        }catch(Exception $e){
+
+            
+            $this->TrackingLog(date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
+
+
+        }
+                
+
+
+     }
+
+
+     public function activar_ads(){
+         $sql = "update ads set estado=? where ads_id=?";
+        $estado = $this->enable();
+        try{
+
+            $data = $this->conection->prepare($sql);
+            $data->bind_param('is',$this->ads_id,$estado);
+            $data->execute();
+
+       
+        }catch(Exception $e){
+
+            
+            $this->TrackingLog(date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
+
+            
+        }
+                
 
      }
 

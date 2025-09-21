@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 23:39:36
+/* Smarty version 3.1.48, created on 2025-09-21 18:32:55
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68aa3518b8f1b9_97823054',
+  'unifunc' => 'content_68d028b7f26869_57064738',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0a34b60b2e98b1563713c174aa7e8617f6f84eca' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl',
-      1 => 1755985175,
+      1 => 1758472360,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68aa3518b8f1b9_97823054 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68d028b7f26869_57064738 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
         <input type="hidden" id="modulo_select" value="config"/>
@@ -45,7 +45,7 @@ function content_68aa3518b8f1b9_97823054 (Smarty_Internal_Template $_smarty_tpl)
             <!-- Formulario de creación de banner -->
             <div class="tab-pane fade show active" id="publicar_banner_tab" role="tabpanel" aria-labelledby="publicar-banner-tab">
                 <div class="card-body">
-                    <form>
+                    <div>
                         <div class="mb-3">
                             <label for="titulo" class="form-label">Título</label>
                             <input type="text" class="form-control" id="titulo" placeholder="Ingresa el título del anuncio">
@@ -81,8 +81,8 @@ function content_68aa3518b8f1b9_97823054 (Smarty_Internal_Template $_smarty_tpl)
                             <input type="number" class="form-control" id="posicion" placeholder="Ingresa la posición del anuncio">
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Guardar Anuncio</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary w-100" id="guardar_ads">Guardar Anuncio</button>
+                    </div>
                 </div>
             </div>
 

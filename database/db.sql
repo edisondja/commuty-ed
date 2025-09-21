@@ -196,6 +196,8 @@ CREATE TABLE ads (
   ads_id INT PRIMARY KEY AUTO_INCREMENT,
   titulo VARCHAR(200),
   descripcion TEXT,
+  id_user  INT,
+  FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
   imagen_ruta VARCHAR(250),
   tipo VARCHAR(30),
   script_banner TEXT,

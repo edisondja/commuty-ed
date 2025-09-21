@@ -261,17 +261,30 @@ Class Like extends EncryptToken{
 
      }
 
-     
-	
+public function cargar_likes_board_usuario() {
+    $sql = "SELECT COUNT(*) AS likes FROM likes WHERE id_user = ?";
 
+    try {
+        $stmt = $this->conection->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Error al preparar la consulta: " . $this->conection->error);
+        }
+
+        $stmt->bind_param('i', $this->id_usuario);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result && $row = $result->fetch_object()) {
+            return (int)$row->likes;
+        }
+
+        // Si no hay resultados, devolver 0
+        return 0;
+
+    } catch (Exception $e) {
+            $this->TrackingLog(date('Y-m-d H:i:s') . " No se pudo cargar los likes del usuario: " . $e->getMessage(), 'errores');
+            return 0;
+        }
+    }
 
 }
-
-/*
-$guardar = new Coment();
-$guardar->id_post = 1;
-$guardar->id_user = 1;
-$guardar->comentario = 'probando objeto de comentario';
-$guardar->tipo_post = 'board';
-$guardar->data_og ='';
-*/

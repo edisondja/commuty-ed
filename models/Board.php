@@ -364,7 +364,7 @@
                     FROM tableros as t
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE t.titulo LIKE ? OR t.descripcion LIKE ?
-                    order by fecha_creacion desc
+                    order by t.fecha_creacion desc
                     LIMIT 8
                 ');
                 $data->bind_param('ss', $texto, $texto);
@@ -373,7 +373,7 @@
                     SELECT * FROM tableros as t
                     INNER JOIN user as u ON t.id_usuario = u.id_user 
                     WHERE (t.titulo LIKE ? OR t.descripcion LIKE ?) 
-                    AND t.estado = ? order by fecha_creacion desc
+                    AND t.estado = ? order by t.fecha_creacion desc
                     LIMIT 8
                 ');
 
@@ -567,6 +567,33 @@
         }
 
 
- 
+        
+        public function contar_tableros_usuario($config = 'object') {
+            $sql = "SELECT COUNT(*) AS tableros FROM tableros WHERE id_usuario = ?";
+
+            try {
+                $stmt = $this->conection->prepare($sql);
+                $stmt->bind_param('i', $this->id_usuario);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
+                $row = $result->fetch_object(); // devuelve stdClass { tableros: X }
+
+                if ($config === 'object') {
+                    return $row; // stdClass con propiedad 'tableros'
+                } else if ($config === 'json') {
+                    return json_encode($row); // devuelve JSON
+                } else {
+                    return $row->tableros; // si quieres devolver solo el número
+                }
+
+            } catch (Exception $e) {
+                $this->TrackingLog(date('ymdis') . ' No se pudo cargar la cantidad de tableros del usuario: ' . $e, 'errores');
+                return null; // en caso de error
+            }
+        }
+
+
+
 
     }

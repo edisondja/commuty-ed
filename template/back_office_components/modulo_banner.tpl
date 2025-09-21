@@ -22,7 +22,7 @@
             <!-- Formulario de creación de banner -->
             <div class="tab-pane fade show active" id="publicar_banner_tab" role="tabpanel" aria-labelledby="publicar-banner-tab">
                 <div class="card-body">
-                    <form>
+                    <div>
                         <div class="mb-3">
                             <label for="titulo" class="form-label">Título</label>
                             <input type="text" class="form-control" id="titulo" placeholder="Ingresa el título del anuncio">
@@ -35,7 +35,7 @@
 
                         <div class="mb-3">
                             <label for="imagen_ruta" class="form-label">Subir imagen</label>
-                            <input type="file" class="form-control" id="imagen_ruta">
+                            <input type="file" class="form-control" id="imagen_banner">
                         </div>
 
                         <div class="mb-3">
@@ -58,8 +58,8 @@
                             <input type="number" class="form-control" id="posicion" placeholder="Ingresa la posición del anuncio">
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Guardar Anuncio</button>
-                    </form>
+                        <button type="submit" class="btn btn-primary w-100" id="guardar_ads">Guardar Anuncio</button>
+                    </div>
                 </div>
             </div>
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-05 04:55:03
+/* Smarty version 3.1.48, created on 2025-09-17 07:16:25
   from '/opt/lampp/htdocs/commuty-ed/template/menu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68ba5107d28dd9_58448972',
+  'unifunc' => 'content_68ca44291bfea7_85485547',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '94fe0e25e888c4fc42e4486adffd520b965ea59e' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/menu.tpl',
-      1 => 1757040902,
+      1 => 1758086183,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68ba5107d28dd9_58448972 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68ca44291bfea7_85485547 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-3">
   <div class="menu-fijo" style="color: balck;">
     </br>
@@ -35,10 +35,12 @@ function content_68ba5107d28dd9_58448972 (Smarty_Internal_Template $_smarty_tpl)
 
             </li>
             <li class="list-group-item" style="color:white; background: transparent;">
-              <i class="fa-solid fa-book"></i> Posts 850
+              <i class="fa-solid fa-book"></i> Posts <?php echo $_smarty_tpl->tpl_vars['cantidad_tableros_usuario']->value->tableros;?>
+
             </li>
             <li class="list-group-item" style="color:white; background: transparent;">
-              <i class="fa-solid fa-heart"></i> Likes 500
+              <i class="fa-solid fa-heart"></i> Likes <?php echo $_smarty_tpl->tpl_vars['cantidad_tableros_likes']->value;?>
+
             </li>
         <?php } else { ?>
             <li class="list-group-item" style="color:white; background: transparent;">

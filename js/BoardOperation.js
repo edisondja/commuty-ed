@@ -36,7 +36,7 @@ window.onload=function(){
                     
                     alertify.confirm('Eliminar publicación','Estas seguro que deseas eliminar esta publicación',function(){
 
-                        alertify.message(`Eliminado ${id_board}`);
+                      // alertify.message(`Eliminado ${id_board}`);
                         document.querySelector(`#board${id_board}`).remove();
 
                         let FormDatas = new FormData();

@@ -9,12 +9,14 @@
     require_once 'models/Config.php';
     require_once 'models/Mail.php';
     require_once 'models/Notificacion.php';
+    require_once 'models/Like.php';
+
 
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
     $id_user=0;
 
-        // Inicializar Redis
+     // Inicializar Redis
     try {
         $redis = new Predis\Client([
             "scheme" => "tcp",
@@ -95,8 +97,19 @@
         $smarty->assign('type_user', $_SESSION['type_user']);
         $smarty->assign('nombre',$_SESSION['nombre']);
         $smarty->assign('apellido',$_SESSION['apellido']);
+        
+        $Board = new Board();
+        $Board->id_usuario = $_SESSION['id_user'];
+
+        $Like = new Like();
+        $Like->id_usuario =$_SESSION['id_user'];
+        $smarty->assign('cantidad_tableros_usuario',$Board->contar_tableros_usuario());
+        $smarty->assign('cantidad_tableros_likes',$Like->cargar_likes_board_usuario());
+
 
     } else {
+        $smarty->assign('cantidad_tableros_usuario','');
+        $smarty->assign('cantidad_tableros_likes','');
         $smarty->assign('type_user', '');
         $smarty->assign('id_user', '');
         $smarty->assign('foto_perfil', '');

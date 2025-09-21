@@ -9,10 +9,10 @@
               {$nombre} {$apellido}
             </li>
             <li class="list-group-item" style="color:white; background: transparent;">
-              <i class="fa-solid fa-book"></i> Posts 850
+              <i class="fa-solid fa-book"></i> Posts {$cantidad_tableros_usuario->tableros}
             </li>
             <li class="list-group-item" style="color:white; background: transparent;">
-              <i class="fa-solid fa-heart"></i> Likes 500
+              <i class="fa-solid fa-heart"></i> Likes {$cantidad_tableros_likes}
             </li>
         {else}
             <li class="list-group-item" style="color:white; background: transparent;">
