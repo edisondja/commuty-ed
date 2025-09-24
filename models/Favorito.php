@@ -2,10 +2,11 @@
 
     class Favorito extends EncryptToken{
 
-        public int $id_favorito;
-        public int $id_post;
-        public int $id_usuario;
-
+        public  $id_favorito;
+        public  $id_post;
+        public  $id_usuario;
+        public  $conection;
+        public  $estado;
 
         public function __construct() {
             

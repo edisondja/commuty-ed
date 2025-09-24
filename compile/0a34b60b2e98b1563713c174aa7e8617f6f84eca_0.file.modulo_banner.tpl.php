@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-21 18:32:55
+/* Smarty version 3.1.48, created on 2025-09-24 22:48:44
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68d028b7f26869_57064738',
+  'unifunc' => 'content_68d4592cf3d6d4_37266042',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0a34b60b2e98b1563713c174aa7e8617f6f84eca' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl',
-      1 => 1758472360,
+      1 => 1758746830,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68d028b7f26869_57064738 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68d4592cf3d6d4_37266042 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
         <input type="hidden" id="modulo_select" value="config"/>
@@ -42,8 +42,76 @@ function content_68d028b7f26869_57064738 (Smarty_Internal_Template $_smarty_tpl)
         <hr/>
 
         <div class="tab-content" id="myTabContent">
+        <!-- Modal Banner -->
+            <div class="modal fade" id="modalBanner" tabindex="-1" aria-labelledby="modalBannerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalBannerLabel">Editar Banner</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formBanner">
+                    <input type="hidden" id="id_banner"> <!-- Para editar -->
+                    <input type="hidden" id="id_usuario" value="1"> <!-- Cambia según tu sesión -->
+
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" placeholder="Título del banner">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" placeholder="Descripción"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imagen_banner" class="form-label">Imagen</label>
+                        <input type="file" class="form-control" id="imagen_banner">
+                        <img id="previewImagen" src="" alt="Preview" class="img-fluid mt-2" style="max-width: 150px; display: none;">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label">Tipo</label>
+                        <select class="form-select" id="tipo">
+                        <option value="horizontal">banner</option>
+                        <option value="texto">texto</option>
+                        <option value="video">Video</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="script_banner" class="form-label">Script</label>
+                        <textarea class="form-control" id="script_banner"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="posicion" class="form-label">Posición</label>
+                        <input type="number" class="form-control" id="posicion" min="1">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="link_banner" class="form-label">Link</label>
+                        <input type="text" class="form-control" id="link_banner" placeholder="https://">
+                    </div>
+
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="estado_banner">
+                        <label class="form-check-label" for="estado_banner">Activo</label>
+                    </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarBanner">Guardar</button>
+                </div>
+                </div>
+            </div>
+            </div>
             <!-- Formulario de creación de banner -->
             <div class="tab-pane fade show active" id="publicar_banner_tab" role="tabpanel" aria-labelledby="publicar-banner-tab">
+        
                 <div class="card-body">
                     <div>
                         <div class="mb-3">
@@ -58,7 +126,7 @@ function content_68d028b7f26869_57064738 (Smarty_Internal_Template $_smarty_tpl)
 
                         <div class="mb-3">
                             <label for="imagen_ruta" class="form-label">Subir imagen</label>
-                            <input type="file" class="form-control" id="imagen_ruta">
+                            <input type="file" class="form-control" id="imagen_banner">
                         </div>
 
                         <div class="mb-3">
@@ -88,7 +156,47 @@ function content_68d028b7f26869_57064738 (Smarty_Internal_Template $_smarty_tpl)
 
             <!-- Pestaña Administrar Banners -->
             <div class="tab-pane fade" id="administrar_banner_tab" role="tabpanel" aria-labelledby="administrar-banner-tab">
-                <h3>Administrar Banners</h3>
+                <div class="container mt-4">
+                        <h3 class="mb-3">Listado de Anuncios (ADS)</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered align-middle" id="tablaAds">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Descripción</th>
+                                        <th>Imagen</th>
+                                        <th>Posición</th>
+                                        <th>Fecha</th>
+                                        <th>Script Banner</th>
+                                        <th>Tipo</th>
+                                        <th>Link</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Aquí van los registros dinámicos -->
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Banner Promo</td>
+                                        <td>Descripción de ejemplo</td>
+                                        <td><img src="ruta/imagen.jpg" alt="Banner" class="img-fluid" width="80"></td>
+                                        <td>1</td>
+                                        <td>2025-09-24 10:30:00</td>
+                                        <td><code>&lt;script&gt;...&lt;/script&gt;</code></td>
+                                        <td>HTML</td>
+                                        <td><a href="https://ejemplo.com" target="_blank">Ver Link</a></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">Editar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
             </div>
         </div>
     </div>

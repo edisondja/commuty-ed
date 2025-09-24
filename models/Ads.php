@@ -11,9 +11,11 @@ Class Ads extends EncryptToken{
     public $tipo;
     public $descripcion;
     public $imagen_ruta;
-    public $scrip_banner;
+    public $script_banner;
     public $posicion;
+    public $link_banner;
     public $conection;
+    public $estado;
 
 
 
@@ -25,75 +27,113 @@ Class Ads extends EncryptToken{
 	 }
 
 
-     public function GuardarAds(){
+    public function GuardarAds() {
+        $fecha = date('Y-m-d H:i:s'); // formato correcto de fecha
+        $sql = "insert into ads(
+                    titulo,
+                    descripcion,
+                    imagen_ruta,
+                    posicion,
+                    fecha_ads,
+                    script_banner,
+                    tipo,
+                    link_banner,
+                    estado
+                ) VALUES (?,?,?,?,?,?,?,?,?)";
 
-        $sql = "insert into ads(titulo,descripcio,imagen_ruta,posicion,fecha_ads,tipo)
-        values(?,?,?,?,?,?)";
-
-        $fecha = date('y-m-d h:i:s');
-
-        try{
-
+        try {
             $guardar = $this->conection->prepare($sql);
-            $guardar->bind_param('ssssss',$this->titulo,
-                                          $this->descripcion,
-                                          $this->imagen_ruta,
-                                          $fecha,
-                                          $this->tipo
-                                        );
-            $guardar->execute();
 
+            if (!$guardar) {
+                throw new Exception("Error en prepare: " . $this->conection->error);
+            }
+
+            $this->estado = $this->enable();
             
-        }catch(Exception $e){
-
-
-            $this->TrackingLog($fecha.' Error registrando ads '.$e,'errores');
-        }
-
-        $this->TrackingLog($fecha.' Ads registrada con exito','eventos');
-
-     }
-
-
-     public function ActuactlizarAds(){
-
-
-         $actualizar = "update ads set titulo=?,
-                                     descripcion=?,
-                                     imagen_ruta=?,
-                                     posicion=?,
-                                     fecha_ads=?,
-                                     tipo=? 
-                                     where id ads_id=?";
-
-         $procesar = $this->conection->prepare($actualizar);
-
-
-        try{
-
-         $procesar->bind_param('sssiss',
+            $guardar->bind_param(
+                'sssisssss',
                 $this->titulo,
                 $this->descripcion,
                 $this->imagen_ruta,
                 $this->posicion,
+                $fecha,
+                $this->script_banner,
                 $this->tipo,
-                $fecha = date('y-m-d h:i:s')
-
+                $this->link_banner,
+                $this->estado
             );
 
-         $procesar->excute();
+            if ($guardar->execute()) {
+                echo json_encode(["status" => "success"]);
+            } else {
+                echo json_encode(["status" => "error", "msg" => $guardar->error]);
+            }
 
-        }catch(Exception $e){
-
-            $this->TrackingLog($fecha.' Error actualizando ads '.$e,'errores');
-
+            $guardar->close();
+            $this->conection->close();
+        } catch (Exception $e) {
+            $this->TrackingLog($fecha . ' Error registrando ads ' . $e->getMessage(), 'errores');
+            echo json_encode(["status" => "error", "msg" => $e->getMessage()]);
         }
 
-     }
+        $this->TrackingLog($fecha . ' Ads registrada con exito', 'eventos');
+    }
+
+    public function Actualizar_ads() {
+        $fecha = date('Y-m-d H:i:s'); // formato correcto de fecha
+        $sql = "update ads set
+                    titulo = ?,
+                    descripcion = ?,
+                    imagen_ruta = ?,
+                    posicion = ?,
+                    fecha_ads = ?,
+                    script_banner = ?,
+                    tipo = ?,
+                    link_banner = ?,
+                    estado = ?
+                where id = ?";
+
+        try {
+            $guardar = $this->conection->prepare($sql);
+
+            if (!$guardar) {
+                throw new Exception("Error en prepare: " . $this->conection->error);
+            }
+
+            $this->estado = $this->enable();
+
+            $guardar->bind_param(
+                'sssissssii',
+                $this->titulo,
+                $this->descripcion,
+                $this->imagen_ruta,
+                $this->posicion,
+                $fecha,
+                $this->script_banner,
+                $this->tipo,
+                $this->link_banner, 
+                $this->estado,
+                $this->ads_id 
+            );
+
+            if ($guardar->execute()) {
+                echo json_encode(["status" => "success"]);
+            } else {
+                echo json_encode(["status" => "error", "msg" => $guardar->error]);
+            }
+
+            $guardar->close();
+            $this->conection->close();
+        } catch (Exception $e) {
+            $this->TrackingLog($fecha . ' Error actualizando ads ' . $e->getMessage(), 'errores');
+            echo json_encode(["status" => "error", "msg" => $e->getMessage()]);
+        }
+
+        $this->TrackingLog($fecha . ' Ads actualizado con exito', 'eventos');
+    }
 
 
      public function CargarAds(){
-
 
         $sql = "select * from ads";
 
@@ -103,7 +143,15 @@ Class Ads extends EncryptToken{
         try{
 
             $cargar->execute();
-            $cargar->get_result();   
+            $data = $cargar->get_result();      
+            $results =[];
+
+            foreach($data as $key){
+
+                $results[] = $key;
+            }
+
+            echo json_encode($results);
 
         }catch(Exception $e){
 
@@ -114,7 +162,6 @@ Class Ads extends EncryptToken{
      }
 
        
-
      public function EliminarAds(){
 
         $sql = "update ads set estado=? where ads_id=?";
@@ -135,7 +182,6 @@ Class Ads extends EncryptToken{
 
      }
 
-
      public function cargar_1_ads(){
 
 
@@ -147,7 +193,7 @@ Class Ads extends EncryptToken{
     
             $data->execute();
             $result = $data->get_result();
-        
+
             echo json_encode(mysqli_fetch_object($result));
        
         }catch(Exception $e){
@@ -159,18 +205,43 @@ Class Ads extends EncryptToken{
 
     }
 
-
-     public function desactivar_ads(){
+     public function cambiar_estado_ads(){
 
         $sql = "update ads set estado=? where ads_id=?";
-        $estado = $this->disable();
+        $estado= "";
+
+
+        if($this->estado==$this->disable()){
+
+            $estado = $this->disable();
+            echo "desactivar estado";
+
+        }else if($this->estado==$this->enable()){
+            $estado = $this->enable();
+            echo "activar estado ";
+
+
+        }else{  
+            /*Se detiene el procedimiento para eviar guardar
+              estados que no cumplan el estandar.
+            */
+            return;
+        }
+
+
         try{
 
             $data = $this->conection->prepare($sql);
             $data->bind_param('is',$this->ads_id,$estado);
-            $data->execute();
+            if($data->execute()){
 
-       
+                echo json_encode(["status" => "success"]);
+
+            }else{
+
+                echo json_encode(["status" => "error"]);
+            }
+            
         }catch(Exception $e){
 
             
@@ -180,30 +251,9 @@ Class Ads extends EncryptToken{
         }
                 
 
-
      }
 
-
-     public function activar_ads(){
-         $sql = "update ads set estado=? where ads_id=?";
-        $estado = $this->enable();
-        try{
-
-            $data = $this->conection->prepare($sql);
-            $data->bind_param('is',$this->ads_id,$estado);
-            $data->execute();
-
-       
-        }catch(Exception $e){
-
-            
-            $this->TrackingLog(date('y-m-d h:i:s').' Error eliminando ads '.$e,'errores');
-
-            
-        }
-                
-
-     }
+     
 
 }
 

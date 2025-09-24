@@ -10,6 +10,8 @@
   require '../models/Like.php';
   require '../models/Report.php';
   require '../models/View.php';
+  require '../models/Favorito.php';
+  require '../models/Ads.php';
   use setasign\Fpdi\Fpdi;
   require 'Core.php';
  // require '../modeles/Mail.php';
@@ -158,18 +160,20 @@ if (isset($_POST['action'])) {
 
         case 'guardar_ads':
             
+        
             $publicidad = new Ads();
             $publicidad->titulo  =$_POST['titulo'];
             $publicidad->descripcion = $_POST['descripcion'];
             $publicidad->posicion = $_POST['posicion'];
             $publicidad->tipo = $_POST['tipo'];
-            $publicidad->scrip_banner =$_POST['script_banner'];
+            $publicidad->script_banner =$_POST['script_banner'];
+            $publicidad->link_banner =$_POST['link_banner'];
             $publicidad->GuardarAds();
 
 
         break;
 
-        case 'cargar_ads':
+        case 'cargar_banners':
             //cargar todas las ads
             $publicidad = new Ads();
             $publicidad->CargarAds();
@@ -179,31 +183,49 @@ if (isset($_POST['action'])) {
         case 'cargar_ads_s':
             //cargar la data de una sola ads con su ID
             $publicidad = new Ads();
+            $publicidad->ads_id = $_POST['ads_id'];
             $publicidad->Cargar_1_ads();
-
+  
         break;
 
         
-        case 'desactivar_ads':
+        case 'cambiar_estado_ads':
            //Desactiva la ads para no visualizada de forma publica
            $publicidad = new Ads();
-           $publicidad->ads_id = $_POST['id_ads'];
-           $publicidad->desactivar_ads();
+           $publicidad->ads_id = $_POST['ads_id'];
+           $publicidad->estado = $_POST['estado'];
+           $publicidad->cambiar_estado_ads();
+        
+        break;
+
+           case 'actualizar_ads':
+           //Desactiva la ads para no visualizada de forma publica
+           $publicidad = new Ads();
+           $publicidad->ads_id = $_POST['ads_id'];
+           $publicidad->estado = $_POST['estado'];
+           $publicidad->titulo = $_POST['titulo'];
+           $publicidad->descripcion = $_POST['descripcion'];
+           $publicidad->script_banner = $_POST['escript_banner'];
+           $publicidad->posicion = $_POST['posicion'];
+           $publicidad->link_banner = $_POST['link_banner'];
+           $publicidad->estado = $_POST['estado'];
+            if(isset($_FILES['imagen_banner']['tmp_name'])){
+
+                $nombre_archivo=date('Y-m-dH:i:s').$_FILES['imagen_banner']['name'];
+                $ruta_archivo_banner = "imagenes_tableros/".$nombre_archivo;
+               if(move_uploaded_file($_FILES['imagen_banner']['tmp_name'],"../".$ruta_archivo_banner)){
+
+                    $publicidad->imagen_ruta = $ruta_archivo_banner;
+               }
+            }else{
+
+                $publicidad->imagen_ruta = $_POST['imagen_original'];
+            }
+           $publicidad->Actualizar_ads();
         
         break;
     
-        
-        
-        case 'activar_ads':
-            //Activa la ads para ser visualizada de forma publica
-            $publicidad = new Ads();
-           $publicidad->ads_id = $_POST['id_ads'];
-           $publicidad->activar_ads();
     
-        break;
-        
-
-
 
         break;
 
@@ -373,7 +395,7 @@ if (isset($_POST['action'])) {
         break;
 
         case 'add_favorite':
-            $favorite = new Favorite();
+            $favorite = new Favorito();
             $favorite->id_tablero = $_POST['id_board'];
             $favorite->id_usuario = $_POST['id_user'];
             $favorite->agregar_a_favorito();
