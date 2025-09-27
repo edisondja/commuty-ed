@@ -91,7 +91,7 @@ Class Ads extends EncryptToken{
                     tipo = ?,
                     link_banner = ?,
                     estado = ?
-                where id = ?";
+                where ads_id = ?";
 
         try {
             $guardar = $this->conection->prepare($sql);
@@ -99,11 +99,21 @@ Class Ads extends EncryptToken{
             if (!$guardar) {
                 throw new Exception("Error en prepare: " . $this->conection->error);
             }
+            
+            $estado=''; 
 
-            $this->estado = $this->enable();
+            if($this->estado=='activo'){
+            
+                $estado = $this->enable();
+
+            }else if($this->estado=='inactivo'){
+
+                $estado = $this->disable();
+            }   
+         
 
             $guardar->bind_param(
-                'sssissssii',
+                'sssisssssi',
                 $this->titulo,
                 $this->descripcion,
                 $this->imagen_ruta,
@@ -210,7 +220,6 @@ Class Ads extends EncryptToken{
         $sql = "update ads set estado=? where ads_id=?";
         $estado= "";
 
-
         if($this->estado==$this->disable()){
 
             $estado = $this->disable();
@@ -218,7 +227,7 @@ Class Ads extends EncryptToken{
 
         }else if($this->estado==$this->enable()){
             $estado = $this->enable();
-            echo "activar estado ";
+            echo "activar estado "; 
 
 
         }else{  
@@ -251,6 +260,24 @@ Class Ads extends EncryptToken{
         }
                 
 
+     }
+
+
+     public function cargar_ads_pos(){
+
+        $sql = "select * from ads where posicion=?";
+        $data = $this->conection->prepare($sql);
+        $data->bind_param('i',$this->posicion);
+
+        try{
+        $result = $data->get_result();
+
+    
+        }catch(exception $e){
+   
+            $this->TrackingLog(date('y-m-d h:i:s').'Error eliminando ads '.$e,'errores');
+
+        }
      }
 
      

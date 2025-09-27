@@ -36,6 +36,9 @@
             let usuario_smtp = document.getElementById('usuario_smtp').value;
             let clave_smtp = document.getElementById('contrasena_smtp').value;
             let autenticacion_ssl = document.getElementById('autenticacion_ssl').value;
+            let rabbit_mq = document.getElementById('rabbit_mq').value;
+            let ffmpeg = document.getElementById('ffmpeg').value;
+            let redis_cache = document.getElementById('redis_cache').value;
        
             let publicar_sin_revision = '';
             if(document.getElementById('publicar_sin_revision').checked==true){
@@ -79,6 +82,9 @@
             FormDatas.append('autenticacion_ssl',autenticacion_ssl);
             FormDatas.append('publicar_sin_revision',publicar_sin_revision);
             FormDatas.append('verificar_cuenta',verificar_cuenta);
+            FormDatas.append('rabbit_mq',rabbit_mq);
+            FormDatas.append('ffmpeg',ffmpeg);
+            FormDatas.append('redis_cache',redis_cache);
 
             axios.post(api_config,
                 FormDatas,
@@ -145,6 +151,12 @@
                         document.getElementById('usuario_smtp').value = data.data.usuario_smtp;
                         document.getElementById('contrasena_smtp').value = data.data.clave_smtp;
                         document.getElementById('autenticacion_ssl').value = data.data.autenticacion_ssl;
+                        //servicios
+                        document.getElementById('rabbit_mq').value = data.data.rabbit_mq;
+                        document.getElementById('ffmpeg').value = data.data.ffmpeg;
+                        document.getElementById('redis_cache').value = data.data.redis_cache;
+
+                        
                         if(data.data.publicar_sin_revision=='SI'){
                             document.getElementById('publicar_sin_revision').checked=true;
                         }else{

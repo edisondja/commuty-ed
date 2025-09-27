@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-24 22:48:44
+/* Smarty version 3.1.48, created on 2025-09-25 00:39:58
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68d4592cf3d6d4_37266042',
+  'unifunc' => 'content_68d4733e02eba8_03660010',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0a34b60b2e98b1563713c174aa7e8617f6f84eca' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl',
-      1 => 1758746830,
+      1 => 1758753594,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68d4592cf3d6d4_37266042 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68d4733e02eba8_03660010 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
         <input type="hidden" id="modulo_select" value="config"/>
@@ -54,7 +54,7 @@ function content_68d4592cf3d6d4_37266042 (Smarty_Internal_Template $_smarty_tpl)
                     <form id="formBanner">
                     <input type="hidden" id="id_banner"> <!-- Para editar -->
                     <input type="hidden" id="id_usuario" value="1"> <!-- Cambia según tu sesión -->
-
+                    <input type="hidden" id="imagen_original" value="1"> <!-- Cambia según tu sesión -->
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Título</label>
                         <input type="text" class="form-control" id="titulo" placeholder="Título del banner">
@@ -74,7 +74,8 @@ function content_68d4592cf3d6d4_37266042 (Smarty_Internal_Template $_smarty_tpl)
                     <div class="mb-3">
                         <label for="tipo" class="form-label">Tipo</label>
                         <select class="form-select" id="tipo">
-                        <option value="horizontal">banner</option>
+                        <option>Selecciona el tipo de banner</option>
+                        <option value="banner">banner</option>
                         <option value="texto">texto</option>
                         <option value="video">Video</option>
                         </select>
@@ -104,7 +105,7 @@ function content_68d4592cf3d6d4_37266042 (Smarty_Internal_Template $_smarty_tpl)
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarBanner">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="actualizar_ads()">Guardar</button>
                 </div>
                 </div>
             </div>

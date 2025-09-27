@@ -205,14 +205,13 @@ if (isset($_POST['action'])) {
            $publicidad->estado = $_POST['estado'];
            $publicidad->titulo = $_POST['titulo'];
            $publicidad->descripcion = $_POST['descripcion'];
-           $publicidad->script_banner = $_POST['escript_banner'];
+           $publicidad->script_banner = $_POST['script_banner'];
            $publicidad->posicion = $_POST['posicion'];
            $publicidad->link_banner = $_POST['link_banner'];
-           $publicidad->estado = $_POST['estado'];
             if(isset($_FILES['imagen_banner']['tmp_name'])){
 
-                $nombre_archivo=date('Y-m-dH:i:s').$_FILES['imagen_banner']['name'];
-                $ruta_archivo_banner = "imagenes_tableros/".$nombre_archivo;
+                $nombre_archivo=date('YmdHis').$_FILES['imagen_banner']['name'];
+                $ruta_archivo_banner = "imagenes_tablero/".$nombre_archivo;
                if(move_uploaded_file($_FILES['imagen_banner']['tmp_name'],"../".$ruta_archivo_banner)){
 
                     $publicidad->imagen_ruta = $ruta_archivo_banner;

@@ -6,8 +6,6 @@
     use Firebase\JWT\JWT;
     use Firebase\JWT\Key;
 
-    global $conexion;
-    $conexion = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
 
     Class EncryptToken extends Prop{
      

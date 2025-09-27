@@ -51,7 +51,8 @@
                     <div class="mb-3">
                         <label for="tipo" class="form-label">Tipo</label>
                         <select class="form-select" id="tipo">
-                        <option value="horizontal">banner</option>
+                        <option>Selecciona el tipo de banner</option>
+                        <option value="banner">banner</option>
                         <option value="texto">texto</option>
                         <option value="video">Video</option>
                         </select>
@@ -81,7 +82,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarBanner">Guardar</button>
+                    <button type="button" class="btn btn-primary" onclick="actualizar_ads()">Guardar</button>
                 </div>
                 </div>
             </div>

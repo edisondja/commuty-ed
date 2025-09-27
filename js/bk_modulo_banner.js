@@ -86,16 +86,25 @@ function abrirModalEditar(id_banner) {
 function actualizar_ads() {
 
   let formData = new FormData();
-  formData.append('action', 'guardar_ads'); // o 'update_ads' según tu backend
+  formData.append('action', 'actualizar_ads'); // o 'update_ads' según tu backend
   formData.append('ads_id', document.getElementById('id_banner').value);
   formData.append('titulo', document.getElementById('titulo').value);
   formData.append('descripcion', document.getElementById('descripcion').value);
   formData.append('tipo', document.getElementById('tipo').value);
   formData.append('script_banner', document.getElementById('script_banner').value);
   formData.append('posicion', document.getElementById('posicion').value);
+  formData.append('imagen_original',document.getElementById('imagen_original').value);
   formData.append('link_banner', document.getElementById('link_banner').value);
-  formData.append('estado', document.getElementById('estado_banner').checked ? 'activo' : 'inactivo');
-  
+
+  if(document.getElementById('estado_banner').checked){
+
+      formData.append('estado','activo');
+  }else{
+
+    formData.append('estado','inactivo');
+  }
+
+
   // Si seleccionaron una nueva imagen
   let nuevaImagen = document.getElementById('imagen_banner').files[0];
   if (nuevaImagen) {
@@ -112,16 +121,18 @@ function actualizar_ads() {
     }
   })
   .then(response => {
+
+    console.log(response);
     console.log("Respuesta:", response.data);
 
     if (response.data.status === "success") {
-      alert("Banner guardado correctamente ✅");
+        alertify.message("Banner actualizado correctamente");
       // cerrar modal
-      bootstrap.Modal.getInstance(document.getElementById('modalBanner')).hide();
+      //bootstrap.Modal.getInstance(document.getElementById('modalBanner')).hide();
       // refrescar tabla/lista de banners
-      cargarTablaBanners(); 
+        cargar_banners();
     } else {
-      alert("Error al guardar: " + response.data.msg);
+      alert("Error al actualizar: " + response.data.msg);
     }
   })
   .catch(error => {
@@ -129,9 +140,6 @@ function actualizar_ads() {
     alert("Ocurrió un error al guardar el banner.");
   });
 }
-
-
-
 
 
 function renderAdsTable(data) {

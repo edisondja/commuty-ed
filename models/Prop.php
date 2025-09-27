@@ -1,10 +1,15 @@
 <?php
 
-class Prop
+
+
+global $conexion;
+$conexion = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+
+class Prop 
 {
 
 
-    public  $fecha; 
+    public  $fecha;         
 
     public function titleList($title)
     {
@@ -23,11 +28,12 @@ class Prop
 
     public function save_tracking($tracking,$tipo){
 
-        $fecha = new Date('ymdiss');
+        global $conexion;
+        $fecha = date('ymdiss');
         $sql = "intert into logs_i(fecha_log,tracking,tipo)VALUES(?,?,?)";
 
         try{
-            $save  = $this->conection($sql);
+            $save  = $conexion->prepare($sql);
             $save->bind_param('sss',$fecha,$tracking,$tipo);
             $save->execute();
         }catch(Exception $e){
@@ -35,6 +41,7 @@ class Prop
             $this->TrackingLog('no se estan guardando los logs en la base de datos '.$fecha,'errores');
         }
 
+        $conexion->close();
 
     }
 
