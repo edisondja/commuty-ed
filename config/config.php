@@ -2,7 +2,7 @@
    
     //define("DOMAIN","https://943b-152-166-176-57.ngrok.io/edtube");
     //define("DOMAIN","https://ventasrd.com");
-    define("DOMAIN","http://localhost:100/commuty-ed");
+    define("DOMAIN","http://localhost:200/commuty-ed");
     #These are the data for the connection of the database 
     define("HOST_BD","localhost");
     define("USER_BD","root");
@@ -21,7 +21,13 @@
     define("SEARCH_DESCRIPTION","");
     define("PAGE_DESCRIPTION","");
     #The title description is the tag used for the browser for example..
-    define("TITLE_DESCRIPTION","");-
+    define("TITLE_DESCRIPTION","");
+    #Conexion Rabbit MQ
+    define('host_rabbit_mq','localhost');
+    define('port_rabbit_mq','5672');
+    define('user_rabbit_mq','guest');
+    define('password_rabbit_mq','guest');
+    define('vhost_rabbit_mq','/');
     #Description for search using hastag
     define("SEARCH_HASTAG","Ventazs rd");
 

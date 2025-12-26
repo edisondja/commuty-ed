@@ -137,7 +137,7 @@ class Config extends EncryptToken
     public function Guardar_configuracion()
     {
         
-
+        // El método Actualizar_configuracion puede usar esta misma consulta con ON DUPLICATE KEY UPDATE
         $sql = 'INSERT INTO configuracion(
                 dominio,
                 nombre_sitio,
@@ -212,7 +212,7 @@ class Config extends EncryptToken
 
 
     //    echo $this->favicon_url;
-        $sql = "UPDATE configuracion SET
+        $sql = "UPDATE configuracion SET 
                     dominio =?,
                     nombre_sitio = ?,
                     descripcion_slogan = ?,
@@ -237,7 +237,7 @@ class Config extends EncryptToken
                     rabbit_mq = ?,
                     ffmpeg = ?,
                     redis_cache = ?
-                    ";
+                    LIMIT 1"; // Es buena práctica añadir LIMIT 1 en updates sin WHERE si solo esperas afectar una fila.
 
         $actualizar = $this->conection->prepare($sql);
 
@@ -287,4 +287,3 @@ class Config extends EncryptToken
 }
 
 ?>
-

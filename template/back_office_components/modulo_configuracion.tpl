@@ -89,13 +89,13 @@
                 <hr/>
                 <div class="form-group form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="rabbit_mq" name="publicar_sin_revision">
-                <label class="form-check-label" for="rabbit_mq">Broker Rabbit MQ</label>
+                <label class="form-check-label" for="rabbit_mq">Broker Rabbit MQ (Colas de mensajes asincronas para evitar cuellos de botellas en procesos de alto de rendimiento.)</label>
                 </div>
             <hr/>
                 <hr/>
                 <div class="form-group form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="ffmpeg" name="ffmpeg">
-                <label class="form-check-label" for="rabbit_mq">Motor multimedia FFMPEG</label>
+                <label class="form-check-label" for="rabbit_mq">Motor multimedia FFMPEG (Renderizaje de multimedias y generacion de vistas previas automaticas.)</label>
                 </div>
             <hr/>
 

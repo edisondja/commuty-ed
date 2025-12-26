@@ -63,7 +63,7 @@
                     <input type='hidden' value='0' id='usuario'/>
                     <input type='hidden' value='0' id='foto_url'/>
                 {/if}
-                <img src="{$foto_usuario}" alt="{$usuario}" class="profile-img">
+                <img src="{$foto_usuario}" width="50" height="50 alt="{$usuario}" class="profile-img">
                 <strong class="username-text">{$usuario}</strong>
                 <h5 class="card-title title-text">{$titulo}</h5>
                 <p class="card-text description-text" id='descripcion'>{$descripcion}</p>
@@ -147,7 +147,7 @@
                         {if $id_user!=''}
                             <div id="interface_og"></div>
                             <div class="list-group-item flex-container barContentComent fixed-bottom">
-                                <img src="{$foto_perfil}" class="rounded comment-profile-img">
+                                <img src="{$foto_perfil}" width="50" height="50  class="rounded comment-profile-img">
                                 <textarea id="text_coment" class='textComent' rows='1' cols='25' placeholder='write a comment'></textarea>
                                 <svg style='height: 35px;margin: 2px;' id='send_coment' xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>

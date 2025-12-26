@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-27 17:06:36
+/* Smarty version 3.1.48, created on 2025-09-27 19:52:09
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68d7fd7c267904_02986563',
+  'unifunc' => 'content_68d8244947f596_06548649',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9b20980f0ed37acea50d44739fc0bb3445c05dbf' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_configuracion.tpl',
-      1 => 1758985591,
+      1 => 1758995528,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68d7fd7c267904_02986563 (Smarty_Internal_Template $_smarty_tpl) {
+function content_68d8244947f596_06548649 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
@@ -112,13 +112,13 @@ function content_68d7fd7c267904_02986563 (Smarty_Internal_Template $_smarty_tpl)
                 <hr/>
                 <div class="form-group form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="rabbit_mq" name="publicar_sin_revision">
-                <label class="form-check-label" for="rabbit_mq">Broker Rabbit MQ</label>
+                <label class="form-check-label" for="rabbit_mq">Broker Rabbit MQ (Colas de mensajes asincronas para evitar cuellos de botellas en procesos de alto de rendimiento.)</label>
                 </div>
             <hr/>
                 <hr/>
                 <div class="form-group form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="ffmpeg" name="ffmpeg">
-                <label class="form-check-label" for="rabbit_mq">Motor multimedia FFMPEG</label>
+                <label class="form-check-label" for="rabbit_mq">Motor multimedia FFMPEG (Renderizaje de multimedias y generacion de vistas previas automaticas.)</label>
                 </div>
             <hr/>
 

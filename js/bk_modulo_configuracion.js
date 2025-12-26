@@ -36,27 +36,54 @@
             let usuario_smtp = document.getElementById('usuario_smtp').value;
             let clave_smtp = document.getElementById('contrasena_smtp').value;
             let autenticacion_ssl = document.getElementById('autenticacion_ssl').value;
-            let rabbit_mq = document.getElementById('rabbit_mq').value;
-            let ffmpeg = document.getElementById('ffmpeg').value;
-            let redis_cache = document.getElementById('redis_cache').value;
        
             let publicar_sin_revision = '';
             if(document.getElementById('publicar_sin_revision').checked==true){
                  publicar_sin_revision = 'SI';
-                alertify.message('Los nuevos articulos se publicaran sin revision');
+                //alertify.message('Los nuevos articulos se publicaran sin revision');
             }else{
                 publicar_sin_revision = 'NO';
-                alertify.message('Los nuevos articulos se publicaran con revision');
+                //alertify.message('Los nuevos articulos se publicaran con revision');
             }
             let verificar_cuenta = '';
             if(document.getElementById('verificar_cuenta').checked==true){
                 verificar_cuenta = 'SI';
-                alertify.message('Los nuevos usuarios deberan verificar su cuenta');
+               // alertify.message('Los nuevos usuarios deberan verificar su cuenta');
             }else{
                 verificar_cuenta = 'NO';
-                alertify.message('Los nuevos usuarios no deberan verificar su cuenta');
+                //alertify.message('Los nuevos usuarios no deberan verificar su cuenta');
             }
 
+            let rabbit_mq ='';
+
+            if(document.getElementById('rabbit_mq').checked==true){
+
+                    rabbit_mq = 'SI';
+            }else{
+
+                    rabbit_mq = 'NO';
+            }
+
+            let ffmpeg ='';
+
+            if(document.getElementById('ffmpeg').checked==true){
+
+                 ffmpeg = 'SI';
+            }else{
+                
+                ffmpeg = 'NO';
+            }
+
+
+            let redis_cache ='';
+
+            if(document.getElementById('redis_cache').checked==true){
+
+                redis_cache = 'SI';
+            }else{
+
+                redis_cache = 'NO';
+            }
 
             let FormDatas = new FormData();
             FormDatas.append('action','config_site_text');
@@ -156,7 +183,25 @@
                         document.getElementById('ffmpeg').value = data.data.ffmpeg;
                         document.getElementById('redis_cache').value = data.data.redis_cache;
 
+
+                        //Edejesusa 27-09-2025
+                        if(data.data.rabbit_mq=='SI'){
+                            document.getElementById('rabbit_mq').checked=true;
+                        }else{
+                            document.getElementById('rabbit_mq').checked=false;
+                        }
                         
+                        if(data.data.ffmpeg=='SI'){
+                            document.getElementById('ffmpeg').checked=true;
+                        }else{
+                            document.getElementById('ffmpeg').checked=false;
+                        }
+                        
+                        if(data.data.redis_cache=='SI'){
+                            document.getElementById('redis_cache').checked=true;
+                        }
+                            
+
                         if(data.data.publicar_sin_revision=='SI'){
                             document.getElementById('publicar_sin_revision').checked=true;
                         }else{

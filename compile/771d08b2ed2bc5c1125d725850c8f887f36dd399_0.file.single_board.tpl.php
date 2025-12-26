@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-17 06:53:49
+/* Smarty version 3.1.48, created on 2025-12-25 19:05:59
   from '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68ca3edd391551_14405134',
+  'unifunc' => 'content_694d7d07558826_08498990',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d08b2ed2bc5c1125d725850c8f887f36dd399' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl',
-      1 => 1758084827,
+      1 => 1766685957,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_68ca3edd391551_14405134 (Smarty_Internal_Template $_smarty_tpl) {
+function content_694d7d07558826_08498990 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <div class="row">
@@ -93,7 +93,7 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                     <input type='hidden' value='0' id='foto_url'/>
                 <?php }?>
                 <img src="<?php echo $_smarty_tpl->tpl_vars['foto_usuario']->value;?>
-" alt="<?php echo $_smarty_tpl->tpl_vars['usuario']->value;?>
+" width="50" height="50 alt="<?php echo $_smarty_tpl->tpl_vars['usuario']->value;?>
 " class="profile-img">
                 <strong class="username-text"><?php echo $_smarty_tpl->tpl_vars['usuario']->value;?>
 </strong>
@@ -199,7 +199,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                             <div id="interface_og"></div>
                             <div class="list-group-item flex-container barContentComent fixed-bottom">
                                 <img src="<?php echo $_smarty_tpl->tpl_vars['foto_perfil']->value;?>
-" class="rounded comment-profile-img">
+" width="50" height="50  class="rounded comment-profile-img">
                                 <textarea id="text_coment" class='textComent' rows='1' cols='25' placeholder='write a comment'></textarea>
                                 <svg style='height: 35px;margin: 2px;' id='send_coment' xmlns="http://www.w3.org/2000/svg" width="25" height="30" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>

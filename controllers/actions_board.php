@@ -107,6 +107,10 @@ if (isset($_POST['action'])) {
                 $config->autenticacion_ssl=$_POST['autenticacion_ssl'];
                 $config->publicar_sin_revision = $_POST['publicar_sin_revision'];
                 $config->verificar_cuenta = $_POST['verificar_cuenta'];
+                $config->rabbit_mq = $_POST['rabbit_mq']; /*Edejesusa  27-09-2025*/
+                $config->ffmpeg = $_POST['ffmpeg'];/*Edejesusa  27-09-2025*/
+                $config->redis_cache = $_POST['redis_cache'];/*Edejesusa  27-09-2025*/
+                
 
                 if ($config->VerificarConfiguracion()>0){
 

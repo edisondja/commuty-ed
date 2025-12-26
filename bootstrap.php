@@ -10,6 +10,7 @@
     require_once 'models/Mail.php';
     require_once 'models/Notificacion.php';
     require_once 'models/Like.php';
+    
 
 
     $dominio = DOMAIN;
@@ -28,7 +29,8 @@
         $redisAvailable = false; // Redis no disponible, seguimos con BD
     }
 
-        /*
+   
+    /*
         load cdns
     */
     $libs_string = '';

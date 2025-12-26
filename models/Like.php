@@ -10,6 +10,7 @@ Class Like extends EncryptToken{
 	public  $id_tablero;
 	public  $id_usuario;
     public  $estado_lk='';
+    public  $conection;
 
 	function __construct(){
 		
