@@ -5,8 +5,6 @@ $Board = new Board();
 $tableros = [];
 $pagina = 0;
 
-
-
 // Base de la clave de cache
 $cache_key = "tableros:";
 
