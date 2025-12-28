@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-25 00:39:58
+/* Smarty version 3.1.48, created on 2025-12-26 05:40:11
   from '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68d4733e02eba8_03660010',
+  'unifunc' => 'content_694e11abb40099_26954024',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0a34b60b2e98b1563713c174aa7e8617f6f84eca' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/back_office_components/modulo_banner.tpl',
-      1 => 1758753594,
+      1 => 1766724009,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68d4733e02eba8_03660010 (Smarty_Internal_Template $_smarty_tpl) {
+function content_694e11abb40099_26954024 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
     <div class="container mt-5">
         <input type="hidden" id="modulo_select" value="config"/>
@@ -76,6 +76,7 @@ function content_68d4733e02eba8_03660010 (Smarty_Internal_Template $_smarty_tpl)
                         <select class="form-select" id="tipo">
                         <option>Selecciona el tipo de banner</option>
                         <option value="banner">banner</option>
+                        <option value="imagen">Imagen</option>
                         <option value="texto">texto</option>
                         <option value="video">Video</option>
                         </select>
@@ -135,6 +136,7 @@ function content_68d4733e02eba8_03660010 (Smarty_Internal_Template $_smarty_tpl)
                             <select class="form-select" id="tipo">
                                 <option value="">Selecciona el tipo de anuncio</option>
                                 <option value="banner">Banner</option>
+                                <option value="imagen">Imagen</option>
                                 <option value="video">Video</option>
                                 <option value="texto">Texto</option>
                             </select>

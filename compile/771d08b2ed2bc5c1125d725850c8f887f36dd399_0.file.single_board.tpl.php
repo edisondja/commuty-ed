@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-12-25 19:05:59
+/* Smarty version 3.1.48, created on 2025-12-26 06:02:55
   from '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_694d7d07558826_08498990',
+  'unifunc' => 'content_694e16ffd0eda4_20522549',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d08b2ed2bc5c1125d725850c8f887f36dd399' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl',
-      1 => 1766685957,
+      1 => 1766725374,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_694d7d07558826_08498990 (Smarty_Internal_Template $_smarty_tpl) {
+function content_694e16ffd0eda4_20522549 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <div class="row">
@@ -64,6 +64,44 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
         </div>
         </div>
         <br/><br/><br/>
+          <?php if ($_smarty_tpl->tpl_vars['ads_1']->value) {?>
+            <?php if ($_smarty_tpl->tpl_vars['ads_1']->value->tipo == 'video') {?>
+
+            <a href=<?php echo $_smarty_tpl->tpl_vars['ads_1']->value->link_banner;?>
+ target="_blank">
+                    <div class="card-body" style="text-align:center">>
+                        <video src='<?php echo $_smarty_tpl->tpl_vars['ads_1']->value->imagen_ruta;?>
+' style='width:320px; height:80px;' />
+                    </div>
+                </a>
+               
+            <?php } elseif ($_smarty_tpl->tpl_vars['ads_1']->value->tipo == 'imagen') {?>
+
+                <a href=<?php echo $_smarty_tpl->tpl_vars['ads_1']->value->link_banner;?>
+ target="_blank">
+                    <div class="card-body" style="text-align:center">
+                        <image src='<?php echo $_smarty_tpl->tpl_vars['ads_1']->value->imagen_ruta;?>
+' style='width:320px; height:80px;' />
+                    </div>
+                </a>
+
+            <?php } elseif ($_smarty_tpl->tpl_vars['ads_1']->value->tipo == 'texto') {?>
+
+                  <div class="card-body">
+                       <h5><?php echo $_smarty_tpl->tpl_vars['ads_1']->value->titulo;?>
+</h5>
+                       <p><?php echo $_smarty_tpl->tpl_vars['ads_1']->value->descripcion;?>
+</p>
+                  </div>
+
+            <?php } elseif ($_smarty_tpl->tpl_vars['ads_1']->value->tipo == 'banner') {?>
+         
+                   <?php echo $_smarty_tpl->tpl_vars['ads_1']->value->script_banner;?>
+
+                  
+            <?php }?>
+            
+        <?php }?>
         <?php if ($_smarty_tpl->tpl_vars['estado']->value !== 'baneado') {?>
         <div class="card mb-3 card-custom">
         <div style="position: absolute; right: 10px; top: 10px;">
@@ -167,7 +205,44 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </li>
                     </ul>
                 </div>
+                  <?php if ($_smarty_tpl->tpl_vars['ads_2']->value) {?>
+                        <?php if ($_smarty_tpl->tpl_vars['ads_2']->value->tipo == 'video') {?>
 
+                        <a href=<?php echo $_smarty_tpl->tpl_vars['ads_2']->value->link_banner;?>
+ target="_blank">
+                                <div class="card-body" style="text-align:center">>
+                                    <video src='<?php echo $_smarty_tpl->tpl_vars['ads_2']->value->imagen_ruta;?>
+' style='width:320px; height:80px;' />
+                                </div>
+                            </a>
+                        
+                        <?php } elseif ($_smarty_tpl->tpl_vars['ads_1']->value->tipo == 'imagen') {?>
+
+                            <a href=<?php echo $_smarty_tpl->tpl_vars['ads_2']->value->link_banner;?>
+ target="_blank">
+                                <div class="card-body" style="text-align:center">
+                                    <image src='<?php echo $_smarty_tpl->tpl_vars['ads_2']->value->imagen_ruta;?>
+' style='width:320px; height:80px;' />
+                                </div>
+                            </a>
+
+                        <?php } elseif ($_smarty_tpl->tpl_vars['ads_2']->value->tipo == 'texto') {?>
+
+                            <div class="card-body">
+                                <h5><?php echo $_smarty_tpl->tpl_vars['ads_1']->value->titulo;?>
+</h5>
+                                <p><?php echo $_smarty_tpl->tpl_vars['ads_1']->value->descripcion;?>
+</p>
+                            </div>
+
+                        <?php } elseif ($_smarty_tpl->tpl_vars['ads_2']->value->tipo == 'banner') {?>
+                    
+                            <?php echo $_smarty_tpl->tpl_vars['ads_2']->value->script_banner;?>
+
+                            
+                        <?php }?>
+                        
+                    <?php }?>
                 <?php if ($_smarty_tpl->tpl_vars['like_login_user']->value == 'tiene_like') {?> 
                     <i class="fa-solid fa-heart heart-liked" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">
@@ -184,6 +259,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                     <span id="likes_c"><?php echo $_smarty_tpl->tpl_vars['likes']->value->likes;?>
 </span>
                 <?php }?>
+                
                     <i class="fa fa-eye"></i>
                     <span><?php echo $_smarty_tpl->tpl_vars['total_views']->value;?>
 </span>

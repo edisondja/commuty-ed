@@ -211,6 +211,7 @@ if (isset($_POST['action'])) {
            $publicidad->descripcion = $_POST['descripcion'];
            $publicidad->script_banner = $_POST['script_banner'];
            $publicidad->posicion = $_POST['posicion'];
+           $publicidad->tipo = $_POST['tipo'];
            $publicidad->link_banner = $_POST['link_banner'];
             if(isset($_FILES['imagen_banner']['tmp_name'])){
 

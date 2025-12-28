@@ -38,6 +38,37 @@
         </div>
         </div>
         <br/><br/><br/>
+          {if $ads_1}
+            {if $ads_1->tipo=='video'}
+
+            <a href={$ads_1->link_banner} target="_blank">
+                    <div class="card-body" style="text-align:center">>
+                        <video src='{$ads_1->imagen_ruta}' style='width:320px; height:80px;' />
+                    </div>
+                </a>
+               
+            {else if $ads_1->tipo=='imagen'}
+
+                <a href={$ads_1->link_banner} target="_blank">
+                    <div class="card-body" style="text-align:center">
+                        <image src='{$ads_1->imagen_ruta}' style='width:320px; height:80px;' />
+                    </div>
+                </a>
+
+            {else if $ads_1->tipo=='texto'}
+
+                  <div class="card-body">
+                       <h5>{$ads_1->titulo}</h5>
+                       <p>{$ads_1->descripcion}</p>
+                  </div>
+
+            {else if $ads_1->tipo=='banner'}
+         
+                   {$ads_1->script_banner}
+                  
+            {/if}
+            
+        {/if}
         {if $estado!=='baneado'}
         <div class="card mb-3 card-custom">
         <div style="position: absolute; right: 10px; top: 10px;">
@@ -120,7 +151,37 @@
                         </li>
                     </ul>
                 </div>
+                  {if $ads_2}
+                        {if $ads_2->tipo=='video'}
 
+                        <a href={$ads_2->link_banner} target="_blank">
+                                <div class="card-body" style="text-align:center">>
+                                    <video src='{$ads_2->imagen_ruta}' style='width:320px; height:80px;' />
+                                </div>
+                            </a>
+                        
+                        {else if $ads_1->tipo=='imagen'}
+
+                            <a href={$ads_2->link_banner} target="_blank">
+                                <div class="card-body" style="text-align:center">
+                                    <image src='{$ads_2->imagen_ruta}' style='width:320px; height:80px;' />
+                                </div>
+                            </a>
+
+                        {else if $ads_2->tipo=='texto'}
+
+                            <div class="card-body">
+                                <h5>{$ads_1->titulo}</h5>
+                                <p>{$ads_1->descripcion}</p>
+                            </div>
+
+                        {else if $ads_2->tipo=='banner'}
+                    
+                            {$ads_2->script_banner}
+                            
+                        {/if}
+                        
+                    {/if}
                 {if $like_login_user=='tiene_like'} 
                     <i class="fa-solid fa-heart heart-liked" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">
@@ -134,6 +195,7 @@
                     <i class="fa-regular fa-heart heart-default" style="cursor:pointer" id="like"></i>
                     <span id="likes_c">{$likes->likes}</span>
                 {/if}
+                
                     <i class="fa fa-eye"></i>
                     <span>{$total_views}</span>
 

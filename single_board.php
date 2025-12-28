@@ -1,6 +1,7 @@
 <?php
     require('bootstrap.php');
     require('models/View.php');
+    require('models/Ads.php');
     //solo cargar un tablero
 
     $smarty->assign('content_config','single_board');
@@ -52,10 +53,15 @@
 
         $cached_key.='/likes:';
 
+        $ads = new Ads();
+        $ads->estado = $ads->enable();
+        $ads->posicion = 1;
+        $smarty->assign('ads_1',$ads->cargar_ads_pos());
+        $ads->posicion = 2;
+        $smarty->assign('ads_2',$ads->cargar_ads_pos());
 
-  
 
-          $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
+        $smarty->assign('likes',$Verificar_like->contar_lk('asoc'));
       
 
         $smarty->assign('like_login_user',$Verificar_like->verificar_mi_like());

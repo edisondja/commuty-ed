@@ -237,7 +237,6 @@ Class Ads extends EncryptToken{
             return;
         }
 
-
         try{
 
             $data = $this->conection->prepare($sql);
@@ -265,16 +264,19 @@ Class Ads extends EncryptToken{
 
      public function cargar_ads_pos(){
 
-        $sql = "select * from ads where posicion=?";
+        $sql = "select * from ads where posicion=? and estado=?";
         $data = $this->conection->prepare($sql);
-        $data->bind_param('i',$this->posicion);
+        $data->bind_param('is',$this->posicion,$this->estado);
 
         try{
-        $result = $data->get_result();
+            $data->execute();
+            $result = $data->get_result();
+            return mysqli_fetch_object($result);
 
-    
         }catch(exception $e){
-   
+
+            return new Ads();
+
             $this->TrackingLog(date('y-m-d h:i:s').'Error eliminando ads '.$e,'errores');
 
         }

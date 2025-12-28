@@ -28,6 +28,11 @@
     define('user_rabbit_mq','guest');
     define('password_rabbit_mq','guest');
     define('vhost_rabbit_mq','/');
+    #Conexion Redis Cache
+    define("host_redis_cache","localhost");
+    define("port_redis_cache","6379");
+    define("scheme_redis_cache","tcp");
+
     #Description for search using hastag
     define("SEARCH_HASTAG","Ventazs rd");
 

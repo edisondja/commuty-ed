@@ -53,6 +53,7 @@
                         <select class="form-select" id="tipo">
                         <option>Selecciona el tipo de banner</option>
                         <option value="banner">banner</option>
+                        <option value="imagen">Imagen</option>
                         <option value="texto">texto</option>
                         <option value="video">Video</option>
                         </select>
@@ -112,6 +113,7 @@
                             <select class="form-select" id="tipo">
                                 <option value="">Selecciona el tipo de anuncio</option>
                                 <option value="banner">Banner</option>
+                                <option value="imagen">Imagen</option>
                                 <option value="video">Video</option>
                                 <option value="texto">Texto</option>
                             </select>
