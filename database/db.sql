@@ -55,8 +55,8 @@ CREATE TABLE tableros (
   fecha_creacion DATETIME,
   id_usuario INT,
   tipo_tablero VARCHAR(10),
-  imagen_tablero VARCHAR(120),
-  preview_tablero VARCHAR(120),
+  imagen_tablero VARCHAR(120) DEFAULT NULL,
+  preview_tablero VARCHAR(120) DEFAULT NULL,
   FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE
 );
 

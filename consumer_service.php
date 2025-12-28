@@ -120,7 +120,7 @@ $callback = function ($msg) use ($channel) {
         $msg->ack();
 
     } catch (Exception $e) {
-        echo "Error: " . $e->getMessage() . "\n";
+        echo "❌ Error: " . $e->getMessage() . "\n";
         $channel->basic_publish(
             new AMQPMessage(json_encode([
                 'board_id' => $data['board_id'] ?? null,

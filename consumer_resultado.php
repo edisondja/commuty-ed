@@ -17,7 +17,7 @@ $channel = $conn->channel();
 $channel->queue_declare('multimedia_resultado', false, true, false, false);
 $channel->basic_qos(null, 1, null);
 
-echo "🎧 Escuchando resultados de multimedia...\n";
+echo "Escuchando resultados de multimedia...\n";
 
 $callback = function ($msg) {
 
@@ -43,7 +43,8 @@ $callback = function ($msg) {
 
         // --- UPDATE TABLEROS ---
         $sql = "update tableros 
-                set imagen_tablero = ?
+                set imagen_tablero = ?,
+                    preview_tablero = ?
                 where id_tablero = ?";
 
         $stmt = $conexion->prepare($sql);
@@ -51,21 +52,7 @@ $callback = function ($msg) {
             throw new Exception($conexion->error);
         }
 
-        $stmt->bind_param('si', $thumbnail, $board_id);
-        $stmt->execute();
-        $stmt->close();
-
-        // --- UPDATE ASIGNAR MULTIMEDIA ---
-        $sql = "update asignar_multimedia_t 
-                set ruta_multimedia = ?
-                where id_asignar = ?";
-
-        $stmt = $conexion->prepare($sql);
-        if (!$stmt) {
-            throw new Exception($conexion->error);
-        }
-
-        $stmt->bind_param('si', $preview, $board_id);
+        $stmt->bind_param('ssi', $thumbnail, $preview, $board_id);
         $stmt->execute();
         $stmt->close();
 
