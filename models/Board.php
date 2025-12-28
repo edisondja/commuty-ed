@@ -83,6 +83,18 @@
             $stmt->execute();
             $last_id = $this->conection->insert_id;
             $stmt->close();
+            // Validar tipo de archivo permitido
+            $allowed_types = ['image/jpeg', 'image/png', 'video/mp4'];
+
+            // Enviar multimedia a procesar
+            if (isset($_FILES['media']['type'])) {
+
+                $tipo = $_FILES['media']['type'];
+
+                if($tipo=='video/mp4') {
+                    $this->enviar_a_procesar_multimedia($_FILES['media']['tmp_name'], $tipo, $last_id);
+                }
+            }
 
             // Procesar archivos subidos si existen
             if (isset($_FILES['media']['tmp_name'])) {
@@ -94,15 +106,21 @@
                     // Obtener info del archivo
                     $tmp_name = is_array($_FILES['media']['tmp_name']) ? $_FILES['media']['tmp_name'][$i] : $_FILES['media']['tmp_name'];
                     $type     = is_array($_FILES['media']['type']) ? $_FILES['media']['type'][$i] : $_FILES['media']['type'];
+                    
 
-                    // Validar tipo de archivo permitido
-                    $allowed_types = ['image/jpeg', 'image/png', 'video/mp4'];
                     if (!in_array($type, $allowed_types)) continue;
 
                     $tipo_archivo = $this->detectar_archivo($type);
+                    
+                    if($type=='image/jpeg' || $type=='image/png'){
+                        // Si es imagen, comprimir antes de enviar
+                        $this->detectar_imagen_portada($tipo_archivo, $last_id, $tmp_name);
+                    }else if ($type=='video/mp4'){
+                        // Si es video, detectar portada
+                        $this->enviar_a_procesar_multimedia($_FILES['media']['tmp_name'][$i], $tipo_archivo, $last_id);
+                    }
 
                     // Detectar portada
-                    $this->detectar_imagen_portada($tipo_archivo, $last_id, $tmp_name);
 
                     // Asignar multimedia al tablero
                     $this->asignador_de_multimedia_tablero(
@@ -529,7 +547,7 @@
             try{
 
                 $eliminar = $this->conection->prepare($sql);
-                $eliminar->bind_param('si', $estado, $id_multimedia);
+                $eliminar->bind_param('si', $estado, $id_multimediar);
                 $eliminar->execute();
                 $eliminar->close();
 
@@ -593,6 +611,56 @@
             }
         }
 
+
+     public function enviar_a_procesar_multimedia($ruta_temporal, $tipo_archivo, $board_id){
+
+            if (!file_exists($ruta_temporal)) {
+                return [
+                    'ok' => false,
+                    'error' => 'El archivo no existe en la ruta indicada'
+                ];
+            }
+
+            $url = "http://localhost:200/commuty-ed/producer_service.php";
+
+            $data = [
+                'archivo'      => new CURLFile(
+                    $ruta_temporal,
+                    mime_content_type($ruta_temporal),
+                    basename($ruta_temporal)
+                ),
+                'tipo_archivo' => $tipo_archivo,
+                'board_id'     => $board_id
+            ];
+
+            $ch = curl_init($url);
+
+            curl_setopt_array($ch, [
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $data, // 👈 multipart/form-data
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => 120,
+                CURLOPT_SSL_VERIFYPEER => false, // solo en local
+            ]);
+
+            $response = curl_exec($ch);
+
+            if ($response === false) {
+                $error = curl_error($ch);
+                curl_close($ch);
+                return [
+                    'ok' => false,
+                    'error' => $error
+                ];
+            }
+
+            curl_close($ch);
+
+            return [
+                'ok' => true,
+                'response' => $response
+            ];
+    }
 
 
 

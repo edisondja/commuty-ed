@@ -1,61 +1,68 @@
 <?php
 require_once 'vendor/autoload.php';
 require_once 'config/config.php';
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-//Recibe la ruta temporal del archivo subido,el nombre del archivo y el tipo de archivo
- // Conectar Rabbit MQ 
-$conn = new AMQPStreamConnection(
-        host_rabbit_mq,
-        port_rabbit_mq,
-        user_rabbit_mq,
-        password_rabbit_mq,
-        vhost_rabbit_mq
-    );
-
-
-try{
-    $ruta_temporal = $_POST['temp_ruta'];
-    $nombre_archivo = $_POST['nombre_archivo'];
-    $tipo_archivo = $_POST['tipo_archivo'];
-    $board_id = $_POST['board_id'];
-}catch(Exception $e){
-    $ruta_temporal = '';
-    $nombre_archivo = '';
-    $tipo_archivo = '';
-    $board_id = '';
-    echo "Error al recibir los datos: " . $e->getMessage() . "\n";
+// Validaciones básicas
+if (!isset($_FILES['archivo'], $_POST['tipo_archivo'], $_POST['board_id'])) {
+    http_response_code(400);
+    echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+    exit;
 }
 
+$archivo = $_FILES['archivo'];
+
+if ($archivo['error'] !== UPLOAD_ERR_OK) {
+    echo json_encode(['ok' => false, 'error' => 'Error al subir archivo']);
+    exit;
+}
+
+// 🔥 MOVER EL ARCHIVO A UNA RUTA REAL
+$directorio = __DIR__ . '/uploads/';
+if (!is_dir($directorio)) {
+    mkdir($directorio, 0777, true);
+}
+
+$nombreSeguro = time() . '_' . basename($archivo['name']);
+$rutaFinal = $directorio . $nombreSeguro;
+
+if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
+    echo json_encode(['ok' => false, 'error' => 'No se pudo guardar el archivo']);
+    exit;
+}
+
+// Datos finales
+$tipo_archivo = $_POST['tipo_archivo'];
+$board_id     = (int)$_POST['board_id'];
+
+// 🐰 Conectar RabbitMQ
+$conn = new AMQPStreamConnection(
+    host_rabbit_mq,
+    port_rabbit_mq,
+    user_rabbit_mq,
+    password_rabbit_mq,
+    vhost_rabbit_mq
+);
 
 $channel = $conn->channel();
 
+$channel->queue_declare('procesar_multimedia', false, true, false, false);
+
+// 🔥 SOLO SE ENVÍA LA RUTA (STRING)
 $msg = new AMQPMessage(
-    json_encode(
-        ['mensaje' => 'Encolando multimedia para ser procesada..',
-         'fecha' => date('Y-m-d H:i:s'),
-         'usuario' => 'sistema',
-         'temp_ruta' =>  $ruta_temporal,
-         'nombre_archivo' =>  $nombre_archivo,
-         'tipo_archivo'=> $tipo_archivo,
-         'board_id' => $board_id
-        ]),
+    json_encode([
+        'ruta_tmp'     => $rutaFinal,
+        'tipo_archivo' => $tipo_archivo,
+        'board_id'     => $board_id
+    ]),
     ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]
 );
 
-$channel->queue_declare('procesar_multimedia', false, true, false, false);
+$channel->basic_publish($msg, '', 'procesar_multimedia');
 
-try{
-    echo "Mensaje enviado\n";
-                                
-    $channel->basic_publish($msg, '', 'procesar_multimedia');
-
-}catch(Exception $e){
-    echo "Error al enviar el mensaje: " . $e->getMessage() . "\n";
-    exit(1);
-}
-
+echo json_encode(['ok' => true, 'mensaje' => 'Archivo encolado para procesamiento']);
 
 $channel->close();
 $conn->close();
