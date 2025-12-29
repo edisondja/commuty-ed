@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-08-23 19:47:31
+/* Smarty version 3.1.48, created on 2025-12-29 04:01:34
   from '/opt/lampp/htdocs/commuty-ed/template/footer.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68a9feb31f6231_30068650',
+  'unifunc' => 'content_6951ef0ec1b939_74278118',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68a9feb31f6231_30068650 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6951ef0ec1b939_74278118 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
             
             <?php if ($_smarty_tpl->tpl_vars['content_config']->value == 'boards') {?>

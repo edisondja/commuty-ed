@@ -156,38 +156,42 @@ Class Like extends EncryptToken{
 
      }
 
-     public function verificar_mi_like(){
-        
-        /*
-          Esta funcion es para verificar si el usuario que inicio sesion tiene un like guardado
-          en la publicacion actual
-        */
+   public function verificar_mi_like()
+    {
         $estado = $this->enable();
-        $sql = "select * from likes where id_user=? and id_tablero=? and estado=?";
-        try{
 
-            $cargar= $this->conection->prepare($sql);
-            $cargar->bind_param('iis',$this->id_usuario,$this->id_tablero,$estado);
-            $cargar->execute();
-            $data = $cargar->get_result();
+        $sql = "select id_like 
+                from likes 
+                where id_tablero = ? 
+                and id_user = ?
+                and estado = ?
+                limit 1";
 
-            if($data->num_rows >0){
+        try {
+            $stmt = $this->conection->prepare($sql);
+            $stmt->bind_param(
+                'iis',
+                $this->id_tablero,
+                $this->id_usuario,
+                $estado
+            );
+            $stmt->execute();
 
-                return 'tiene_like';
+            $result = $stmt->get_result();
 
-            }else{
-                return 'no_tiene_like';
+            return ($result && $result->num_rows > 0)
+                ? 'tiene_like'
+                : 'no_tiene_like';
 
-            }   
-    
-        }catch(Exception $e){
-
-            $this->TrackingLog(date('y-m-d h:i:s')."No se pudo cargar los like del usuario".$e,'errores');
-
+        } catch (Exception $e) {
+            $this->TrackingLog(
+                date('Y-m-d H:i:s') . " Error verificando like: " . $e->getMessage(),
+                'errores'
+            );
+            return 'error';
         }
+    }
 
-
-     }
 
      public function cargar_likes_board($config='json'){
 

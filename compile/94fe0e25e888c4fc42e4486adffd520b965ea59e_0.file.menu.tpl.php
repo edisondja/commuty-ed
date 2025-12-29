@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-12-25 18:53:16
+/* Smarty version 3.1.48, created on 2025-12-29 04:01:34
   from '/opt/lampp/htdocs/commuty-ed/template/menu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_694d7a0c333e63_15828403',
+  'unifunc' => 'content_6951ef0ec0f497_32128373',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_694d7a0c333e63_15828403 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6951ef0ec0f497_32128373 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="col-md-3">
   <div class="menu-fijo" style="color: balck;">
     </br>

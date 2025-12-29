@@ -22,17 +22,17 @@ class Coment extends EncryptToken {
         $estado = $this->enable();
 
         if ($tipo_post == 'board') {
-            $sql = "SELECT * FROM comentario AS c 
-                    INNER JOIN user AS u ON c.usuario_id = u.id_user 
-                    WHERE c.id_tablero = ? AND c.tipo_post = ? 
-                    AND c.estado = ?  
-                    ORDER BY id_comentario DESC";
+            $sql = "select * from comentario as c 
+                    inner join user as u on c.usuario_id = u.id_user 
+                    where c.id_tablero = ? and c.tipo_post = ? 
+                    and c.estado = ?  
+                    order by id_comentario desc";
         } else {
-            $sql = "SELECT * FROM comentario AS c 
-                    INNER JOIN user AS u ON c.usuario_id = u.id_user 
-                    WHERE c.id_post = ? AND c.tipo_post = ? 
-                    AND c.estado = ? 
-                    ORDER BY id_comentario DESC";
+            $sql = "select * from comentario as c 
+                    inner join user as u on c.usuario_id = u.id_user 
+                    where c.id_tablero = ? and c.tipo_post = ? 
+                    and c.estado = ? 
+                    order by id_comentario desc";
         }
 
         $read = $this->conection->prepare($sql);

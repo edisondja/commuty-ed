@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-09-27 16:08:28
+/* Smarty version 3.1.48, created on 2025-12-29 04:01:34
   from '/opt/lampp/htdocs/commuty-ed/template/login.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_68d7efdc00e9f2_60405757',
+  'unifunc' => 'content_6951ef0ebd49c1_90238569',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_68d7efdc00e9f2_60405757 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6951ef0ebd49c1_90238569 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!-- Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

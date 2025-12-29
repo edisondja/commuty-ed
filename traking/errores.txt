@@ -5,3 +5,5 @@
 2025-09-25 00:30:28 Error actualizando ads Error en prepare: Unknown column 'id' in 'where clause'
 2025-09-25 00:30:33 Error actualizando ads Error en prepare: Unknown column 'id' in 'where clause'
 2025-09-25 00:30:54 Error actualizando ads Error en prepare: Unknown column 'id' in 'where clause'
+25-12-29 01:35:02Error Enviando mail tipo: registrer
+25-12-29 03:50:43Error Enviando mail tipo: registrer

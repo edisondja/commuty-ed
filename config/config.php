@@ -1,8 +1,8 @@
 <?php
    
-    error_reporting(E_ALL);
+    /*error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
+    ini_set('display_startup_errors', 1);*/
     //define("DOMAIN","https://943b-152-166-176-57.ngrok.io/edtube");
     //define("DOMAIN","https://ventasrd.com");
     define("DOMAIN","http://localhost:200/commuty-ed");

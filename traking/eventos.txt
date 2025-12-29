@@ -267,3 +267,13 @@ Bloqueando tablero
 2512284024Multimedia agregada con exito
 2512284102Multimedia agregada con exito
 2512284854Multimedia agregada con exito
+2512285915Multimedia agregada con exito
+25-12-28 11:02:30Inicio de sesion usaurio mistered 
+2025-12-28 23:17:54 - Notificación guardada correctamente
+25-12-28 11:17:54 Comentario del user ID: 3
+25-12-28 11:54:13 El usuario ID: 3 Respondió comentario
+25-12-29 01:32:16 Cerrando sesion 
+25-12-29 01:35:12Inicio de sesion usaurio marco 
+25-12-29 03:51:01Inicio de sesion usaurio pedrito
+25-12-29 04:00:35 Cerrando sesion 
+25-12-29 04:12:13Inicio de sesion usaurio dracula

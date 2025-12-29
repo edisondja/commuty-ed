@@ -3,26 +3,36 @@
     <div class="col-md-3"></div>
 
     <div class="col-sm-5" style="margin-bottom:15px;">
-
         <div class="card card-board mb-3" id="board{$tablero.id_tablero}">
             <div class="body" style="padding:5px">
                 <div class="title">
-                    <strong>
-                        <a href="{$url_board}/profile_user.php?user={$tablero.usuario}">
-                            <img class="imagenPerfil" src="{$dominio}/{$tablero.foto_url}"/>
+                <div class="board-header">
+
+                        <!-- Perfil -->
+                        <a href="{$url_board}/profile_user.php?user={$tablero.usuario}" class="profile-link">
+                            <img class="imagenPerfil" src="{$dominio}/{$tablero.foto_url}" />
+                            <strong>{$tablero.nombre} {$tablero.apellido}</strong>
                         </a>
-                        {$tablero.nombre} {$tablero.apellido} 
-                        <div style="float: right;">
+
+                        <!-- Acciones -->
+                        <div class="actions" style="float:right;">
                             {if $user_session!=''}
                                 {if $id_user==$tablero.id_user}
-                                    <i class="fa-solid fa-pen-to-square edit-icon" data-bs-toggle="modal" data-bs-target="#modal_update" data-value="{$tablero.id_tablero}" style="cursor:pointer;"></i>
+                                    <i class="fa-solid fa-pen-to-square edit-icon"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modal_update"
+                                    data-value="{$tablero.id_tablero}"
+                                    style="cursor:pointer;">
+                                    </i>
                                 {/if}
                             {/if}
+
+                            <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:' ':'_'}">
+                                <i class="fa-solid fa-eye view-icon"></i>
+                            </a>
                         </div>
-                        <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
-                            <i class="fa-solid fa-eye view-icon"></i>
-                        </a>
-                    </strong>
+
+                    </div>
                 </div>
 
                 <p class="description-text" id="text{$tablero.id_tablero}">{$tablero.descripcion}</p>

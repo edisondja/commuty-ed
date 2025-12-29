@@ -407,3 +407,12 @@
         display: none;
     }
 }
+
+
+.profile-link,
+.profile-link:visited,
+.profile-link:hover,
+.profile-link:active {
+    color: inherit;          /* hereda el color normal */
+    text-decoration: none;   /* quita subrayado */
+}

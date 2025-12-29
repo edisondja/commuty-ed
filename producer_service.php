@@ -25,7 +25,7 @@ if (!is_dir($directorio)) {
     mkdir($directorio, 0777, true);
 }
 
-$nombreSeguro = time() . '_' . basename($archivo['name']);
+$nombreSeguro = date('YmdHis') . '_' . basename($archivo['name']);
 $rutaFinal = $directorio . $nombreSeguro;
 
 if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
