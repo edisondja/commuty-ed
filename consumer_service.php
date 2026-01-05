@@ -64,7 +64,7 @@ $callback = function ($msg) use ($channel) {
         
         if($data['tipo_archivo']=='transfer_video'){
 
-            $ruta_ffmpeg =$data['ruta_tmp'];
+            $ruta_ffmpeg = $data['ruta_tmp'];
             echo "$ruta_ffmpeg Es una transferencia de archivo, preparando para ffmpeg...\n";
 
             //exec("ffmpeg -y -i $ruta_ffmpeg -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k $video_completo 2>&1");

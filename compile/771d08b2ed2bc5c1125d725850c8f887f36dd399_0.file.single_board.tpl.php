@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-12-29 04:02:33
+/* Smarty version 3.1.48, created on 2026-01-05 15:02:29
   from '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_6951ef4983ca21_94757521',
+  'unifunc' => 'content_695bc475ec0ca7_37434119',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '771d08b2ed2bc5c1125d725850c8f887f36dd399' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/single_board.tpl',
-      1 => 1766725374,
+      1 => 1767621422,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_6951ef4983ca21_94757521 (Smarty_Internal_Template $_smarty_tpl) {
+function content_695bc475ec0ca7_37434119 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <div class="row">
@@ -140,10 +140,11 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                 <p class="card-text description-text" id='descripcion'><?php echo $_smarty_tpl->tpl_vars['descripcion']->value;?>
 </p>
 
-           <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner fixed-size-carousel">
-                    
-                                        <?php if (count($_smarty_tpl->tpl_vars['multimedias_t']->value) > 0) {?>
+          <?php $_smarty_tpl->_assignInScope('total_multimedia', count($_smarty_tpl->tpl_vars['multimedias_t']->value));?>
+
+                        <?php if ($_smarty_tpl->tpl_vars['total_multimedia']->value > 1) {?>
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner fixed-size-carousel">
                         <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['multimedias_t']->value, 'multimedia', false, NULL, 'mediaLoop', array (
   'first' => true,
@@ -155,45 +156,54 @@ $_smarty_tpl->tpl_vars['multimedia']->do_else = false;
 $_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['index']++;
 $_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first'] = !$_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['index'];
 ?>
-                            <?php if ($_smarty_tpl->tpl_vars['multimedia']->value['tipo_multimedia'] == 'imagen') {?>
-                                <div class="carousel-item <?php if ((isset($_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first']) ? $_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first'] : null)) {?>active<?php }?>">
+                            <div class="carousel-item <?php if ((isset($_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first']) ? $_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first'] : null)) {?>active<?php }?>">
+                                <?php if ($_smarty_tpl->tpl_vars['multimedia']->value['tipo_multimedia'] == 'imagen') {?>
                                     <img src="<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['multimedia']->value['ruta_multimedia'],"../",'');?>
 " 
                                         class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
-                                </div>
-                            <?php } else { ?>
-                                <div class="carousel-item <?php if ((isset($_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first']) ? $_smarty_tpl->tpl_vars['__smarty_foreach_mediaLoop']->value['first'] : null)) {?>active<?php }?>">
+                                <?php } else { ?>
                                     <video src="<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['multimedia']->value['ruta_multimedia'],"../",'');?>
 " 
-                                        class="d-block w-100 img-fluid card-img-top fixed-size-video" 
-                                        controls></video>
-                                </div>
-                            <?php }?>
+                                        class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                                <?php }?>
+                            </div>
                         <?php
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
-
-                                        <?php } elseif ($_smarty_tpl->tpl_vars['og_imagen']->value != '') {?>
-                        <div class="carousel-item active">
-                            <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
-/<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
-" 
-                                class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
-                        </div>
-                    <?php }?>
-                </div>
-
-                                <?php if (count($_smarty_tpl->tpl_vars['multimedias_t']->value) > 1) {?>
+                    </div>
+                    
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Anterior</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Siguiente</span>
                     </button>
-                <?php }?>
-            </div>
+                </div>
+
+                        <?php } elseif ($_smarty_tpl->tpl_vars['total_multimedia']->value == 1) {?>
+                <div class="fixed-size-carousel">
+                    <?php $_smarty_tpl->_assignInScope('solo_uno', $_smarty_tpl->tpl_vars['multimedias_t']->value[0]);?>
+                    <?php if ($_smarty_tpl->tpl_vars['solo_uno']->value['tipo_multimedia'] == 'imagen') {?>
+                        <img src="<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['solo_uno']->value['ruta_multimedia'],"../",'');?>
+" 
+                            class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                    <?php } else { ?>
+                        <video src="<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['solo_uno']->value['ruta_multimedia'],"../",'');?>
+" 
+                            class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                    <?php }?>
+                </div>
+
+                        <?php } elseif ($_smarty_tpl->tpl_vars['og_imagen']->value != '') {?>
+                <div class="fixed-size-carousel">
+                    <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
+/<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
+" 
+                        class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                </div>
+            <?php }?>
 
                 <div class="card card-comments">
                     <ul class="list-group list-group-flush">

@@ -624,42 +624,29 @@
 
    public function enviar_a_procesar_multimedia($ruta_temporal, $tipo_archivo, $board_id)
         {
-            echo "Enviando multimedia a procesar...\n";
-
-            $url = "http://localhost:200/commuty-ed/producer_service.php";
-
-            // -----------------------------
-            // CASO 1: TRANSFERENCIA POR URL
-            // -----------------------------
+            // 1. LIMPIEZA DE URL (Elimina el punto conflictivo antes de enviarlo al producer)
             if ($tipo_archivo === 'transfer_video') {
+                $ruta_temporal = rtrim(trim($ruta_temporal), '.');
+            }
 
-                // Validar que sea URL
+            echo "Enviando multimedia a procesar para Board: $board_id...\n";
+
+            $url =  DOMAIN."/producer_service.php";
+
+            if ($tipo_archivo === 'transfer_video') {
                 if (!filter_var($ruta_temporal, FILTER_VALIDATE_URL)) {
-                    return [
-                        'ok' => false,
-                        'error' => 'La ruta no es una URL válida'
-                    ];
+                    return ['ok' => false, 'error' => 'URL inválida'];
                 }
-
                 $data = [
                     'url_archivo'  => $ruta_temporal,
                     'tipo_archivo' => $tipo_archivo,
-                    'board_id'     => $board_id
+                    'board_id'     => $board_id,
+                    'token_unico'  => uniqid('req_', true) // Token para identificar esta petición única
                 ];
-
-            } 
-            // -----------------------------
-            // CASO 2: ARCHIVO LOCAL
-            // -----------------------------
-            else {
-
+            } else {
                 if (!file_exists($ruta_temporal)) {
-                    return [
-                        'ok' => false,
-                        'error' => 'El archivo no existe en la ruta indicada'
-                    ];
+                    return ['ok' => false, 'error' => 'Archivo no existe'];
                 }
-
                 $data = [
                     'archivo' => new CURLFile(
                         realpath($ruta_temporal),
@@ -667,46 +654,33 @@
                         basename($ruta_temporal)
                     ),
                     'tipo_archivo' => $tipo_archivo,
-                    'board_id'     => $board_id
+                    'board_id'     => $board_id,
+                    'token_unico'  => uniqid('req_', true)
                 ];
             }
 
-            // -----------------------------
-            // CURL
-            // -----------------------------
             $ch = curl_init($url);
-
             curl_setopt_array($ch, [
                 CURLOPT_POST           => true,
                 CURLOPT_POSTFIELDS     => $data,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT        => 300,
+                CURLOPT_CONNECTTIMEOUT => 10, // Tiempo máximo para conectar
+                CURLOPT_TIMEOUT        => 60,  // Tiempo máximo de ejecución
                 CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_HTTPHEADER     => [
-                    'Expect:' // evita error 100-continue
-                ]
+                CURLOPT_HTTPHEADER     => ['Expect:']
             ]);
 
             $response = curl_exec($ch);
-
+            
+            // Si cURL falla, no reintentes automáticamente sin lógica de control
             if ($response === false) {
                 $error = curl_error($ch);
                 curl_close($ch);
-
-                return [
-                    'ok' => false,
-                    'error' => $error
-                ];
+                return ['ok' => false, 'error' => "cURL Error: $error"];
             }
 
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
-
-            return [
-                'ok'        => true,
-                'http_code'=> $httpCode,
-                'response' => $response
-            ];
+            return ['ok' => true, 'response' => json_decode($response, true)];
         }
 
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2026-01-02 05:02:14
+/* Smarty version 3.1.48, created on 2026-01-05 04:45:54
   from '/opt/lampp/htdocs/commuty-ed/template/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_6957434600b6a7_10336343',
+  'unifunc' => 'content_695b33f2989486_61441390',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f410541cc83663bf194cbd4ea38a86a9e4888eea' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/header.tpl',
-      1 => 1767326532,
+      1 => 1767584432,
       2 => 'file',
     ),
   ),
@@ -34,7 +34,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_6957434600b6a7_10336343 (Smarty_Internal_Template $_smarty_tpl) {
+function content_695b33f2989486_61441390 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
@@ -107,7 +107,9 @@ function content_6957434600b6a7_10336343 (Smarty_Internal_Template $_smarty_tpl)
 
   </head>
   <body style='background:#151c1b;'>
-  
+    
+    <input type='hidden' id="api_transfer_video" value='<?php echo $_smarty_tpl->tpl_vars['api_transfer_video']->value;?>
+'>
     <input type='hidden' value='<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 ' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='<?php echo $_smarty_tpl->tpl_vars['paginador_scroll']->value;?>

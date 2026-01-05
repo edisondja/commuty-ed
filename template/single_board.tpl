@@ -99,47 +99,55 @@
                 <h5 class="card-title title-text">{$titulo}</h5>
                 <p class="card-text description-text" id='descripcion'>{$descripcion}</p>
 
-           <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner fixed-size-carousel">
-                    
-                    {* Caso: hay multimedia *}
-                    {if $multimedias_t|@count > 0}
+          {assign var="total_multimedia" value=$multimedias_t|@count}
+
+            {* CASO 1: Más de una multimedia (Se activa el Carrusel) *}
+            {if $total_multimedia > 1}
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner fixed-size-carousel">
                         {foreach from=$multimedias_t item=multimedia name=mediaLoop}
-                            {if $multimedia.tipo_multimedia == 'imagen'}
-                                <div class="carousel-item {if $smarty.foreach.mediaLoop.first}active{/if}">
+                            <div class="carousel-item {if $smarty.foreach.mediaLoop.first}active{/if}">
+                                {if $multimedia.tipo_multimedia == 'imagen'}
                                     <img src="{$multimedia.ruta_multimedia|replace:"../":""}" 
                                         class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
-                                </div>
-                            {else}
-                                <div class="carousel-item {if $smarty.foreach.mediaLoop.first}active{/if}">
+                                {else}
                                     <video src="{$multimedia.ruta_multimedia|replace:"../":""}" 
-                                        class="d-block w-100 img-fluid card-img-top fixed-size-video" 
-                                        controls></video>
-                                </div>
-                            {/if}
+                                        class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                                {/if}
+                            </div>
                         {/foreach}
-
-                    {* Caso: no hay multimedia, solo OG imagen *}
-                    {elseif $og_imagen != ''}
-                        <div class="carousel-item active">
-                            <img src="{$dominio}/{$og_imagen}" 
-                                class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
-                        </div>
-                    {/if}
-                </div>
-
-                {* Controles solo si hay más de una multimedia *}
-                {if $multimedias_t|@count > 1}
+                    </div>
+                    
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Anterior</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Siguiente</span>
                     </button>
-                {/if}
-            </div>
+                </div>
+
+            {* CASO 2: Exactamente una multimedia (Sin estructura de carrusel) *}
+            {elseif $total_multimedia == 1}
+                <div class="fixed-size-carousel">
+                    {assign var="solo_uno" value=$multimedias_t[0]}
+                    {if $solo_uno.tipo_multimedia == 'imagen'}
+                        <img src="{$solo_uno.ruta_multimedia|replace:"../":""}" 
+                            class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                    {else}
+                        <video src="{$solo_uno.ruta_multimedia|replace:"../":""}" 
+                            class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                    {/if}
+                </div>
+
+            {* CASO 3: No hay multimedia pero hay imagen de respaldo (OG) *}
+            {elseif $og_imagen != ''}
+                <div class="fixed-size-carousel">
+                    <img src="{$dominio}/{$og_imagen}" 
+                        class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
+                </div>
+            {/if}
 
                 <div class="card card-comments">
                     <ul class="list-group list-group-flush">
