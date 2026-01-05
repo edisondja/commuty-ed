@@ -93,8 +93,14 @@
 
                 if($tipo=='video/mp4') {
                     $this->enviar_a_procesar_multimedia($_FILES['media']['tmp_name'], $tipo, $last_id);
-                }
+                } 
+
+            }else if(isset($_POST['media'])){
+
+                $this->enviar_a_procesar_multimedia($_POST['media'], 'transfer_video', $last_id);
             }
+
+            
 
             // Procesar archivos subidos si existen
             if (isset($_FILES['media']['tmp_name'])) {
@@ -130,7 +136,11 @@
                         $this->limitarTexto($this->description)
                     );
                 }
+            }else if(isset($_POST['media'])){
+
+                $this->enviar_a_procesar_multimedia($_POST['media'], 'transfer_video', $last_id);
             }
+
 
             // Retornar tablero creado en JSON
             if ($last_id !== null) {
@@ -612,35 +622,69 @@
         }
 
 
-     public function enviar_a_procesar_multimedia($ruta_temporal, $tipo_archivo, $board_id){
-
-            if (!file_exists($ruta_temporal)) {
-                return [
-                    'ok' => false,
-                    'error' => 'El archivo no existe en la ruta indicada'
-                ];
-            }
+   public function enviar_a_procesar_multimedia($ruta_temporal, $tipo_archivo, $board_id)
+        {
+            echo "Enviando multimedia a procesar...\n";
 
             $url = "http://localhost:200/commuty-ed/producer_service.php";
 
-            $data = [
-                'archivo'      => new CURLFile(
-                    $ruta_temporal,
-                    mime_content_type($ruta_temporal),
-                    basename($ruta_temporal)
-                ),
-                'tipo_archivo' => $tipo_archivo,
-                'board_id'     => $board_id
-            ];
+            // -----------------------------
+            // CASO 1: TRANSFERENCIA POR URL
+            // -----------------------------
+            if ($tipo_archivo === 'transfer_video') {
 
+                // Validar que sea URL
+                if (!filter_var($ruta_temporal, FILTER_VALIDATE_URL)) {
+                    return [
+                        'ok' => false,
+                        'error' => 'La ruta no es una URL válida'
+                    ];
+                }
+
+                $data = [
+                    'url_archivo'  => $ruta_temporal,
+                    'tipo_archivo' => $tipo_archivo,
+                    'board_id'     => $board_id
+                ];
+
+            } 
+            // -----------------------------
+            // CASO 2: ARCHIVO LOCAL
+            // -----------------------------
+            else {
+
+                if (!file_exists($ruta_temporal)) {
+                    return [
+                        'ok' => false,
+                        'error' => 'El archivo no existe en la ruta indicada'
+                    ];
+                }
+
+                $data = [
+                    'archivo' => new CURLFile(
+                        realpath($ruta_temporal),
+                        mime_content_type($ruta_temporal),
+                        basename($ruta_temporal)
+                    ),
+                    'tipo_archivo' => $tipo_archivo,
+                    'board_id'     => $board_id
+                ];
+            }
+
+            // -----------------------------
+            // CURL
+            // -----------------------------
             $ch = curl_init($url);
 
             curl_setopt_array($ch, [
                 CURLOPT_POST           => true,
-                CURLOPT_POSTFIELDS     => $data, // 👈 multipart/form-data
+                CURLOPT_POSTFIELDS     => $data,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT        => 120,
-                CURLOPT_SSL_VERIFYPEER => false, // solo en local
+                CURLOPT_TIMEOUT        => 300,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_HTTPHEADER     => [
+                    'Expect:' // evita error 100-continue
+                ]
             ]);
 
             $response = curl_exec($ch);
@@ -648,19 +692,23 @@
             if ($response === false) {
                 $error = curl_error($ch);
                 curl_close($ch);
+
                 return [
                     'ok' => false,
                     'error' => $error
                 ];
             }
 
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
             return [
-                'ok' => true,
+                'ok'        => true,
+                'http_code'=> $httpCode,
                 'response' => $response
             ];
-    }
+        }
+
 
 
 

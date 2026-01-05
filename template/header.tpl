@@ -1,15 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+  {literal}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBJQB4PRQ2"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-KBJQB4PRQ2');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KBJQB4PRQ2');
     </script>
+    {/literal}
         <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
@@ -31,7 +32,7 @@
         <meta name="twitter:image" content="{$og_imagen}" >
         <meta name="twitter:url" content="{$url_board}" >
 
-        <!-- ETIQUETAS FACEBOOK -->
+        <!-- ETIQUETAS FACEBOOK --> 
         <meta property="og:image" content="{$og_imagen}">
         <meta property="og:video" content="">
         <meta property="og:title" content="{$titulo}">
@@ -45,13 +46,13 @@
 
   </head>
   <body style='background:#151c1b;'>
-  
+    
+    <input type='hidden' id="api_transfer_video" value='{$api_transfer_video}'>
     <input type='hidden' value='{$dominio}' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='{$paginador_scroll}'/>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#034a4b; position: fixed; top: 0; width: 100%; z-index: 999;">
       
     <div class="container-fluid">
-
 
         <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -115,6 +116,7 @@
                       <ul class="dropdown-menu dropdown-menu-dark">
                           {if $id_user!=''}
                               <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#exampleModal">Public Post</a></li>
+                              <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#transferVideo">Transfer video</a></li>
                               {if $type_user=='admin'}
                                   <li><a class="dropdown-item user_update" href="backcoffe.php" style='cursor:pointer'>Admin</a></li>
                               {/if}
@@ -160,11 +162,14 @@
   </nav>
 
       <div class="container-fluid">
-     
+
               <hr/>
               {include file="login.tpl"}
               {include file="update_user.tpl"}
          
+            <!-- Modal Transfer VIdeo -->
+            {include file="transfer_video.tpl"}
+
 
             <!-- Modal notificaciones-->
 

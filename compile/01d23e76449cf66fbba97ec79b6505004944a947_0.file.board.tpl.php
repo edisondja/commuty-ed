@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-12-29 04:13:28
+/* Smarty version 3.1.48, created on 2026-01-04 04:37:30
   from '/opt/lampp/htdocs/commuty-ed/template/board.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_6951f1d8bd4ad7_27334282',
+  'unifunc' => 'content_6959e07a665c24_77404801',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '01d23e76449cf66fbba97ec79b6505004944a947' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/board.tpl',
-      1 => 1766978005,
+      1 => 1767497845,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:ads.tpl' => 1,
   ),
 ),false)) {
-function content_6951f1d8bd4ad7_27334282 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6959e07a665c24_77404801 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed/vendor/smarty/smarty/libs/plugins/modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 <br/><br/>
@@ -34,7 +34,6 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
             <div class="body" style="padding:5px">
                 <div class="title">
                 <div class="board-header">
-
                         <!-- Perfil -->
                         <a href="<?php echo $_smarty_tpl->tpl_vars['url_board']->value;?>
 /profile_user.php?user=<?php echo $_smarty_tpl->tpl_vars['tablero']->value['usuario'];?>
@@ -45,9 +44,11 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                             <strong><?php echo $_smarty_tpl->tpl_vars['tablero']->value['nombre'];?>
  <?php echo $_smarty_tpl->tpl_vars['tablero']->value['apellido'];?>
 </strong>
+                           vb
                         </a>
 
                         <!-- Acciones -->
+                     
                         <div class="actions" style="float:right;">
                             <?php if ($_smarty_tpl->tpl_vars['user_session']->value != '') {?>
                                 <?php if ($_smarty_tpl->tpl_vars['id_user']->value == $_smarty_tpl->tpl_vars['tablero']->value['id_user']) {?>
@@ -75,8 +76,9 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                 <p class="description-text" id="text<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
 "><?php echo $_smarty_tpl->tpl_vars['tablero']->value['descripcion'];?>
 </p>
-
+            
                 <?php if ($_smarty_tpl->tpl_vars['tablero']->value['imagen_tablero'] !== '') {?>
+                    <div class='content_image'>
                     <a href="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /single_board.php?id=<?php echo $_smarty_tpl->tpl_vars['tablero']->value['id_tablero'];?>
 /<?php echo smarty_modifier_replace($_smarty_tpl->tpl_vars['tablero']->value['titulo']," ","_");?>
@@ -84,7 +86,8 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'/opt/lampp/htdocs/commuty-ed
                         <img src="<?php echo $_smarty_tpl->tpl_vars['dominio']->value;?>
 /<?php echo $_smarty_tpl->tpl_vars['tablero']->value['imagen_tablero'];?>
 " class="card-img-top board-image" alt="...">
-                    </a>
+                     </a>
+                     </div>
                 <?php }?>
             </div>
 

@@ -39,6 +39,17 @@ if (isset($_POST['action'])) {
         break;
 
 
+        case 'save_transferred_video':
+
+                $board = new Board();
+                $board->description = $_POST['video_txt'];
+                $board->imagen_tablero = '';
+                $board->id_usuario = $_POST['id_user'];
+                $board->guardar_tablero();
+        
+        break;
+
+    
         case 'verify_user_exist':
 
             $username = $_POST['username'];

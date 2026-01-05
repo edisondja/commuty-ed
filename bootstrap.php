@@ -23,10 +23,10 @@
             "port"   => port_redis_cache,
         ]);
         $redisAvailable = true;
+        
     } catch (Exception $e) {
         $redisAvailable = false; // Redis no disponible, seguimos con BD
     }
-
    
     /*
         load cdns
@@ -44,6 +44,7 @@
     $smarty->assign('libs_cdn', $libs_string);
     $smarty->setCompileDir('compile');
     $smarty->setCacheDir('cache');
+    $smarty->assign('api_transfer_video', API_TRANSFER_VIDEO);
     //Verificar si existe cofinguracion en la base de datos 
 
     $configuracion = new Config();

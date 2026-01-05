@@ -58,9 +58,6 @@ window.onload=function(){
 
                         });
 
-
-                                            
-
                     },function(){
 
                     });
@@ -246,7 +243,6 @@ window.onload=function(){
         axios.post(`controllers/actions_board.php`,FormDatas).then(data=>{
 
 
-        
 
             if(data.data.estado=='activo'){
             
@@ -709,8 +705,56 @@ window.onload=function(){
 
 
 
-    
+    var transfer_video = document.querySelector('#btnTransferVideo');
 
+    if(transfer_video){
+
+        transfer_video.addEventListener('click',function(){
+
+                let plataforma = document.querySelector('#platformSelect').value;
+                let url_video = document.querySelector('#url_video').value;
+                let video_txt = document.querySelector('#video_txt').value;
+
+                if(plataforma==''){
+                    alertify.message('Debe seleccionar una plataforma');
+                    return;
+                }
+
+                if(url_video==''){
+                    alertify.message('Debe ingresar la URL del video');
+                    return;
+                }
+
+                let api_transfer_video = document.querySelector('#api_transfer_video').value;
+
+
+                axios.get(`${api_transfer_video}`,{
+                    params: {
+                        ruta: url_video
+                    }
+                }).then(info=>{
+
+                    let ruta_limpia = info.data.url_video;
+                    const form = new FormData();
+                    form.append('action', 'save_transferred_video');
+                    form.append('id_user', document.querySelector('#id_usuario').value);
+                    form.append('media', ruta_limpia);
+                    form.append('video_txt', video_txt);
+
+                    axios.post(`${dominio}/controllers/actions_board.php`, form, {
+                        headers:{
+                            'Authorization': `Bearer ${token_get}`
+                        }
+                    }).then(response => {
+                        console.log(response);
+                        alertify.message('Video transferido y guardado correctamente');
+                    }).catch(error => {
+                        console.error('Error al guardar el video transferido:', error);
+                        alertify.error('Error al guardar el video transferido');
+                    });
+
+             });
+          });    
+    }
 }
-
 

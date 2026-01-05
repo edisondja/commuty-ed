@@ -6,18 +6,18 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 // Validaciones básicas
-if (!isset($_FILES['archivo'], $_POST['tipo_archivo'], $_POST['board_id'])) {
-    http_response_code(400);
-    echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
-    exit;
+
+if (isset($_FILES['archivo'])) {
+
+    $archivo = $_FILES['archivo'];
+
+}else{
+
+     $archivo =$_POST['url_archivo'];
 }
 
-$archivo = $_FILES['archivo'];
 
-if ($archivo['error'] !== UPLOAD_ERR_OK) {
-    echo json_encode(['ok' => false, 'error' => 'Error al subir archivo']);
-    exit;
-}
+
 
 // 🔥 MOVER EL ARCHIVO A UNA RUTA REAL
 $directorio = __DIR__ . '/uploads/';
@@ -28,10 +28,20 @@ if (!is_dir($directorio)) {
 $nombreSeguro = date('YmdHis') . '_' . basename($archivo['name']);
 $rutaFinal = $directorio . $nombreSeguro;
 
-if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
-    echo json_encode(['ok' => false, 'error' => 'No se pudo guardar el archivo']);
-    exit;
+
+if(isset($_FILES['archivo'])){
+
+    if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
+        echo json_encode(['ok' => false, 'error' => 'No se pudo guardar el archivo']);
+        exit;
+    }
+}else{
+
+
+    $rutaFinal = $_POST['url_archivo'];
+
 }
+
 
 // Datos finales
 $tipo_archivo = $_POST['tipo_archivo'];
@@ -51,6 +61,8 @@ $channel = $conn->channel();
 $channel->queue_declare('procesar_multimedia', false, true, false, false);
 
 // 🔥 SOLO SE ENVÍA LA RUTA (STRING)
+
+
 $msg = new AMQPMessage(
     json_encode([
         'ruta_tmp'     => $rutaFinal,

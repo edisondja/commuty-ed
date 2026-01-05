@@ -32,6 +32,7 @@ $callback = function ($msg) {
         $board_id  = (int)$data['board_id'];
         $preview   = $data['preview'];
         $thumbnail = $data['thumbnail'];
+        $video_completo  = $data['video_completo'];
 
         echo "✔ Resultado recibido para board {$board_id}\n";
 
@@ -55,6 +56,23 @@ $callback = function ($msg) {
         $stmt->bind_param('ssi', $thumbnail, $preview, $board_id);
         $stmt->execute();
         $stmt->close();
+        
+
+        $sql = "insert into asignar_multimedia_t 
+                (id_tablero,ruta_multimedia,tipo_multimedia) values (?,?,?)";
+
+        $stmt = $conexion->prepare($sql);
+        if (!$stmt) {
+            throw new Exception($conexion->error);
+        }
+        $tipo_multimedia = 'video';
+
+        $stmt->bind_param('iss', $board_id, $video_completo, $tipo_multimedia);
+        $stmt->execute();
+        $stmt->close();
+
+        // --- UPDATE COMENTARIOS ---
+
 
         $conexion->close();
 

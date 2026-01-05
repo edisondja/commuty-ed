@@ -1,10 +1,18 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
 require_once 'vendor/autoload.php';
 require_once 'config/config.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+
+
+
+
 
 $conn = new AMQPStreamConnection(
     host_rabbit_mq, port_rabbit_mq, user_rabbit_mq, password_rabbit_mq, vhost_rabbit_mq
@@ -29,21 +37,52 @@ $callback = function ($msg) use ($channel) {
         $board_id     = (int)$data['board_id'];
         $fecha        = date('YmdHis');
         
-        if (!file_exists($rutaOriginal)) {
-            throw new Exception("Archivo no encontrado en: $rutaOriginal");
-        }
-
-        // 1. Obtener información de duración
-        $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal " . escapeshellarg($rutaOriginal));
-        // Formato esperado de ffprobe con -sexagesimal: 00:05:30.123456
-        $partesTiempo = explode(':', $duracionRaw);
-        $tiempo_cut   = (int)$partesTiempo[1]; // Minutos
-        $tiempo_cut_s = (int)explode('.', $partesTiempo[2])[0]; // Segundos
         
+        echo "rita:".$rutaOriginal."\n";
+        if($data['tipo_archivo']=='transfer_video'){
+            echo "Procesando video transferido para board {$board_id}\n";
+        }else{
+            
+            throw new Exception("Archivo no encontrado en: $rutaOriginal");
+
+        }
+        
+        // 1. Obtener información de duración
+        if($data['tipo_archivo']!=='transfer_video'){
+            
+            $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal " . escapeshellarg($rutaOriginal));
+            // Formato esperado de ffprobe con -sexagesimal: 00:05:30.123456
+            $partesTiempo = explode(':', $duracionRaw);
+            $tiempo_cut   = (int)$partesTiempo[1]; // Minutos
+            $tiempo_cut_s = (int)explode('.', $partesTiempo[2])[0]; // Segundos
+        }
         // 2. Definir rutas de salida
         $rutaImagen      = "imagenes_tablero/{$fecha}_{$board_id}.jpg";
         $reciduo_video   = "previa/{$fecha}_{$board_id}.mp4";
-        $rutaTemVideo    = escapeshellarg($rutaOriginal);
+        $video_completo = "videos/{$fecha}_{$board_id}.mp4";
+
+        
+        if($data['tipo_archivo']=='transfer_video'){
+
+            $ruta_ffmpeg =$data['ruta_tmp'];
+            echo "$ruta_ffmpeg Es una transferencia de archivo, preparando para ffmpeg...\n";
+
+            //exec("ffmpeg -y -i $ruta_ffmpeg -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k $video_completo 2>&1");
+             exec("ffmpeg -i {$ruta_ffmpeg}  {$video_completo}");
+
+            $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal '$video_completo'");
+            // Formato esperado de ffprobe con -sexagesimal: 00:05:30.123456
+            $partesTiempo = explode(':', $duracionRaw);
+            $tiempo_cut   = (int)$partesTiempo[1]; // Minutos
+            $tiempo_cut_s = (int)explode('.', $partesTiempo[2])[0]; // Segundos
+
+            echo "se ha guardado el video transfrido en: ".$video_completo."\n";
+        
+           
+            $rutaTemVideo=$video_completo;
+        }else{
+           $rutaTemVideo    = escapeshellarg($rutaOriginal);
+        }
         $prefix          = "tmp_{$board_id}_"; // Prefijo para archivos temporales .ts
 
         // 3. Lógica de Cortes de Video (Tu lógica integrada)
@@ -111,6 +150,7 @@ $callback = function ($msg) use ($channel) {
             new AMQPMessage(json_encode([
                 'board_id' => $board_id,
                 'preview' => $reciduo_video,
+                'video_completo' => $video_completo,
                 'thumbnail' => $rutaImagen,
                 'status' => 'ok'
             ])), '', 'multimedia_resultado'

@@ -7,14 +7,15 @@
             <div class="body" style="padding:5px">
                 <div class="title">
                 <div class="board-header">
-
                         <!-- Perfil -->
                         <a href="{$url_board}/profile_user.php?user={$tablero.usuario}" class="profile-link">
                             <img class="imagenPerfil" src="{$dominio}/{$tablero.foto_url}" />
                             <strong>{$tablero.nombre} {$tablero.apellido}</strong>
+                           vb
                         </a>
 
                         <!-- Acciones -->
+                     
                         <div class="actions" style="float:right;">
                             {if $user_session!=''}
                                 {if $id_user==$tablero.id_user}
@@ -36,11 +37,13 @@
                 </div>
 
                 <p class="description-text" id="text{$tablero.id_tablero}">{$tablero.descripcion}</p>
-
+            
                 {if $tablero.imagen_tablero!==''}
+                    <div class='content_image'>
                     <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
                         <img src="{$dominio}/{$tablero.imagen_tablero}" class="card-img-top board-image" alt="...">
-                    </a>
+                     </a>
+                     </div>
                 {/if}
             </div>
 

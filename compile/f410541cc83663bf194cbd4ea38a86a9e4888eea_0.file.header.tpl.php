@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.48, created on 2025-12-29 04:01:34
+/* Smarty version 3.1.48, created on 2026-01-02 05:02:14
   from '/opt/lampp/htdocs/commuty-ed/template/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.48',
-  'unifunc' => 'content_6951ef0ebbe994_12703709',
+  'unifunc' => 'content_6957434600b6a7_10336343',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f410541cc83663bf194cbd4ea38a86a9e4888eea' => 
     array (
       0 => '/opt/lampp/htdocs/commuty-ed/template/header.tpl',
-      1 => 1757566165,
+      1 => 1767326532,
       2 => 'file',
     ),
   ),
@@ -20,6 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
     'file:login.tpl' => 1,
     'file:update_user.tpl' => 1,
+    'file:transfer_video.tpl' => 1,
     'file:modal_notificacion.tpl' => 1,
     'file:modal_post.tpl' => 1,
     'file:menu.tpl' => 1,
@@ -33,11 +34,25 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ),false)) {
-function content_6951ef0ebbe994_12703709 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6957434600b6a7_10336343 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+  
+    <!-- Google tag (gtag.js) -->
+    <?php echo '<script'; ?>
+ async src="https://www.googletagmanager.com/gtag/js?id=G-KBJQB4PRQ2"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KBJQB4PRQ2');
+    <?php echo '</script'; ?>
+>
+    
+        <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <?php echo '<script'; ?>
@@ -72,7 +87,7 @@ function content_6951ef0ebbe994_12703709 (Smarty_Internal_Template $_smarty_tpl)
         <meta name="twitter:url" content="<?php echo $_smarty_tpl->tpl_vars['url_board']->value;?>
 " >
 
-        <!-- ETIQUETAS FACEBOOK -->
+        <!-- ETIQUETAS FACEBOOK --> 
         <meta property="og:image" content="<?php echo $_smarty_tpl->tpl_vars['og_imagen']->value;?>
 ">
         <meta property="og:video" content="">
@@ -100,7 +115,6 @@ function content_6951ef0ebbe994_12703709 (Smarty_Internal_Template $_smarty_tpl)
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#034a4b; position: fixed; top: 0; width: 100%; z-index: 999;">
       
     <div class="container-fluid">
-
 
         <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -174,6 +188,7 @@ function content_6951ef0ebbe994_12703709 (Smarty_Internal_Template $_smarty_tpl)
                       <ul class="dropdown-menu dropdown-menu-dark">
                           <?php if ($_smarty_tpl->tpl_vars['id_user']->value != '') {?>
                               <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#exampleModal">Public Post</a></li>
+                              <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#transferVideo">Transfer video</a></li>
                               <?php if ($_smarty_tpl->tpl_vars['type_user']->value == 'admin') {?>
                                   <li><a class="dropdown-item user_update" href="backcoffe.php" style='cursor:pointer'>Admin</a></li>
                               <?php }?>
@@ -222,13 +237,17 @@ function content_6951ef0ebbe994_12703709 (Smarty_Internal_Template $_smarty_tpl)
   </nav>
 
       <div class="container-fluid">
-     
+
               <hr/>
               <?php $_smarty_tpl->_subTemplateRender("file:login.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
               <?php $_smarty_tpl->_subTemplateRender("file:update_user.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
          
+            <!-- Modal Transfer VIdeo -->
+            <?php $_smarty_tpl->_subTemplateRender("file:transfer_video.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
 
             <!-- Modal notificaciones-->
 

@@ -1,10 +1,8 @@
 <?php
    
-    /*error_reporting(E_ALL);
+    error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);*/
-    //define("DOMAIN","https://943b-152-166-176-57.ngrok.io/edtube");
-    //define("DOMAIN","https://ventasrd.com");
+    ini_set('display_startup_errors', 1);
     define("DOMAIN","http://localhost:200/commuty-ed");
     #These are the data for the connection of the database 
     define("HOST_BD","localhost");
@@ -31,13 +29,25 @@
     define('user_rabbit_mq','guest');
     define('password_rabbit_mq','guest');
     define('vhost_rabbit_mq','/');
-    #Conexion Redis Cache
+    #Conexion Redis Cache 
     define("host_redis_cache","localhost");
     define("port_redis_cache","6379");
     define("scheme_redis_cache","tcp");
 
     #Description for search using hastag
     define("SEARCH_HASTAG","Ventazs rd");
+
+    #api_tranfer_video 
+    define("API_TRANSFER_VIDEO","https://videosegg.com/download_video.php");
+    /*El retorno debe de ser asi 
+        {
+            "status":"ok",
+            "url_video":"https://tusitio.com/ruta_del_video.mp4"
+        }   
+
+        parametro ruta=url del video a transferir metodo get
+    */
+
 
     $conexion = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
 
