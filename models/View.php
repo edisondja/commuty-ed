@@ -70,10 +70,15 @@ Class View extends EncryptToken{
                 $this->id_tablero
             );
             $data->execute();
-            $views_count = $data->get_result();
-            $views_count = mysqli_fetch_object($views_count);
+            $result = $data->get_result();
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                $views_count = $result->fetch_object();
+            } else {
+                $views_count = mysqli_fetch_object($result);
+            }
 
-            return $views_count->total_views;
+            return $views_count ? $views_count->total_views : 0;
 
         }catch(Exception $e){
         

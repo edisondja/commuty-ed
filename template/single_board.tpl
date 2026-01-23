@@ -87,6 +87,7 @@
             <div class="card-body">
                 <input type='hidden' value='{$id_tablero}' id='id_tablero'/>
                 {if $user_session!=''}
+                    <input type='hidden' value='{$id_user}' id='id_usuario'/>
                     <input type='hidden' value='{$user_session}' id='usuario'/>
                     <input type='hidden' value='{$foto_perfil}' id='foto_url'/>
                 {else}
@@ -206,6 +207,25 @@
                 
                     <i class="fa fa-eye"></i>
                     <span>{$total_views}</span>
+                
+                <!-- Sistema de Calificación con Estrellas -->
+                <div class="rating-section single-rating-section" data-tablero-id="{$id_tablero}">
+                    <div class="rating-display">
+                        <div class="stars-container" data-rating="0">
+                            {for $i=1 to 5}
+                                <span class="star" data-value="{$i}" title="Calificar con {$i} {if $i==1}estrella{else}estrellas{/if}">
+                                    <i class="far fa-circle"></i>
+                                </span>
+                            {/for}
+                        </div>
+                        <div class="rating-info">
+                            <span class="rating-average" data-tablero="{$id_tablero}">0.0</span>
+                            <span class="rating-separator">/</span>
+                            <span class="rating-max">5.0</span>
+                            <span class="rating-count">(0 calificaciones)</span>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card card-comments" id="coments">
                     <ul class="list-group list-group-flush" id='data_coments'>
@@ -248,8 +268,18 @@
 </div>
 
 {literal}
+<script type="text/javascript">
+    // Establecer variables globales para el sistema de calificación
+    if (typeof window.dominio === 'undefined') {
+        window.dominio = document.getElementById('dominio')?.value || window.location.origin;
+    }
+    if (typeof window.id_usuario === 'undefined') {
+        window.id_usuario = document.getElementById('id_usuario')?.value || 0;
+    }
+</script>
+<script type="text/javascript" src='js/comments_system.js'></script>
 <script type="text/javascript" src='js/single_board.js'></script>
-<script type="text/javascript" src='js/action_coments.js'></script>
+<script type="text/javascript" src='js/rating_system.js'></script>
 {/literal}
 
 <style>
@@ -341,6 +371,90 @@
     color: white;
 }
 
+/* Estilos para el sistema de comentarios */
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-avatar, .reply-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.comment-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-username, .reply-username {
+    color: #20c997;
+    font-weight: bold;
+}
+
+.comment-date, .reply-date {
+    color: #888;
+    font-size: 0.85em;
+    float: right;
+}
+
+.comment-text, .reply-text {
+    margin: 10px 0;
+    color: #cfd8dc;
+    line-height: 1.5;
+}
+
+.comment-actions {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+}
+
+.comment-actions i {
+    margin-right: 15px;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.comment-actions i:hover {
+    color: #20c997;
+}
+
+.comment-replies {
+    margin-top: 15px;
+    margin-left: 50px;
+    padding-left: 15px;
+    border-left: 2px solid #20c997;
+    list-style: none;
+}
+
+.reply-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(32, 201, 151, 0.1);
+    border-radius: 5px;
+}
+
+.reply-content {
+    flex: 1;
+}
+
+.reply-text {
+    margin-top: 5px;
+}
+
+.box_comment {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: #243537;
+    border-radius: 5px;
+}
 
 /* Fondo del modal (semi-transparente) */
 #report_modal .modal-content {
@@ -403,8 +517,142 @@
     border-radius: 6px;
 }
 
+/* Sistema de Calificación en Single Board */
+.single-rating-section {
+    padding: 15px;
+    border-top: 1px solid #2d3748;
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
 
+.single-rating-section .rating-display {
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
+.single-rating-section .stars-container {
+    gap: 4px;
+}
+
+.single-rating-section .star {
+    font-size: 14px;
+    width: 18px;
+    height: 18px;
+}
+
+.single-rating-section .rating-info {
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+.single-rating-section .rating-average {
+    font-size: 20px;
+}
+
+.single-rating-section .rating-count {
+    font-size: 14px;
+}
+
+/* Reutilizar estilos del sistema de calificación */
+.single-rating-section .star {
+    cursor: pointer;
+    color: #4a5568;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-rating-section .star:hover {
+    transform: scale(1.3);
+}
+
+.single-rating-section .star i {
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.single-rating-section .star:not(.active) i.fa-circle {
+    color: #4a5568;
+    opacity: 0.5;
+}
+
+.single-rating-section .star.active i.fa-circle {
+    color: #20c997;
+    font-weight: 900;
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+}
+
+.single-rating-section .star:hover i.fa-circle {
+    color: #20c997;
+    transform: scale(1.1);
+    text-shadow: 0 0 8px rgba(32, 201, 151, 0.4);
+}
+
+.single-rating-section .star.hover-active i.fa-circle {
+    color: #20c997;
+    opacity: 0.8;
+}
+
+.single-rating-section .star.active i.far.fa-circle::before {
+    content: "\f111";
+    font-weight: 900;
+}
+
+.single-rating-section .star:not(.active) i.far.fa-circle::before {
+    content: "\f111";
+    font-weight: 400;
+}
+
+.single-rating-section .rating-info {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 12px;
+    color: #cfd8dc;
+    flex-wrap: wrap;
+}
+
+.single-rating-section .rating-average {
+    font-weight: 700;
+    color: #20c997;
+    font-size: 16px;
+}
+
+.single-rating-section .rating-separator {
+    color: #718096;
+    font-size: 14px;
+}
+
+.single-rating-section .rating-max {
+    color: #718096;
+    font-size: 14px;
+}
+
+.single-rating-section .rating-count {
+    color: #718096;
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+@keyframes pulse-rating {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.single-rating-section .star.active {
+    animation: pulse-rating 0.3s ease;
+}
 
 </style>
 

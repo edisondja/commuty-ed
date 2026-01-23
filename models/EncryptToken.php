@@ -19,7 +19,21 @@
 
         public function SetConection(){
             global $conexion; 
-            $this->conection = $conexion;
+            // Verificar si la conexión global existe y es válida
+            if (isset($conexion) && $conexion instanceof mysqli && !$conexion->connect_error) {
+                $this->conection = $conexion;
+            } else {
+                // Crear una nueva conexión si la global no está disponible
+                try {
+                    $this->conection = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                    if ($this->conection->connect_error) {
+                        throw new Exception("Error de conexión: " . $this->conection->connect_error);
+                    }
+                    $this->conection->set_charset("utf8mb4");
+                } catch (Exception $e) {
+                    throw new Exception("No se pudo establecer la conexión: " . $e->getMessage());
+                }
+            }
         }
 
         public function EncryptUser($id_user,$usuario){

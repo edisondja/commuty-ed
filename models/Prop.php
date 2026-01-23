@@ -30,7 +30,7 @@ class Prop
 
         global $conexion;
         $fecha = date('ymdiss');
-        $sql = "intert into logs_i(fecha_log,tracking,tipo)VALUES(?,?,?)";
+        $sql = "insert into logs_i(fecha_log,tracking,tipo)VALUES(?,?,?)";
 
         try{
             $save  = $conexion->prepare($sql);
@@ -41,7 +41,7 @@ class Prop
             $this->TrackingLog('no se estan guardando los logs en la base de datos '.$fecha,'errores');
         }
 
-        $conexion->close();
+        // No cerrar la conexión aquí, puede ser necesaria para otros métodos
 
     }
 
@@ -54,14 +54,25 @@ class Prop
             
             case 'errores':
                 
-                file_put_contents("../traking/errores.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $log_file = __DIR__ . '/../traking/errores.txt';
+                // Verificar que el directorio existe y tiene permisos
+                $log_dir = dirname($log_file);
+                if (!is_dir($log_dir)) {
+                    @mkdir($log_dir, 0777, true);
+                }
+                @file_put_contents($log_file, $mensaje.PHP_EOL, FILE_APPEND);
              //   $this->save_tracking($mensaje,'errores');
 
             break;
             
             case 'usuarios':
                 
-                file_put_contents("../traking/usuarios.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $log_file = __DIR__ . '/../traking/usuarios.txt';
+                $log_dir = dirname($log_file);
+                if (!is_dir($log_dir)) {
+                    @mkdir($log_dir, 0777, true);
+                }
+                @file_put_contents($log_file, $mensaje.PHP_EOL, FILE_APPEND);
                 //$this->save_tracking($mensaje,'usuarios');
 
             break;
@@ -69,14 +80,24 @@ class Prop
 
             case 'alertas':
 
-                file_put_contents("../traking/alertas.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $log_file = __DIR__ . '/../traking/alertas.txt';
+                $log_dir = dirname($log_file);
+                if (!is_dir($log_dir)) {
+                    @mkdir($log_dir, 0777, true);
+                }
+                @file_put_contents($log_file, $mensaje.PHP_EOL, FILE_APPEND);
                // $this->save_tracking($mensaje,'alertas');
 
             break;
 
             case 'eventos':
 
-                file_put_contents("../traking/eventos.txt",$mensaje.PHP_EOL,FILE_APPEND);
+                $log_file = __DIR__ . '/../traking/eventos.txt';
+                $log_dir = dirname($log_file);
+                if (!is_dir($log_dir)) {
+                    @mkdir($log_dir, 0777, true);
+                }
+                @file_put_contents($log_file, $mensaje.PHP_EOL, FILE_APPEND);
               //  $this->save_tracking($mensaje,'eventos');
 
             break;

@@ -22,7 +22,13 @@
         <meta http-equiv="Content-Language" content="en-US">
         <meta name="Robots" content="all"/>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-        <link rel="icon" href="{$dominio}/{$favicon}" type="image/png">
+        {if isset($favicon) && $favicon != '' && $favicon != 'assets/favicon.ico'}
+            {if strpos($favicon, 'http') === 0}
+                <link rel="icon" href="{$favicon}" type="image/png">
+            {else}
+                <link rel="icon" href="{$dominio}/{$favicon}" type="image/png">
+            {/if}
+        {/if}
 
         <!-- ETIQUETAS TWITER -->
         <meta name="twitter:card" content="{$og_imagen}" >
@@ -43,6 +49,73 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content=""/>
         {$libs_cdn}
+        
+        {if isset($estilos) && !empty($estilos)}
+        <style>
+            :root {
+                --color-primario: {$estilos.color_primario|default:'#20c997'};
+                --color-secundario: {$estilos.color_secundario|default:'#09b9e1'};
+                --color-fondo: {$estilos.color_fondo|default:'#1a1c1d'};
+                --color-texto: {$estilos.color_texto|default:'#cfd8dc'};
+                --color-enlace: {$estilos.color_enlace|default:'#20c997'};
+                --color-enlace-hover: {$estilos.color_enlace_hover|default:'#17a085'};
+                --color-boton: {$estilos.color_boton|default:'#20c997'};
+                --color-boton-hover: {$estilos.color_boton_hover|default:'#17a085'};
+                --color-tarjeta: {$estilos.color_tarjeta|default:'#2d2d2d'};
+                --color-borde: {$estilos.color_borde|default:'#444'};
+                --color-header: {$estilos.color_header|default:'#1a1a1a'};
+            }
+            
+            body {
+                background-color: var(--color-fondo) !important;
+                color: var(--color-texto) !important;
+            }
+            
+            a {
+                color: var(--color-enlace) !important;
+            }
+            
+            a:hover {
+                color: var(--color-enlace-hover) !important;
+            }
+            
+            .btn-primary, .btn {
+                background-color: var(--color-boton) !important;
+                border-color: var(--color-boton) !important;
+            }
+            
+            .btn-primary:hover, .btn:hover {
+                background-color: var(--color-boton-hover) !important;
+                border-color: var(--color-boton-hover) !important;
+            }
+            
+            .card, .card-body, .card-header {
+                background-color: var(--color-tarjeta) !important;
+                border-color: var(--color-borde) !important;
+                color: var(--color-texto) !important;
+            }
+            
+            .navbar, .navbar-dark {
+                background-color: var(--color-header) !important;
+            }
+            
+            .bg-dark {
+                background-color: var(--color-tarjeta) !important;
+            }
+            
+            .text-primary {
+                color: var(--color-primario) !important;
+            }
+            
+            .text-secondary {
+                color: var(--color-secundario) !important;
+            }
+            
+            .border-primary {
+                border-color: var(--color-primario) !important;
+            }
+        </style>
+        {/if}
 
   </head>
   <body style='background:#151c1b;'>
@@ -83,7 +156,15 @@
         </div>
 
           <a class="navbar-brand" style="color: #09b9e1;" href="{$dominio}">
-              <img src='{$dominio}/{$logosite}' style="width:230px; height:50px;" />
+              {if isset($logosite) && $logosite != ''}
+                  {if strpos($logosite, 'http') === 0}
+                      <img src='{$logosite}' style="width:230px; height:50px;" />
+                  {else}
+                      <img src='{$dominio}/{$logosite}' style="width:230px; height:50px;" />
+                  {/if}
+              {else}
+                  <img src='{$dominio}/assets/ventasRD.png' style="width:230px; height:50px;" />
+              {/if}
               <strong style='color:#ebebeb; font-size:15px;'>{$user_session}</strong>
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -177,6 +258,8 @@
             
             <!-- Modal POST-->
               {include file="modal_post.tpl"}
+            <!-- Modal Editar Publicación -->
+              {include file="modal_edit_board.tpl"}
                    <!-- Incluir menu -->
                    {assign var="counter" value=true}
 
@@ -196,6 +279,8 @@
                         {assign var="counter" value=false}
                         
                     {/foreach}
+                    <script type="text/javascript" src="{$dominio}/js/board_preview.js"></script>
+                    <script type="text/javascript" src="{$dominio}/js/board_interactions.js"></script>
 
                     {elseif $content_config=='single_board'}
                         <!--  include template for board-->

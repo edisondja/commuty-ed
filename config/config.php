@@ -3,7 +3,7 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
-    define("DOMAIN","http://localhost:200/commuty-ed");
+    define("DOMAIN","http://localhost/commuty-ed");
     #These are the data for the connection of the database 
     define("HOST_BD","localhost");
     define("USER_BD","root");
@@ -47,17 +47,5 @@
 
         parametro ruta=url del video a transferir metodo get
     */
-
-
-    $conexion = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
-
-    // Verificar la conexión
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
-
-    // Aquí puedes ejecutar consultas y realizar otras operaciones con la base de datos
-    // Cuando termines, no olvides cerrar la conexión
-    $conexion->close();
 
 ?>

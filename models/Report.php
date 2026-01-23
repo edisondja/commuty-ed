@@ -103,7 +103,7 @@ Class Report extends EncryptToken{
                           r.estado as estado_reporte,
                           t.estado as estado_tablero from reportes r 
                           inner join tableros t on r.id_board=t.id_tablero
-                          inner join user u on r.id_usuario=u.id_user
+                          inner join users u on r.id_usuario=u.id_user
                           where r.estado = ? order by r.fecha_creacion desc limit 100 ";
         }else{
 
@@ -114,7 +114,7 @@ Class Report extends EncryptToken{
                           r.estado as estado_reporte,
                           t.estado as estado_tablero from reportes r 
                           inner join tableros t on r.id_board=t.id_tablero
-                          inner join user u on r.id_usuario=u.id_user
+                          inner join users u on r.id_usuario=u.id_user
                           where r.id_usuario=? and r.estado = ? order by r.fecha_creacion desc limit 100";
         }
         // Preparamos la consulta
@@ -179,7 +179,7 @@ Class Report extends EncryptToken{
                        r.estado as estado_reporte,
                        t.estado as estado_tablero from reportes r 
                        inner join tableros t on r.id_board=t.id_tablero
-                       inner join user u on r.id_usuario=u.id_user
+                       inner join users u on r.id_usuario=u.id_user
                        where (t.descripcion LIKE ? or u.usuario LIKE ? or r.descripcion LIKE ?)
                        and r.estado = ? limit 100";
 

@@ -20,8 +20,19 @@
 
 if (isset($_POST['action'])) {
       $action = $_POST['action'];
-  } else {
+  } elseif (isset($_GET['action'])) {
       $action = $_GET['action'];
+  } else {
+      // Si no hay action, puede ser un error de tamaño de archivo
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+          header('Content-Type: application/json');
+          echo json_encode([
+              'error' => 'El archivo es demasiado grande. Tamaño máximo permitido: 250MB',
+              'code' => 'FILE_TOO_LARGE'
+          ]);
+          exit;
+      }
+      $action = null;
   }
 
        switch ($action) {
@@ -80,60 +91,113 @@ if (isset($_POST['action'])) {
         break;
 
         case 'config_site_text':
+            header('Content-Type: application/json');
             $config = new Config();
             $imagen_actual =  $config->Cargar_configuracion('asoc');
-            $config->sitio_logo_url =$imagen_actual->sitio_logo_url;
-            $config->favicon_url = $imagen_actual->favicon_url;
+            
+            // Preservar URLs existentes si no se suben nuevas imágenes
+            if ($imagen_actual) {
+                $config->sitio_logo_url = $imagen_actual->sitio_logo_url ?? '';
+                $config->favicon_url = $imagen_actual->favicon_url ?? '';
+            }
         
             #Verificando si se enviaron multimedias
-               if(isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio']) ){
+            if(isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio']) ){
+                $config->DetectarMultimedias($_FILES['logo_sitio'], $_FILES['favicon_sitio']);
+            }else if(isset($_FILES['logo_sitio']) && !isset($_FILES['favicon_sitio']) ){
+                $config->DetectarMultimedias($_FILES['logo_sitio'], null);
+            }else if(!isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio'])){
+                $config->DetectarMultimedias(null, $_FILES['favicon_sitio']);
+            }
+            
+            // Asignar valores del POST con valores por defecto
+            $config->dominio = $_POST['dominio'] ?? '';
+            $config->nombre_sitio = $_POST['nombre_sitio'] ?? '';
+            $config->descripcion_slogan = $_POST['descripcion_slogan'] ?? '';
+            $config->descripcion_sitio = $_POST['descripcion_sitio'] ?? '';
+            $config->copyright_descripcion = $_POST['copyright_descripcion'] ?? '';
+            $config->email_sitio = $_POST['email_sitio'] ?? '';
+            $config->busqueda_descripcion = $_POST['busqueda_descripcion'] ?? '';
+            $config->pagina_descripcion = $_POST['pagina_descripcion'] ?? '';
+            $config->titulo_descripcion = $_POST['titulo_descripcion'] ?? '';
+            $config->busqueda_hastag = $_POST['busqueda_hastag'] ?? '';
+            $config->email_remitente = $_POST['email_remitente'] ?? '';
+            $config->nombre_remitente = $_POST['nombre_remitente'] ?? '';
+            $config->servidor_smtp = $_POST['servidor_smtp'] ?? '';
+            $config->puerto_smtp = $_POST['puerto_smtp'] ?? '';
+            $config->usuario_smtp = $_POST['usuario_smtp'] ?? '';
+            $config->clave_smtp = $_POST['clave_smtp'] ?? '';
+            // Convertir autenticacion_ssl a entero (la base de datos espera INTEGER)
+            $autenticacion_ssl_value = $_POST['autenticacion_ssl'] ?? '';
+            if (empty($autenticacion_ssl_value) || strtolower($autenticacion_ssl_value) === 'no') {
+                $config->autenticacion_ssl = 0;
+            } elseif (strtolower($autenticacion_ssl_value) === 'si' || $autenticacion_ssl_value === '1' || $autenticacion_ssl_value === 1) {
+                $config->autenticacion_ssl = 1;
+            } else {
+                $config->autenticacion_ssl = (int)$autenticacion_ssl_value;
+            }
+            // Convertir publicar_sin_revision a entero
+            $publicar_sin_revision_value = $_POST['publicar_sin_revision'] ?? 'NO';
+            if (empty($publicar_sin_revision_value) || strtolower($publicar_sin_revision_value) === 'no') {
+                $config->publicar_sin_revision = 0;
+            } elseif (strtolower($publicar_sin_revision_value) === 'si' || $publicar_sin_revision_value === '1' || $publicar_sin_revision_value === 1) {
+                $config->publicar_sin_revision = 1;
+            } else {
+                $config->publicar_sin_revision = (int)$publicar_sin_revision_value;
+            }
+            
+            // Convertir verificar_cuenta a entero
+            $verificar_cuenta_value = $_POST['verificar_cuenta'] ?? 'NO';
+            if (empty($verificar_cuenta_value) || strtolower($verificar_cuenta_value) === 'no') {
+                $config->verificar_cuenta = 0;
+            } elseif (strtolower($verificar_cuenta_value) === 'si' || $verificar_cuenta_value === '1' || $verificar_cuenta_value === 1) {
+                $config->verificar_cuenta = 1;
+            } else {
+                $config->verificar_cuenta = (int)$verificar_cuenta_value;
+            }
+            
+            // Convertir rabbit_mq a entero
+            $rabbit_mq_value = $_POST['rabbit_mq'] ?? 'NO';
+            if (empty($rabbit_mq_value) || strtolower($rabbit_mq_value) === 'no') {
+                $config->rabbit_mq = 0;
+            } elseif (strtolower($rabbit_mq_value) === 'si' || $rabbit_mq_value === '1' || $rabbit_mq_value === 1) {
+                $config->rabbit_mq = 1;
+            } else {
+                $config->rabbit_mq = (int)$rabbit_mq_value;
+            }
+            
+            // Convertir ffmpeg a entero
+            $ffmpeg_value = $_POST['ffmpeg'] ?? 'NO';
+            if (empty($ffmpeg_value) || strtolower($ffmpeg_value) === 'no') {
+                $config->ffmpeg = 0;
+            } elseif (strtolower($ffmpeg_value) === 'si' || $ffmpeg_value === '1' || $ffmpeg_value === 1) {
+                $config->ffmpeg = 1;
+            } else {
+                $config->ffmpeg = (int)$ffmpeg_value;
+            }
+            
+            // Convertir redis_cache a entero
+            $redis_cache_value = $_POST['redis_cache'] ?? 'NO';
+            if (empty($redis_cache_value) || strtolower($redis_cache_value) === 'no') {
+                $config->redis_cache = 0;
+            } elseif (strtolower($redis_cache_value) === 'si' || $redis_cache_value === '1' || $redis_cache_value === 1) {
+                $config->redis_cache = 1;
+            } else {
+                $config->redis_cache = (int)$redis_cache_value;
+            }
+            
+            // Preservar estilos_json existente si no se envía
+            if ($imagen_actual && isset($imagen_actual->estilos_json)) {
+                $config->estilos_json = $imagen_actual->estilos_json;
+            }
 
-                        $config->DetectarMultimedias($_FILES['logo_sitio'], $_FILES['favicon_sitio']);
-                    
-                    }else if(isset($_FILES['logo_sitio']) && !isset($_FILES['favicon_sitio']) ){
-
-                        $config->DetectarMultimedias($_FILES['logo_sitio'],null);
-                        
-                    }else if(!isset($_FILES['logo_sitio']) && isset($_FILES['favicon_sitio'])){
-
-                        $config->DetectarMultimedias(null,$_FILES['favicon_sitio']);
-
-                }
-                $config->dominio = $_POST['dominio'];
-                $config->nombre_sitio = $_POST['nombre_sitio'];
-                $config->descripcion_slogan = $_POST['descripcion_slogan'];
-                $config->descripcion_sitio = $_POST['descripcion_sitio'];
-                $config->copyright_descripcion = $_POST['copyright_descripcion'];
-                $config->email_sitio = $_POST['email_sitio'];
-                $config->busqueda_descripcion = $_POST['busqueda_descripcion'];
-                $config->pagina_descripcion = $_POST['pagina_descripcion'];
-                $config->titulo_descripcion = $_POST['titulo_descripcion'];
-                $config->busqueda_hastag = $_POST['busqueda_hastag'];
-                $config->email_remitente = $_POST['email_remitente'];
-                $config->nombre_remitente = $_POST['nombre_remitente'];
-                $config->servidor_smtp = $_POST['servidor_smtp'];
-                $config->puerto_smtp = $_POST['puerto_smtp'];
-                $config->usuario_smtp = $_POST['usuario_smtp'];
-                $config->clave_smtp =$_POST['clave_smtp'];
-                $config->autenticacion_ssl=$_POST['autenticacion_ssl'];
-                $config->publicar_sin_revision = $_POST['publicar_sin_revision'];
-                $config->verificar_cuenta = $_POST['verificar_cuenta'];
-                $config->rabbit_mq = $_POST['rabbit_mq']; /*Edejesusa  27-09-2025*/
-                $config->ffmpeg = $_POST['ffmpeg'];/*Edejesusa  27-09-2025*/
-                $config->redis_cache = $_POST['redis_cache'];/*Edejesusa  27-09-2025*/
-                
-
-                if ($config->VerificarConfiguracion()>0){
-
-                    #Si ya existe una configuracion guardada  se llama el metodo actualziar
-                    #cuando es mayor que 0 es por que ya existe un registro de configuracion
-                    $config->Actualizar_configuracion();
-                }else{  
-                        
-                    #Se guarda la configuracion por primera vez
-                    $config->Guardar_configuracion();
-                    
-                }
+            if ($config->VerificarConfiguracion() > 0){
+                #Si ya existe una configuracion guardada se llama el metodo actualizar
+                $config->Actualizar_configuracion();
+            }else{  
+                #Se guarda la configuracion por primera vez
+                $config->Guardar_configuracion();
+            }
 
         break;
 
@@ -141,6 +205,109 @@ if (isset($_POST['action'])) {
             $config = new Config();
             $config->Cargar_configuracion('json');
 
+        break;
+
+        case 'save_styles':
+            header('Content-Type: application/json');
+            require '../config/config.php';
+            $config = new Config();
+            
+            // Obtener estilos del POST
+            $estilos = [
+                'color_primario' => $_POST['color_primario'] ?? '#20c997',
+                'color_secundario' => $_POST['color_secundario'] ?? '#09b9e1',
+                'color_fondo' => $_POST['color_fondo'] ?? '#1a1c1d',
+                'color_texto' => $_POST['color_texto'] ?? '#cfd8dc',
+                'color_enlace' => $_POST['color_enlace'] ?? '#20c997',
+                'color_enlace_hover' => $_POST['color_enlace_hover'] ?? '#17a085',
+                'color_boton' => $_POST['color_boton'] ?? '#20c997',
+                'color_boton_hover' => $_POST['color_boton_hover'] ?? '#17a085',
+                'color_tarjeta' => $_POST['color_tarjeta'] ?? '#2d2d2d',
+                'color_borde' => $_POST['color_borde'] ?? '#444',
+                'color_header' => $_POST['color_header'] ?? '#1a1a1a'
+            ];
+            
+            // Guardar estilos como JSON en la tabla de configuración
+            $estilos_json = json_encode($estilos);
+            
+            // Usar la conexión del objeto Config
+            $conexion = $config->conection;
+            
+            if ($config->VerificarConfiguracion() > 0) {
+                // Actualizar estilos existentes
+                $sql = "update configuracion set estilos_json = ? limit 1";
+                $stmt = $conexion->prepare($sql);
+                if ($stmt) {
+                    $stmt->bind_param('s', $estilos_json);
+                    $stmt->execute();
+                    $stmt->close();
+                    echo json_encode(['success' => true, 'message' => 'Estilos guardados correctamente']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Error al preparar la consulta: ' . $conexion->error]);
+                }
+            } else {
+                // Crear nueva configuración con estilos
+                $sql = "insert into configuracion (estilos_json) values (?)";
+                $stmt = $conexion->prepare($sql);
+                if ($stmt) {
+                    $stmt->bind_param('s', $estilos_json);
+                    $stmt->execute();
+                    $stmt->close();
+                    echo json_encode(['success' => true, 'message' => 'Estilos guardados correctamente']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Error al preparar la consulta: ' . $conexion->error]);
+                }
+            }
+        break;
+
+        case 'load_styles':
+            header('Content-Type: application/json');
+            $config = new Config();
+            
+            if ($config->VerificarConfiguracion() > 0) {
+                $config_data = $config->Cargar_configuracion('asoc');
+                
+                // Intentar obtener estilos desde la configuración
+                $estilos = [];
+                if (isset($config_data->estilos_json) && !empty($config_data->estilos_json)) {
+                    $estilos = json_decode($config_data->estilos_json, true);
+                }
+                
+                // Si no hay estilos guardados, usar valores por defecto
+                if (empty($estilos)) {
+                    $estilos = [
+                        'color_primario' => '#20c997',
+                        'color_secundario' => '#09b9e1',
+                        'color_fondo' => '#1a1c1d',
+                        'color_texto' => '#cfd8dc',
+                        'color_enlace' => '#20c997',
+                        'color_enlace_hover' => '#17a085',
+                        'color_boton' => '#20c997',
+                        'color_boton_hover' => '#17a085',
+                        'color_tarjeta' => '#2d2d2d',
+                        'color_borde' => '#444',
+                        'color_header' => '#1a1a1a'
+                    ];
+                }
+                
+                echo json_encode(['success' => true, 'estilos' => $estilos]);
+            } else {
+                // Valores por defecto si no hay configuración
+                $estilos = [
+                    'color_primario' => '#20c997',
+                    'color_secundario' => '#09b9e1',
+                    'color_fondo' => '#1a1c1d',
+                    'color_texto' => '#cfd8dc',
+                    'color_enlace' => '#20c997',
+                    'color_enlace_hover' => '#17a085',
+                    'color_boton' => '#20c997',
+                    'color_boton_hover' => '#17a085',
+                    'color_tarjeta' => '#2d2d2d',
+                    'color_borde' => '#444',
+                    'color_header' => '#1a1a1a'
+                ];
+                echo json_encode(['success' => true, 'estilos' => $estilos]);
+            }
         break;
 
         case 'search_boards':
@@ -417,12 +584,24 @@ if (isset($_POST['action'])) {
         break;
 
         case 'reply_coment':
-
-            $id_coment =(int)$_POST['id_coment'];
-            $id_user = (int)$_POST['id_user'];
-            $text_coment = $_POST['text_coment'];
-            $reply_coment = new Coment();
-            $reply_coment->reply_coment($id_coment, $id_user, $text_coment);
+            // Establecer header JSON
+            header('Content-Type: application/json; charset=utf-8');
+            
+            $id_coment = isset($_POST['id_coment']) ? (int)$_POST['id_coment'] : 0;
+            $id_user = isset($_POST['id_user']) ? (int)$_POST['id_user'] : 0;
+            $text_coment = isset($_POST['text_coment']) ? trim($_POST['text_coment']) : '';
+            
+            if (!$id_coment || !$id_user || !$text_coment) {
+                echo json_encode(['error' => 'Faltan parámetros requeridos']);
+                exit;
+            }
+            
+            try {
+                $reply_coment = new Coment();
+                $reply_coment->reply_coment($id_coment, $id_user, $text_coment);
+            } catch (Exception $e) {
+                echo json_encode(['error' => $e->getMessage()]);
+            }
 
         break;
 
@@ -532,19 +711,64 @@ if (isset($_POST['action'])) {
 
         
         case 'contar_likes_board':
+            header('Content-Type: application/json');
+            $like = new Like();
+            $like->id_tablero = (int)$_GET['id_tablero'];
+            $result = $like->contar_lk('asoc');
+            echo json_encode($result);
+        break;
 
-          $like = new Like();
-          $like->id_tablero = $_GET['id_tablero'];
-          $like->contar_likes();
+        case 'verificar_mi_like':
+            header('Content-Type: application/json');
+            $like = new Like();
+            $like->id_tablero = (int)$_GET['id_tablero'];
+            $like->id_usuario = (int)$_GET['id_usuario'];
+            $result = $like->verificar_mi_like();
+            echo json_encode(['status' => $result]);
+        break;
 
+        case 'save_rating':
+            require '../models/Rating.php';
+            header('Content-Type: application/json');
+            
+            $rating = new Rating();
+            $rating->id_tablero = (int)$_POST['id_tablero'];
+            $rating->id_user = (int)$_POST['id_usuario'];
+            $rating->puntuacion = (int)$_POST['puntuacion'];
+            
+            // Validar que la puntuación esté entre 1 y 5
+            if ($rating->puntuacion < 1 || $rating->puntuacion > 5) {
+                echo json_encode(['error' => 'La puntuación debe estar entre 1 y 5']);
+                break;
+            }
+            
+            $rating->guardar_rating();
+        break;
+
+        case 'get_rating_average':
+            require '../models/Rating.php';
+            header('Content-Type: application/json');
+            
+            $rating = new Rating();
+            $rating->id_tablero = (int)$_GET['id_tablero'];
+            $rating->obtener_promedio('json');
+        break;
+
+        case 'get_my_rating':
+            require '../models/Rating.php';
+            header('Content-Type: application/json');
+            
+            $rating = new Rating();
+            $rating->id_tablero = (int)$_GET['id_tablero'];
+            $rating->id_user = (int)$_GET['id_usuario'];
+            $rating->obtener_mi_calificacion('json');
         break;
 
         
         case 'cargar_un_tablero':
-
-            $tablero = new Tablero();
+            header('Content-Type: application/json');
+            $tablero = new Board();
             $tablero->cargar_solo_tablero($_GET['id_tablero'],'json');
-
         break; 
 
         //Apis de favoritos

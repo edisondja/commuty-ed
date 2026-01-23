@@ -17,11 +17,20 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
             $tableros = json_decode($cached, true);
         } else {
             $tableros = $Board->cargar_tablerosx('general', 'asoc');
+            
+            // Debug: Verificar si hay tableros
+            if (empty($tableros)) {
+                // Verificar estados de tableros en la BD
+                $estados = $Board->contar_tableros_por_estado();
+                error_log("Tableros por estado: " . print_r($estados, true));
+            }
+            
             if ($redisAvailable) {
                 $redis->setex($cache_key, 300, json_encode($tableros)); // 5 minutos
             }
         }
     } catch (Exception $e) {
+        error_log("Error cargando tableros: " . $e->getMessage());
         $tableros = $Board->cargar_tablerosx('general', 'asoc');
     }
 
@@ -33,13 +42,13 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
         if ($redisAvailable && $cached = $redis->get($cache_key)) {
             $tableros = json_decode($cached, true);
         } else {
-            $tableros = $Board->search_tablero($searchTerm, 'ascoc');
+            $tableros = $Board->search_tablero($searchTerm, 'asoc');
             if ($redisAvailable) {
                 $redis->setex($cache_key, 300, json_encode($tableros)); // 5 minutos
             }
         }
     } catch (Exception $e) {
-        $tableros = $Board->search_tablero($searchTerm, 'ascoc');
+        $tableros = $Board->search_tablero($searchTerm, 'asoc');
     }
 
 } elseif (isset($_GET['leaf'])) {

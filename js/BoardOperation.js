@@ -158,8 +158,9 @@ window.onload=function(){
         });
 
     }else{
-
-        console.log('selector no encontrado aqui');
+        // El selector no existe, probablemente el usuario no está logueado
+        // Esto es normal, no es un error crítico
+        // console.log('selector no encontrado aqui - usuario no logueado');
     }
 
 
@@ -383,45 +384,57 @@ window.onload=function(){
 
                 if(data.target.files[i].type=='image/jpeg' || data.target.files[i].type=='image/png'){
                         document.querySelector('#multimedia_view').innerHTML+=`
-                        <figure id='fig${id_medias}'>
-                        <figcaption><i class="fa-solid fa-delete-left" style='float:right' id='${id_medias}'></i></figcaption>
-                        <img src='${media}'  class='Miniatura'>
-                        </figure>`;
+                        <div class="multimedia-item" id='fig${id_medias}'>
+                            <div class="multimedia-overlay">
+                                <button class="multimedia-delete-btn" id='${id_medias}' title="Eliminar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <img src='${media}' alt='Preview' class='multimedia-preview'>
+                        </div>`;
                 }else{
                         document.querySelector('#multimedia_view').innerHTML+=`
-                        <figure id='fig${id_medias}'>
-                        <figcaption><i class="fa-solid fa-delete-left" style='float:right' id='${id_medias}'></i></figcaption>
-                        <video src='${media}'controls' class='Miniatura'></video>
-                        </figure>`;
+                        <div class="multimedia-item" id='fig${id_medias}'>
+                            <div class="multimedia-overlay">
+                                <button class="multimedia-delete-btn" id='${id_medias}' title="Eliminar">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <video src='${media}' controls class='multimedia-preview'></video>
+                        </div>`;
                 }
 
              
             }                             
 
 
-            let figure = document.querySelectorAll('figcaption');
-
+            // Actualizar event listeners para los nuevos botones de eliminar
+            let deleteButtons = document.querySelectorAll('.multimedia-delete-btn');
 
             generar_media(files_json);
 
-            figure.forEach(data=>{
-
-                    //aqui se debe de eliminar el archivo formData.append("media",data.target.files[i]) correspo
-                data.addEventListener('click',data=>{
+            deleteButtons.forEach(button=>{
+                button.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    let buttonId = this.id;
+                    let id_archivo_json = `fig${buttonId}`;
                     
-                    document.querySelector(`#fig${data.target.id}`).style.display='none';
-                    let id_archivo_json = `fig${data.target.id}`;
-
-                    alert(id_archivo_json);
-
+                    // Ocultar el elemento multimedia
+                    const multimediaItem = document.querySelector(`#${id_archivo_json}`);
+                    if (multimediaItem) {
+                        multimediaItem.style.opacity = '0';
+                        multimediaItem.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            multimediaItem.remove();
+                        }, 300);
+                    }
+                    
+                    // Actualizar el array de archivos
                     let actualizar_archivos = files_json.filter(archivo=>archivo.archivo_id!==id_archivo_json);
-                    
                     files_json = actualizar_archivos;
 
                     generar_media(files_json);
-
                 });
-
             });
 
 
@@ -455,6 +468,40 @@ window.onload=function(){
             return;
         }
 
+        // Validar tamaño de archivos antes de enviar
+        const maxSizeMB = 250; // Tamaño máximo en MB
+        let totalSize = 0;
+        
+        // Verificar archivos en files_json
+        if (files_json && files_json.length > 0) {
+            for (let i = 0; i < files_json.length; i++) {
+                if (files_json[i].media && files_json[i].media.size) {
+                    totalSize += files_json[i].media.size;
+                    const fileSizeMB = files_json[i].media.size / (1024 * 1024);
+                    if (fileSizeMB > maxSizeMB) {
+                        const errorMsg = `El archivo "${files_json[i].media.name || 'archivo'}" (${fileSizeMB.toFixed(2)}MB) excede el límite permitido de ${maxSizeMB}MB.`;
+                        if (typeof alertify !== 'undefined') {
+                            alertify.error(errorMsg);
+                        } else {
+                            alert(errorMsg);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+        
+        // Convertir a MB
+        const totalSizeMB = totalSize / (1024 * 1024);
+        if (totalSizeMB > maxSizeMB) {
+            const errorMsg = `El tamaño total de los archivos (${totalSizeMB.toFixed(2)}MB) excede el límite permitido de ${maxSizeMB}MB.`;
+            if (typeof alertify !== 'undefined') {
+                alertify.error(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+            return;
+        }
 
         // Agrega los datos del formulario a FormDatas_board
         FormDatas_board.append('action', 'create_board');
@@ -464,8 +511,16 @@ window.onload=function(){
 
         //visualizando barra de subida de archivos
 
-        document.querySelector('.progress').style.display = 'block';
-        document.querySelector('#porcentaje').style.display = 'block';
+        // Mostrar barra de progreso moderna
+        const progressSection = document.getElementById('progress_section');
+        if (progressSection) {
+            progressSection.style.display = 'block';
+        }
+        
+        // Usar la función moderna si está disponible
+        if (typeof updateUploadProgress === 'function') {
+            updateUploadProgress(0);
+        }
         // Configuración para el progreso de carga del archivo
         const config = {
             headers: {
@@ -476,9 +531,24 @@ window.onload=function(){
                 // Muestra la barra de progreso
                 // Calcula el porcentaje completado
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                // Actualiza la barra de progreso
-                document.querySelector('.progress').value=percentCompleted;
-                document.querySelector('#porcentaje').innerHTML=`${percentCompleted}%`;
+                
+                // Actualizar barra de progreso moderna
+                const progressBar = document.getElementById('file');
+                const porcentaje = document.getElementById('porcentaje');
+                
+                if (progressBar) {
+                    progressBar.style.width = percentCompleted + '%';
+                    progressBar.setAttribute('aria-valuenow', percentCompleted);
+                }
+                
+                if (porcentaje) {
+                    porcentaje.textContent = percentCompleted + '%';
+                }
+                
+                // Usar función moderna si está disponible
+                if (typeof updateUploadProgress === 'function') {
+                    updateUploadProgress(percentCompleted);
+                }
 
             }
         };
@@ -491,68 +561,143 @@ window.onload=function(){
                 //Caputra el id del usuario de sesión
 
                   let id_user_s = document.querySelector('#id_usuario').value;
-                  document.querySelector('.progress').style.display = 'none';
-                  document.querySelector('#porcentaje').style.display='none';
+                  // Ocultar barra de progreso moderna
+                  const progressSection = document.getElementById('progress_section');
+                  if (progressSection) {
+                      progressSection.style.display = 'none';
+                  }
+                  
+                  // Resetear progreso
+                  const progressBar = document.getElementById('file');
+                  if (progressBar) {
+                      progressBar.style.width = '0%';
+                      progressBar.setAttribute('aria-valuenow', 0);
+                  }
+                  
+                  const porcentaje = document.getElementById('porcentaje');
+                  if (porcentaje) {
+                      porcentaje.textContent = '0%';
+                  }
+                  
+                  if (typeof updateUploadProgress === 'function') {
+                      updateUploadProgress(0);
+                  }
                   console.log(data);
                   let response;
                   
-                  if(subir_imagen.files.length>0){
-                    
-                   console.log('DEBUG '+data.data);
-                   //console.log('End DEBUG...');
-                   //response = data.data.replace(/1/g,'');
-                   response = data.data;
-
-                }else{
-
-                     response = data.data;
-                }
-               
-                console.log(response);
+                  // Parsear la respuesta correctamente
+                  if (typeof data.data === 'string') {
+                      try {
+                          response = JSON.parse(data.data);
+                      } catch (e) {
+                          console.error('Error parsing JSON:', e);
+                          response = data.data;
+                      }
+                  } else {
+                      response = data.data;
+                  }
+                  
+                  // Validar que response sea un objeto
+                  if (!response || typeof response !== 'object') {
+                      console.error('Respuesta inválida:', response);
+                      // Si la respuesta es un string con error HTML, mostrar mensaje apropiado
+                      if (typeof response === 'string') {
+                            if (response.includes('Content-Length') || response.includes('exceeds the limit')) {
+                                if (typeof alertify !== 'undefined') {
+                                    alertify.error('El archivo es demasiado grande. Tamaño máximo: 250MB');
+                                } else {
+                                    alert('El archivo es demasiado grande. Tamaño máximo: 250MB');
+                                }
+                            } else {
+                              if (typeof alertify !== 'undefined') {
+                                  alertify.error('Error al procesar la respuesta del servidor');
+                              }
+                          }
+                      } else {
+                          if (typeof alertify !== 'undefined') {
+                              alertify.error('Error al procesar la respuesta del servidor');
+                          }
+                      }
+                      return;
+                  }
+                  
+                  // Asegurar que los valores no sean undefined
+                  const id_tablero = response.id_tablero || response.id_tablero || '';
+                  const titulo = response.titulo || null;
+                  const descripcion = response.descripcion || '';
+                  const usuario = response.usuario || '';
+                  const imagen_tablero = response.imagen_tablero || '';
+                  const id_usuario = response.id_usuario || response.id_user || '';
+                  
+                  // Crear slug para la URL (usar descripción si no hay título)
+                  const url_slug = titulo 
+                      ? titulo.replace(/\s+/g, '_').substring(0, 50)
+                      : (descripcion ? descripcion.replace(/\s+/g, '_').substring(0, 50) : '');
+                  
+                  console.log('Response parsed:', response);
+                  console.log('URL slug:', url_slug);
                 
 
                   let post_ready = `
-                    <div class='card text-white bg-dark mb-3' id="board${response.id_tablero}">
+                    <div class='card text-white bg-dark mb-3' id="board${id_tablero}">
                         <div class='body' style='padding:5px'>
                         <div class='title'>
                             <strong>
-                            <a href='${dominio}/profile_user.php?user=${response.usuario}'>
+                            <a href='${dominio}/profile_user.php?user=${usuario}'>
                                 <img class='imagenPerfil' src='${foto_perfil}'/>
                             </a>
                             ${nombre_usuario}
-                            <a href="${dominio}/single_board.php?id=${response.id_tablero}/${response.titulo}">
+                            <a href="${dominio}/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
                                 <i class="fa-solid fa-highlighter"></i>
                             </a>
                             </strong>
                         </div>
-                        <p style='padding-left: 10px;'>${response.descripcion}</p>
-                        <a href="${dominio}/single_board.php?id=${response.id_tablero}/${response.titulo}">
+                        <p style='padding-left: 10px;'>${descripcion}</p>
+                        <a href="${dominio}/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
                     `;
                     
-                    if (response.imagen_tablero !== '') {
-                    post_ready += `
-                        <img src="${dominio}/${response.imagen_tablero}" class="card-img-top" alt="...">
-                    `;
-                    } else {
-                    post_ready += `
-                        <a href="${dominio}/single_board.php?id=${response.id_tablero}/${response.titulo}"></a>
+                    if (imagen_tablero && imagen_tablero !== '' && imagen_tablero !== 'undefined' && imagen_tablero !== null) {
+                        // Limpiar la ruta de la imagen
+                        let imagen_path = imagen_tablero.startsWith('/') ? imagen_tablero.substring(1) : imagen_tablero;
+                        // Asegurar que no tenga doble barra
+                        imagen_path = imagen_path.replace(/^\/+/, '');
+                        
+                        // Obtener preview_tablero si existe
+                        const preview_tablero = response.preview_tablero || '';
+                        const hasPreview = preview_tablero && preview_tablero !== '' && preview_tablero !== 'undefined' && preview_tablero !== null;
+                        let preview_path = '';
+                        if (hasPreview) {
+                            preview_path = preview_tablero.startsWith('/') ? preview_tablero.substring(1) : preview_tablero;
+                            preview_path = preview_path.replace(/^\/+/, '');
+                        }
+                        
+                        post_ready += `
+                        <div class='content_image board-image-container' 
+                             data-preview="${preview_path}" 
+                             data-image="${imagen_path}"
+                             data-has-preview="${hasPreview ? 'true' : 'false'}">
+                        <img src="${dominio}/${imagen_path}" 
+                             class="card-img-top board-image board-main-image" 
+                             alt="..."
+                             data-preview-src="${hasPreview ? dominio + '/' + preview_path : ''}">
                     `;
                     }
                     
                     post_ready += `
                         </a>
+                        ${imagen_tablero && imagen_tablero !== '' && imagen_tablero !== 'undefined' && imagen_tablero !== null ? '</div>' : ''}
                         </div>
                         <p class='p' style='padding:5px;'></p>
                         <div class="card-footer" style='float:right'>
                         <div style='float:right'>
                             <i class="fa-solid fa-thumbs-up" style='display:none'></i>
                             <i class="fa-solid fa-bookmark" style='display:none'></i>
-                            <i class="fa-regular fa-share-from-square" style='cursor:pointer'></i>
-                            <i class="fa-regular fa-thumbs-up" style='cursor:pointer'></i>
-                            <i class="fa-regular fa-comment-dots" style='cursor:pointer'></i>
-                            <i class="fa-regular fa-bookmark" style='cursor:pointer'></i>`;
-                            if(nombre_usuario !== '' && response.id_usuario==id_user_s){
-                                post_ready+=` <i class="fa fa-trash" data-value='${response.id_tablero}' style="cursor: pointer;" aria-hidden="true"></i>`;
+                            <i class="fa-regular fa-share-from-square share-icon" data-tablero="${id_tablero}" style='cursor:pointer' title="Compartir"></i>
+                            <i class="fa-regular fa-thumbs-up like-icon" data-tablero="${id_tablero}" style='cursor:pointer' title="Me gusta"></i>
+                            <i class="fa-regular fa-comment-dots comment-icon" data-tablero="${id_tablero}" style='cursor:pointer' title="Comentar"></i>
+                            <i class="fa-regular fa-bookmark bookmark-icon" style='cursor:pointer' title="Guardar"></i>`;
+                            if(nombre_usuario !== '' && id_usuario==id_user_s){
+                                post_ready+=` <i class="fa fa-trash" data-value='${id_tablero}' style="cursor: pointer;" aria-hidden="true"></i>`;
                             }
                         post_ready+=`
                         </div>
@@ -563,22 +708,101 @@ window.onload=function(){
                  console.log(post_ready);
 
                  
-                 document.querySelector('.col-sm-5').insertAdjacentHTML('afterbegin', post_ready);
+                 // Verificar que el elemento existe antes de insertar
+                 const containerElement = document.querySelector('.col-sm-5');
+                 if (containerElement) {
+                     containerElement.insertAdjacentHTML('afterbegin', post_ready);
+                     
+                     // Reinicializar la vista previa para el nuevo tablero agregado
+                     if (typeof reinitBoardPreview === 'function') {
+                         setTimeout(() => {
+                             reinitBoardPreview();
+                         }, 100);
+                     }
+                     
+                     // Reinicializar interacciones (like, share, comment)
+                     if (typeof reinitBoardInteractions === 'function') {
+                         setTimeout(() => {
+                             reinitBoardInteractions();
+                         }, 200);
+                     }
+                 } else {
+                     // Si no existe, buscar alternativas o recargar la página
+                     console.warn('Elemento .col-sm-5 no encontrado, recargando página...');
+                     // Opción 1: Recargar la página para mostrar el nuevo post
+                     window.location.reload();
+                     // Opción 2: Si prefieres no recargar, puedes buscar otro contenedor
+                     // const altContainer = document.querySelector('#boards-container') || document.querySelector('.boards-list');
+                     // if (altContainer) {
+                     //     altContainer.insertAdjacentHTML('afterbegin', post_ready);
+                     // }
+                 }
                 
                 // Aquí puedes redirigir o actualizar la página según tus necesidades
                 // location.href = dominio;
 
-                document.querySelector('#exampleModal .btn-close').click();
+                // Cerrar el modal solo si existe
+                const closeButton = document.querySelector('#exampleModal .btn-close');
+                if (closeButton) {
+                    closeButton.click();
+                }
 
                 
 
             })
             .catch(error => {
-                console.log(error);
-                // Manejo de errores
-                document.querySelector('.progress').style.display = 'none';
                 console.error('Error en la solicitud:', error);
-                alertify.error('Ocurrió un error al enviar el formulario');
+                
+                // Manejar diferentes tipos de errores
+                let errorMessage = 'Error al publicar la publicación';
+                
+                if (error.response) {
+                    // Error de respuesta del servidor
+                    const responseData = error.response.data;
+                    
+                    if (typeof responseData === 'string') {
+                        // Si la respuesta es HTML (error de PHP)
+                        if (responseData.includes('Content-Length') || responseData.includes('exceeds the limit')) {
+                            errorMessage = 'El archivo es demasiado grande. Tamaño máximo permitido: 250MB. Por favor, reduce el tamaño del archivo o comprímelo.';
+                        } else if (responseData.includes('Unexpected token') || responseData.includes('<br />')) {
+                            // Error de parsing JSON o respuesta HTML
+                            console.error('Error parsing JSON o respuesta HTML:', responseData.substring(0, 200));
+                            errorMessage = 'Error al procesar la respuesta del servidor. Verifica que los archivos no excedan el tamaño máximo.';
+                        }
+                    } else if (responseData && responseData.error) {
+                        errorMessage = responseData.error;
+                    }
+                } else if (error.request) {
+                    // Error de red
+                    errorMessage = 'Error de conexión. Verifica tu conexión a internet.';
+                } else {
+                    // Otro tipo de error
+                    errorMessage = error.message || 'Error desconocido';
+                }
+                
+                // Ocultar barra de progreso en caso de error
+                const progressSection = document.getElementById('progress_section');
+                if (progressSection) {
+                    progressSection.style.display = 'none';
+                }
+                
+                if (typeof alertify !== 'undefined') {
+                    alertify.error(errorMessage);
+                } else {
+                    alert(errorMessage);
+                }
+                
+                const progressBar = document.getElementById('file');
+                if (progressBar) {
+                    progressBar.style.width = '0%';
+                    progressBar.setAttribute('aria-valuenow', 0);
+                }
+                console.error('Error en la solicitud:', error);
+                if (typeof alertify !== 'undefined') {
+                    alertify.error('Ocurrió un error al enviar el formulario');
+                } else {
+                    alert('Ocurrió un error al enviar el formulario');
+                }
             });
     });
 

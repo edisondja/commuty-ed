@@ -85,6 +85,16 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="backcoffe.php?option=rabbitmq">
+                RabbitMQ Monitor <i class="fa-solid fa-server"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="backcoffe.php?option=estilos">
+                Estilos y Colores <i class="fa-solid fa-palette"></i>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="#">
                 Logout <i class="fas fa-bell"></i>
             </a>

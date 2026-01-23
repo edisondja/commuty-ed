@@ -4,6 +4,38 @@
    // session_destroy();
     require_once 'vendor/autoload.php';
     require_once 'config/config.php';
+    
+    // Funciones de compatibilidad para PHP 7.2 y PHP 8+
+    if (!function_exists('php_compat_fetch_object')) {
+        function php_compat_fetch_object($result) {
+            if ($result instanceof mysqli_result) {
+                if (PHP_VERSION_ID >= 80000) {
+                    return $result->fetch_object();
+                } else {
+                    return mysqli_fetch_object($result);
+                }
+            }
+            return false;
+        }
+    }
+    
+    if (!function_exists('php_compat_result_to_array')) {
+        function php_compat_result_to_array($result) {
+            $data = [];
+            if ($result instanceof mysqli_result) {
+                if (PHP_VERSION_ID >= 80000) {
+                    foreach ($result as $row) {
+                        $data[] = $row;
+                    }
+                } else {
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                }
+            }
+            return $data;
+        }
+    }
     require_once 'models/User.php';
     require_once 'models/Board.php';
     require_once 'models/Config.php';
@@ -59,14 +91,54 @@
         $name_site = $config_data->nombre_sitio;
 
         $smarty->assign('name',$config_data->nombre_sitio);
-        $smarty->assign('logosite',$config_data->sitio_logo_url);
-        $smarty->assign('copyright', $config_data->copyright_descripcion);
-        $smarty->assign('favicon',$config_data->favicon_url);
-        $smarty->assign('email_sitio',$config_data->email_sitio);
-        $smarty->assign('dominio', $config_data->dominio);
-        if($config_data->dominio==''){
-            $smarty->assign('dominio', DOMAIN);
+        
+        // Asegurar que logosite no tenga URL duplicada
+        $logosite = $config_data->sitio_logo_url;
+        if (!empty($logosite) && strpos($logosite, 'http') === 0) {
+            // Si ya tiene http, usar tal cual
+            $smarty->assign('logosite', $logosite);
+        } else {
+            // Si es relativa, agregar dominio
+            $dominio_config = !empty($config_data->dominio) ? $config_data->dominio : DOMAIN;
+            $smarty->assign('logosite', $dominio_config . '/' . ltrim($logosite, '/'));
         }
+        
+        $smarty->assign('copyright', $config_data->copyright_descripcion);
+        
+        // Asegurar que favicon esté definido
+        $favicon_url = !empty($config_data->favicon_url) ? $config_data->favicon_url : 'assets/favicon.ico';
+        $smarty->assign('favicon', $favicon_url);
+        
+        $smarty->assign('email_sitio',$config_data->email_sitio);
+        
+        // Asegurar que dominio esté definido
+        $dominio_final = !empty($config_data->dominio) ? $config_data->dominio : DOMAIN;
+        $smarty->assign('dominio', $dominio_final);
+        
+        // Cargar estilos personalizados si existen
+        $estilos = [];
+        if (isset($config_data->estilos_json) && !empty($config_data->estilos_json)) {
+            $estilos = json_decode($config_data->estilos_json, true);
+        }
+        
+        // Si no hay estilos, usar valores por defecto
+        if (empty($estilos)) {
+            $estilos = [
+                'color_primario' => '#20c997',
+                'color_secundario' => '#09b9e1',
+                'color_fondo' => '#1a1c1d',
+                'color_texto' => '#cfd8dc',
+                'color_enlace' => '#20c997',
+                'color_enlace_hover' => '#17a085',
+                'color_boton' => '#20c997',
+                'color_boton_hover' => '#17a085',
+                'color_tarjeta' => '#2d2d2d',
+                'color_borde' => '#444',
+                'color_header' => '#1a1a1a'
+            ];
+        }
+        
+        $smarty->assign('estilos', $estilos);
 
     }else{ 
 
@@ -79,6 +151,23 @@
         $smarty->assign('logosite', LOGOSITE);
         $smarty->assign('copyright', COPYRIGHT_DESCRIPTION);
         $smarty->assign('dominio', DOMAIN);
+        $smarty->assign('favicon', FAVICON);
+        
+        // Estilos por defecto cuando no hay configuración en BD
+        $estilos = [
+            'color_primario' => '#20c997',
+            'color_secundario' => '#09b9e1',
+            'color_fondo' => '#1a1c1d',
+            'color_texto' => '#cfd8dc',
+            'color_enlace' => '#20c997',
+            'color_enlace_hover' => '#17a085',
+            'color_boton' => '#20c997',
+            'color_boton_hover' => '#17a085',
+            'color_tarjeta' => '#2d2d2d',
+            'color_borde' => '#444',
+            'color_header' => '#1a1a1a'
+        ];
+        $smarty->assign('estilos', $estilos);
 
     }
 

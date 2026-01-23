@@ -7,3 +7,124 @@
 2025-09-25 00:30:54 Error actualizando ads Error en prepare: Unknown column 'id' in 'where clause'
 25-12-29 01:35:02Error Enviando mail tipo: registrer
 25-12-29 03:50:43Error Enviando mail tipo: registrer
+2601222522 Error al mover imagen: ../imagenes_tablero/1769120720test.jpg
+26-01-22 11:28:44 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:28:53 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:33:50 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:33:55 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:33:58 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:36:22 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:36:41 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:36:47 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:39:04 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:39:10 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:39:10 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:39:17 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:39:20 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:41:13 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:42:45 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:42:53 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:42:56 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:43:07 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:44:23 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:46:49 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:48:52 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:52:52 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:52:59 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:52:59 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:53:06 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:56:15 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:56:15 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:56:23 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:57:44 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:57:44 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:57:51 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:57:51 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:22 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:22 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:23 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:23 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:34 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:34 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:42 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-22 11:58:46 El comentario ID: 2 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-22 11:58:46 El comentario ID: 1 No pudo cargar sus comentarios hijos Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list' | SQL: SELECT ch.text_coment, ch.user_id, ch.id_reply_id, ch.fecha_creacion, ch.estado, us.usuario, us.foto_url 
+                FROM reply_coment AS ch 
+                INNER JOIN users AS us ON ch.user_id = us.id_user 
+                WHERE ch.coment_id = ? AND ch.estado = ? 
+                ORDER BY ch.fecha_creacion ASC
+26-01-23 12:03:45 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-23 12:03:57 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-23 12:28:24 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'ch.id_reply_id' in 'field list'
+26-01-23 12:39:43 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'id_reply_id' in 'where clause'
+26-01-23 12:39:50 No se pudo cargar el comentario hijo Error al preparar la consulta: Unknown column 'id_reply_id' in 'where clause'
+2601234235 No se puedo asignar la portada 
+Error en Guardar_configuracion: Error al ejecutar: Incorrect integer value: '' for column `edcommunity`.`configuracion`.`autenticacion_ssl` at row 1
+Error en Guardar_configuracion: Error al ejecutar: Incorrect integer value: '' for column `edcommunity`.`configuracion`.`autenticacion_ssl` at row 1
+Error en Guardar_configuracion: Error al ejecutar: Incorrect integer value: 'NO' for column `edcommunity`.`configuracion`.`publicar_sin_revision` at row 1
+Error en Guardar_configuracion: Error al ejecutar: No data supplied for parameters in prepared statement
+Error en Guardar_configuracion: Error al ejecutar: No data supplied for parameters in prepared statement

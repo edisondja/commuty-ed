@@ -203,8 +203,13 @@ Class Ads extends EncryptToken{
     
             $data->execute();
             $result = $data->get_result();
-
-            echo json_encode(mysqli_fetch_object($result));
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                $obj = $result->fetch_object();
+            } else {
+                $obj = mysqli_fetch_object($result);
+            }
+            echo json_encode($obj);
        
         }catch(Exception $e){
 
@@ -271,7 +276,12 @@ Class Ads extends EncryptToken{
         try{
             $data->execute();
             $result = $data->get_result();
-            return mysqli_fetch_object($result);
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                return $result->fetch_object();
+            } else {
+                return mysqli_fetch_object($result);
+            }
 
         }catch(exception $e){
 

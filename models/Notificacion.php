@@ -50,7 +50,7 @@ class Notificacion extends EncryptToken {
     public function cargar_mis_notificaciones($id_usuario) {
 
         $sql = "select * from notificacion as nt inner join tableros as tb 
-        on nt.id_tablero=tb.id_tablero inner join user us on nt.id_usuario_emisor=us.id_user
+        on nt.id_tablero=tb.id_tablero inner join users us on nt.id_usuario_emisor=us.id_user
          where nt.id_usuario_receptor = ? ORDER BY fecha DESC";
          
         try {

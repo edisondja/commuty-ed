@@ -53,6 +53,18 @@
 
                     break;
 
+                    case 'rabbitmq':
+
+                        $smarty->assign('option','monitoreo_rabbitmq');
+
+                    break;
+
+                    case 'estilos':
+
+                        $smarty->assign('option','estilos');
+
+                    break;
+
                     default:
                     
                      $smarty->assign('option','usuarios');

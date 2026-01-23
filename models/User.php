@@ -37,9 +37,11 @@ Class User extends EncryptToken{
             }
 
             $configuracion = $this->config->cargar_configuracion('asoc');
-            if ($configuracion->verificar_cuenta == 'SI') {
+            // Verificar si la configuración existe y tiene la propiedad verificar_cuenta
+            if ($configuracion && isset($configuracion->verificar_cuenta) && $configuracion->verificar_cuenta == 'SI') {
                 $estado = $this->disable();
             } else {
+                // Por defecto, activar la cuenta si no hay configuración
                 $estado = $this->enable();
             }
             $tipo_usuario = 'normal';
@@ -50,7 +52,7 @@ Class User extends EncryptToken{
                 $clave = md5($this->clave);
                 $fecha = date('y-m-d h:i:s');
                 $sql="insert into
-                    user (usuario,clave,
+                    users (usuario,clave,
                          email,sexo,
                          foto_url,
                          fecha_creacion,
@@ -90,18 +92,27 @@ Class User extends EncryptToken{
 
         function get_id_from_user($user,$config="asoc"){
 
-            $sql = "select * from user where usuario=?";
+            $sql = "select * from users where usuario=?";
 			$cargado = $this->conection->prepare($sql);
             $cargado->bind_param('s',$user);
             $cargado->execute();
-            $user = $cargado->get_result();
+            $result = $cargado->get_result();
+            
+            // Compatible con PHP 7.2 y PHP 8+
             if($config=='asoc'){
-
-                $user = mysqli_fetch_object($user);
-                return $user;
+                if (PHP_VERSION_ID >= 80000) {
+                    $user = $result->fetch_object();
+                } else {
+                    $user = mysqli_fetch_object($result);
+                }
+                return $user ? $user : null;
 
             }else{
-                $user = mysqli_fetch_object($user);
+                if (PHP_VERSION_ID >= 80000) {
+                    $user = $result->fetch_object();
+                } else {
+                    $user = mysqli_fetch_object($result);
+                }
                 $user  = json_decode($user);
                 echo $user;
             }   
@@ -115,12 +126,17 @@ Class User extends EncryptToken{
 
 
            // $this->DecodeToken($jwt)
-            $sql = "select * from user where id_user=?";
+            $sql = "select * from users where id_user=?";
 			$cargado = $this->conection->prepare($sql);
             $cargado->bind_param('i',$this->id_user);
             $cargado->execute();
-            $user = $cargado->get_result();
-            $user = mysqli_fetch_object($user);
+            $result = $cargado->get_result();
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                $user = $result->fetch_object();
+            } else {
+                $user = mysqli_fetch_object($result);
+            }
             if($config=='json'){
 
                 $user  = json_encode($user);
@@ -140,7 +156,7 @@ Class User extends EncryptToken{
 
        public function updateUser() {
             try {
-                    $sql = "update user set
+                    $sql = "update users set
                                 usuario = ?,
                                 sexo = ?,
                                 foto_url = ?,
@@ -191,7 +207,7 @@ Class User extends EncryptToken{
                         ];
                     } else {
                         // 🔹 Verificar si el usuario existe
-                        $check = $this->conection->prepare("SELECT COUNT(*) as total FROM user WHERE id_user = ?");
+                        $check = $this->conection->prepare("SELECT COUNT(*) as total FROM users WHERE id_user = ?");
                         $check->bind_param('i', $this->id_user);
                         $check->execute();
                         $result = $check->get_result()->fetch_assoc();
@@ -294,16 +310,53 @@ Class User extends EncryptToken{
         public function Login($user,$clave)
         {       
                 session_start();    
-                $clave = md5($clave);
-                $sql = "select * from user where email=? or usuario=? and clave=?";
+                
+                // Limpiar espacios en blanco
+                $user = trim($user);
+                $clave = trim($clave);
+                
+                // Cifrar la contraseña
+                $clave_md5 = md5($clave);
+                
+                // Debug: Verificar qué se está buscando (solo para desarrollo, quitar en producción)
+                error_log("Login attempt - User: $user, Clave MD5: $clave_md5");
+                
+                // Corregir la consulta: usar paréntesis para agrupar correctamente
+                // La consulta anterior tenía problema de precedencia: email=? or usuario=? and clave=?
+                // Se evaluaba como: (email=?) or (usuario=? and clave=?) lo cual es incorrecto
+                $sql = "select * from users where (email=? or usuario=?) and clave=?";
                 $guardar = $this->conection->prepare($sql);
-                $guardar->bind_param('sss',$user,$user,$clave);
+                if ($guardar === false) {
+                    echo json_encode(['error' => 'Error al preparar la consulta: ' . $this->conection->error]);
+                    return;
+                }
+                $guardar->bind_param('sss',$user,$user,$clave_md5);
                 $guardar->execute();
                 $data = $guardar->get_result();
+                
+                // Debug: Verificar cuántos resultados se encontraron
+                error_log("Login query results: " . $data->num_rows);
                     
                 if($data->num_rows>0){
-
-                    $data = mysqli_fetch_object($data);
+                    // Compatible con PHP 7.2 y PHP 8+
+                    if (PHP_VERSION_ID >= 80000) {
+                        $data = $data->fetch_object();
+                    } else {
+                        $data = mysqli_fetch_object($data);
+                    }
+                    
+                    // Verificar que el objeto no sea null
+                    if (!$data) {
+                        echo json_encode(['error' => 'Error al obtener datos del usuario']);
+                        return;
+                    }
+                    
+                    // Verificar que el usuario esté activo
+                    if ($data->estado == 'inactivo' || $data->estado == 'baneado') {
+                        echo json_encode(['error' => 'Usuario inactivo o baneado']);
+                        return;
+                    }
+                    
                     $_SESSION['nombre'] = $data->nombre;
                     $_SESSION['apellido'] = $data->apellido;
                     $_SESSION['sexo'] = $data->sexo;
@@ -330,10 +383,27 @@ Class User extends EncryptToken{
                     echo json_encode($user_user);
 
                 }else{
-
-                    echo "user incorrect";
+                    // Debug: Verificar si el usuario existe pero la clave no coincide
+                    $sql_check_user = "SELECT usuario, email, clave FROM users WHERE usuario=? OR email=?";
+                    $check = $this->conection->prepare($sql_check_user);
+                    if ($check) {
+                        $check->bind_param('ss', $user, $user);
+                        $check->execute();
+                        $user_result = $check->get_result();
+                        if ($user_result->num_rows > 0) {
+                            $user_data = $user_result->fetch_assoc();
+                            error_log("Usuario existe pero clave no coincide. Clave BD: " . substr($user_data['clave'], 0, 10) . "... Clave ingresada MD5: " . substr($clave_md5, 0, 10) . "...");
+                        } else {
+                            error_log("Usuario no encontrado: $user");
+                        }
+                        $check->close();
+                    }
+                    
+                    echo json_encode(['error' => 'Usuario o contraseña incorrectos']);
 
                 }
+                
+                $guardar->close();
 
         }
 
@@ -371,16 +441,21 @@ Class User extends EncryptToken{
 
         function LoadProfileUser($usuario){
 
-          $SQL =  "select * from user where usuario=?";
+          $SQL =  "select * from users where usuario=?";
           $DataUser =  $this->conection->prepare($SQL);
           
           try{
             
                 $DataUser->bind_param('s',$usuario);
                 $DataUser->execute();
-                $user = $DataUser->get_result();
-                $user = mysqli_fetch_object($user);     
-                return $user;
+                $result = $DataUser->get_result();
+                // Compatible con PHP 7.2 y PHP 8+
+                if (PHP_VERSION_ID >= 80000) {
+                    $user = $result->fetch_object();
+                } else {
+                    $user = mysqli_fetch_object($result);
+                }
+                return $user ? $user : null;
 
           }catch(Exception $e){
 
@@ -392,7 +467,7 @@ Class User extends EncryptToken{
     
         public function ExistUser($config='asoc'){
             
-          $SQL =  "select * from user where usuario=?";
+          $SQL =  "select * from users where usuario=?";
           $DataUser =  $this->conection->prepare($SQL);
           $DataUser->bind_param('s',$this->usuario);
           $DataUser->execute();
@@ -402,8 +477,13 @@ Class User extends EncryptToken{
 
             if($exist->num_rows>0){
 
-                $exist = mysqli_fetch_object($exist);
-                return $exist->usuario;
+                // Compatible con PHP 7.2 y PHP 8+
+                if (PHP_VERSION_ID >= 80000) {
+                    $exist = $exist->fetch_object();
+                } else {
+                    $exist = mysqli_fetch_object($exist);
+                }
+                return $exist ? $exist->usuario : null;
 
             }else{
 
@@ -415,8 +495,13 @@ Class User extends EncryptToken{
 
                 if($exist->num_rows>0){
 
-                    $exist = mysqli_fetch_object($exist);
-                    echo $exist->usuario;
+                    // Compatible con PHP 7.2 y PHP 8+
+                    if (PHP_VERSION_ID >= 80000) {
+                        $exist = $exist->fetch_object();
+                    } else {
+                        $exist = mysqli_fetch_object($exist);
+                    }
+                    echo $exist ? $exist->usuario : '';
 
                 }else{
 
@@ -431,7 +516,7 @@ Class User extends EncryptToken{
          
         public function ExistEmailUser($config='asoc'){
      
-            $SQL =  "select * from user where email=?";
+            $SQL =  "select * from users where email=?";
             $DataUser =  $this->conection->prepare($SQL);
             $DataUser->bind_param('s',$this->email);
             $DataUser->execute();
@@ -441,8 +526,13 @@ Class User extends EncryptToken{
             if($config=='asoc'){
                 if($exist->num_rows>0){
 
-                    $exist = mysqli_fetch_object($exist);
-                    return $exist->email;
+                    // Compatible con PHP 7.2 y PHP 8+
+                    if (PHP_VERSION_ID >= 80000) {
+                        $exist = $exist->fetch_object();
+                    } else {
+                        $exist = mysqli_fetch_object($exist);
+                    }
+                    return $exist ? $exist->email : null;
         
                 }else{
 
@@ -453,8 +543,13 @@ Class User extends EncryptToken{
 
                 if($exist->num_rows>0){
 
-                    $exist = mysqli_fetch_object($exist);
-                    echo $exist->email;
+                    // Compatible con PHP 7.2 y PHP 8+
+                    if (PHP_VERSION_ID >= 80000) {
+                        $exist = $exist->fetch_object();
+                    } else {
+                        $exist = mysqli_fetch_object($exist);
+                    }
+                    echo $exist ? $exist->email : '';
         
                 }else{
 
@@ -470,7 +565,7 @@ Class User extends EncryptToken{
             /*00
                 Cargar todos los correos electronicos para enviarles mensajes
             */
-            $SQL = "select distinct email,usuario,nombre from user where estado=?";
+            $SQL = "select distinct email,usuario,nombre from users where estado=?";
             try {
                 $estado = $this->enable();
                 
@@ -518,7 +613,7 @@ Class User extends EncryptToken{
 
         public function BuscarUsuarios($context, $config) {
             
-            $sql = "select * from user where nombre LIKE ? OR usuario LIKE ? limit 50";
+            $sql = "select * from users where nombre LIKE ? OR usuario LIKE ? limit 50";
             $cargar = $this->conection->prepare($sql);
             
             if (!$cargar) {
@@ -568,7 +663,7 @@ Class User extends EncryptToken{
         public function ActivarUsuario($msj=false){
 
             $estado ='activo';
-            $sql = "update user set estado=? where id_user=?";
+            $sql = "update users set estado=? where id_user=?";
 			
             try{
                 $cargado = $this->conection->prepare($sql);
@@ -592,7 +687,7 @@ Class User extends EncryptToken{
         public function DesactivarUsuario($msj=false){
 
             $estado ='inactivo';
-            $sql = "update user set estado=? where id_user=?";
+            $sql = "update users set estado=? where id_user=?";
 			
             try{
 

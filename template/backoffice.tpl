@@ -78,6 +78,12 @@
 
         {else if $option=='reportes'}    
             {include file='back_office_components/modulo_reportes.tpl'}
+        
+        {else if $option=='monitoreo_rabbitmq'}    
+            {include file='back_office_components/modulo_rabbitmq.tpl'}
+        
+        {else if $option=='estilos'}    
+            {include file='back_office_components/modulo_estilos.tpl'}
         {/if}
 
 </div>

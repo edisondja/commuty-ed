@@ -48,16 +48,34 @@
             $guardar = $this->conection->prepare($sql);
            
             try {
-                move_uploaded_file($ruta_temp, $guardar_como);
-                $ruta_portada = str_replace('..', '', $guardar_como);
-                $guardar->bind_param('si', $ruta_portada, $id_tablero);
-                $guardar->execute();
+                // Asegurar que el directorio existe
+                $dir = dirname($guardar_como);
+                if (!is_dir($dir)) {
+                    @mkdir($dir, 0777, true);
+                }
+                
+                // Intentar mover el archivo
+                if (move_uploaded_file($ruta_temp, $guardar_como)) {
+                    $ruta_portada = str_replace('..', '', $guardar_como);
+                    $guardar->bind_param('si', $ruta_portada, $id_tablero);
+                    $guardar->execute();
+                } else {
+                    // Si falla, intentar con ruta absoluta
+                    $abs_path = __DIR__ . '/../' . ltrim($guardar_como, './');
+                    if (move_uploaded_file($ruta_temp, $abs_path)) {
+                        $ruta_portada = str_replace('..', '', $guardar_como);
+                        $guardar->bind_param('si', $ruta_portada, $id_tablero);
+                        $guardar->execute();
+                    } else {
+                        throw new Exception("No se pudo mover el archivo. Verifique permisos del directorio: " . $dir);
+                    }
+                }
 
             } catch (Exception $e) {
 
                 $fecha = date('ymdis');
 
-                $this->TrackingLog($fecha.' No se puedo asignar la portada '.$e,'errores');
+                $this->TrackingLog($fecha.' No se puedo asignar la portada '.$e->getMessage(),'errores');
             }
         }
 
@@ -69,10 +87,12 @@
 
             $configuracion = $this->config->cargar_configuracion('asoc');
 
-            if ($configuracion->publicar_sin_revision == 'SI') {
+            // Si no hay configuración o publicar_sin_revision no está en 'SI', usar 'activo' por defecto
+            if ($configuracion && isset($configuracion->publicar_sin_revision) && $configuracion->publicar_sin_revision == 'SI') {
                 $estado = $this->enable();
             } else {
-                $estado = $this->disable();
+                // Por defecto, publicar como activo si no hay configuración
+                $estado = $this->enable();
             }
 
             // Insertar tablero en la base de datos
@@ -257,16 +277,21 @@
         public function cargar_solo_tablero($id_tablero,$config='asoc')
         {
          
-            $sql = "SELECT * FROM tableros INNER JOIN user
-             ON tableros.id_usuario = user.id_user 
+            $sql = "SELECT * FROM tableros INNER JOIN users
+             ON tableros.id_usuario = users.id_user 
             WHERE id_tablero = ?";
             $cargado = $this->conection->prepare($sql);
             $cargado->bind_param('i', $id_tablero);
             $cargado->execute();
-            $data = $cargado->get_result();
+            $result = $cargado->get_result();
             $cargado->close();
         
-            $data = mysqli_fetch_object($data);
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                $data = $result->fetch_object();
+            } else {
+                $data = mysqli_fetch_object($result);
+            }
          
             if ($config == 'json') {
                 echo json_encode($data);
@@ -281,8 +306,8 @@
             $this->conection;
             $estado = $this->enable();
             $estado2 = $this->banned();
-            $sql = 'SELECT * FROM tableros INNER JOIN user
-             ON tableros.id_usuario = user.id_user 
+            $sql = 'SELECT * FROM tableros INNER JOIN users
+             ON tableros.id_usuario = users.id_user 
             WHERE id_tablero = ? AND  tableros.estado = ?
             OR tableros.estado=? 
             ';
@@ -338,24 +363,46 @@
                 case 'paginar_general':
 
                     $sql = 'select * from tableros t
-                    inner join user u on  t.id_usuario=u.id_user
+                    inner join users u on  t.id_usuario=u.id_user
                     where t.estado=? order by id_tablero desc limit ?,?';
                     $cargar = $this->conection->prepare($sql);
                     $cargar->bind_param('sii', $estado, $inicio, $fin);
                     $cargar->execute();
-                    $data = $cargar->get_result();
+                    $result = $cargar->get_result();
+                    // Convertir a array para compatibilidad con PHP 7.2 y PHP 8+
+                    $data = [];
+                    if (PHP_VERSION_ID >= 80000) {
+                        foreach ($result as $row) {
+                            $data[] = $row;
+                        }
+                    } else {
+                        while ($row = $result->fetch_assoc()) {
+                            $data[] = $row;
+                        }
+                    }
                 
                 break;
 
                 case 'paginar_usuario':
 
                     $sql = 'select * from tableros t
-                    inner join user u on  t.id_usuario=u.id_user
+                    inner join users u on  t.id_usuario=u.id_user
                     where t.estado=? and t.id_usuario=? order by id_tablero desc limit ?,?';
                     $cargar = $this->conection->prepare($sql);
                     $cargar->bind_param('siii', $estado,$user_id,$inicio, $fin);
                     $cargar->execute();
-                    $data = $cargar->get_result();
+                    $result = $cargar->get_result();
+                    // Convertir a array para compatibilidad con PHP 7.2 y PHP 8+
+                    $data = [];
+                    if (PHP_VERSION_ID >= 80000) {
+                        foreach ($result as $row) {
+                            $data[] = $row;
+                        }
+                    } else {
+                        while ($row = $result->fetch_assoc()) {
+                            $data[] = $row;
+                        }
+                    }
 
 
                 break;
@@ -367,6 +414,7 @@
                         favoritos, que el usuario guardo como preferencias
                         
                     */
+                    $data = [];
 
                 break;
             }
@@ -390,7 +438,7 @@
                     SELECT t.descripcion,t.fecha_creacion,t.tipo_tablero,
                     t.imagen_tablero,u.foto_url,u.usuario,t.estado,t.id_tablero
                     FROM tableros as t
-                    INNER JOIN user as u ON t.id_usuario = u.id_user 
+                    INNER JOIN users as u ON t.id_usuario = u.id_user 
                     WHERE t.titulo LIKE ? OR t.descripcion LIKE ?
                     order by t.fecha_creacion desc
                     LIMIT 8
@@ -399,7 +447,7 @@
             } else {
                 $data = $this->conection->prepare('
                     SELECT * FROM tableros as t
-                    INNER JOIN user as u ON t.id_usuario = u.id_user 
+                    INNER JOIN users as u ON t.id_usuario = u.id_user 
                     WHERE (t.titulo LIKE ? OR t.descripcion LIKE ?) 
                     AND t.estado = ? order by t.fecha_creacion desc
                     LIMIT 8
@@ -464,27 +512,51 @@
             if ($tipo_a == 'jpeg' || $tipo_a == 'png') {
                 $tipo_asset = 'imagen';
                 $guardar_como = "../imagenes_tablero/$fecha_a$titulo_de_assets.jpg";
+                
+                // Asegurar que el directorio existe
+                $dir = dirname($guardar_como);
+                if (!is_dir($dir)) {
+                    @mkdir($dir, 0777, true);
+                }
+                
                 sleep(1);
+                
+                // Intentar mover el archivo
                 if (!move_uploaded_file($url_temp, $guardar_como)) {
-                    //echo "Error al mover el archivo a $guardar_como";
-
-                    return;
+                    // Intentar con ruta absoluta
+                    $abs_path = __DIR__ . '/../' . ltrim($guardar_como, './');
+                    if (!move_uploaded_file($url_temp, $abs_path)) {
+                        $this->TrackingLog(date('ymdis').' Error al mover imagen: ' . $guardar_como, 'errores');
+                        return;
+                    }
                 }
             } elseif ($tipo_a == 'mp4' || $tipo_a == 'webm' || $tipo_a == 'avi') {
                 $tipo_asset = 'video';
-                $guardar_como = "../videos/$fecha_a$titulo_de_assets.mp4";
+                
+                // Asegurar que el directorio videos existe
+                $videos_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'videos';
+                if (!is_dir($videos_dir)) {
+                    @mkdir($videos_dir, 0777, true);
+                }
+                @chmod($videos_dir, 0777);
+                
+                $guardar_como = $videos_dir . DIRECTORY_SEPARATOR . $fecha_a . $titulo_de_assets . '.mp4';
                 sleep(1);
-                if (!move_uploaded_file($url_temp, $guardar_como)) {
-                    //echo "Error al mover el archivo a $guardar_como";
-
-                    $this->TrackingLog(date('ymdis').' No se puedo asignar la portada '.$e,'errores');
+                
+                if (!@move_uploaded_file($url_temp, $guardar_como)) {
+                    $error = error_get_last();
+                    $errorMsg = $error ? $error['message'] : 'Error desconocido al mover el archivo';
+                    $this->TrackingLog(date('ymdis') . ' No se pudo asignar el video: ' . $errorMsg, 'errores');
                     return;
                 }
+                
+                // Establecer permisos en el archivo
+                @chmod($guardar_como, 0666);
+                
+                // Actualizar guardar_como para usar ruta relativa en la base de datos
+                $guardar_como = '/videos/' . $fecha_a . $titulo_de_assets . '.mp4';
             } else {
-
-                echo 'Lo sentimos este tipo de archivo no esta permitido';
-                $this->TrackingLog(date('ymdis').' No se puedo asignar la portada '.$e,'errores');
-
+                $this->TrackingLog(date('ymdis') . ' Tipo de archivo no permitido: ' . $tipo_a, 'errores');
             }
 
             //$guardar_como = str_replace('../','',$guardar_como);
@@ -511,18 +583,48 @@
 
         public function cargar_tablerosx($id_usuario = 'general', $opcion = 'json')
         {
-            $this->conection;
+            // Asegurar que la conexión esté disponible y sea válida
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->SetConection();
+            }
+            
+            // Si aún no hay conexión válida, crear una nueva
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->conection = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                if ($this->conection->connect_error) {
+                    throw new Exception("Error de conexión: " . $this->conection->connect_error);
+                }
+                $this->conection->set_charset("utf8mb4");
+            }
+            
+            // Verificar que la conexión esté activa
+            if (!$this->conection) {
+                throw new Exception("No se pudo establecer la conexión a la base de datos");
+            }
+            
             $estatus = $this->enable();
+            $estatus_baneado = $this->banned();
 
             if ($id_usuario == 'general') {
-                $sql = 'select * from tableros inner join user on 
-                tableros.id_usuario=user.id_user 
-                where tableros.estado=? order by id_tablero desc limit 8';
+                // Mostrar tableros activos e inactivos (pero no baneados)
+                $sql = 'SELECT * FROM tableros INNER JOIN users ON 
+                tableros.id_usuario=users.id_user 
+                WHERE (tableros.estado=? OR tableros.estado=?) AND tableros.estado!=? 
+                ORDER BY id_tablero DESC LIMIT 8';
                 $cargado = $this->conection->prepare($sql);
-                $cargado->bind_param('s', $estatus);
+                if ($cargado === false) {
+                    $error_msg = 'Error al preparar la consulta: ' . $this->conection->error . ' | SQL: ' . $sql;
+                    throw new Exception($error_msg);
+                }
+                $estatus_inactivo = $this->disable();
+                $cargado->bind_param('sss', $estatus, $estatus_inactivo, $estatus_baneado);
             } else {
-                $sql = 'select * from tableros  inner join user on tableros.id_usuario=user.id_user where id_usuario=? and tableros.estado=? order by id_tablero desc limit 8';
+                $sql = 'SELECT * FROM tableros INNER JOIN users ON tableros.id_usuario=users.id_user WHERE id_usuario=? AND tableros.estado=? ORDER BY id_tablero DESC LIMIT 8';
                 $cargado = $this->conection->prepare($sql);
+                if ($cargado === false) {
+                    $error_msg = 'Error al preparar la consulta: ' . $this->conection->error . ' | SQL: ' . $sql;
+                    throw new Exception($error_msg);
+                }
                 $cargado->bind_param('is', $id_usuario, $estatus);
             }
 
@@ -530,10 +632,23 @@
                 $cargado->execute();
                 $data = $cargado->get_result();
                 $cargado->close();
+                
+                // Compatible con PHP 7.2 y PHP 8+
                 $json = [];
-                foreach ($data as $key) {
-                    $json[] = $key;
+                if ($data instanceof mysqli_result) {
+                    // PHP 8+ soporta foreach directamente, PHP 7.2 necesita fetch_assoc
+                    if (PHP_VERSION_ID >= 80000) {
+                        foreach ($data as $key) {
+                            $json[] = $key;
+                        }
+                    } else {
+                        // PHP 7.2
+                        while ($row = $data->fetch_assoc()) {
+                            $json[] = $row;
+                        }
+                    }
                 }
+                
                 if ($opcion == 'json') {
                     echo json_encode($json);
                 } else {
@@ -543,9 +658,30 @@
 
             }catch(Exception $e){
 
-                $this->TrackingLog(date('ymdis').'Error cargando tableros '.$e,'errores');
+                $this->TrackingLog(date('ymdis').'Error cargando tableros '.$e->getMessage(),'errores');
+                return [];
 
             }
+        }
+        
+        /**
+         * Método para verificar y activar tableros inactivos si es necesario
+         * Útil para debugging
+         */
+        public function contar_tableros_por_estado() {
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->SetConection();
+            }
+            
+            $sql = "SELECT estado, COUNT(*) as total FROM tableros GROUP BY estado";
+            $result = $this->conection->query($sql);
+            $estados = [];
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $estados[$row['estado']] = $row['total'];
+                }
+            }
+            return $estados;
         }
 
         public function eliminar_multimedia_de_tablero($id_multimediar)
@@ -581,11 +717,18 @@
             $cargar = $this->conection->prepare($sql);
             $cargar->bind_param('is', $id_tablero, $estado);
             $cargar->execute();
-            $data = $cargar->get_result();
+            $result = $cargar->get_result();
             $cargar->close();
             $datos = [];
-            foreach ($data as $key) {
-                $datos[] = $key;
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                foreach ($result as $key) {
+                    $datos[] = $key;
+                }
+            } else {
+                while ($row = $result->fetch_assoc()) {
+                    $datos[] = $row;
+                }
             }
             if ($config == 'json') {
                 echo json_encode($datos);
@@ -629,7 +772,8 @@
                 $ruta_temporal = rtrim(trim($ruta_temporal), '.');
             }
 
-            echo "Enviando multimedia a procesar para Board: $board_id...\n";
+            // Log en lugar de echo para no interferir con JSON
+            $this->TrackingLog("Enviando multimedia a procesar para Board: $board_id", 'eventos');
 
             $url =  DOMAIN."/producer_service.php";
 

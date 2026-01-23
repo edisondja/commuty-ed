@@ -39,9 +39,15 @@
                 <p class="description-text" id="text{$tablero.id_tablero}">{$tablero.descripcion}</p>
             
                 {if $tablero.imagen_tablero!==''}
-                    <div class='content_image'>
+                    <div class='content_image board-image-container' 
+                         data-preview="{$tablero.preview_tablero|default:''}" 
+                         data-image="{$tablero.imagen_tablero}"
+                         data-has-preview="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}true{else}false{/if}">
                     <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
-                        <img src="{$dominio}/{$tablero.imagen_tablero}" class="card-img-top board-image" alt="...">
+                        <img src="{$dominio}/{$tablero.imagen_tablero}" 
+                             class="card-img-top board-image board-main-image" 
+                             alt="..."
+                             data-preview-src="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}{$dominio}/{$tablero.preview_tablero}{else}{/if}">
                      </a>
                      </div>
                 {/if}
@@ -51,13 +57,22 @@
                 <div style="float:right">
                     <i class="fa-solid fa-thumbs-up" style="display:none"></i>
                     <i class="fa-solid fa-bookmark" style="display:none"></i>
-                    <i class="fa-regular fa-share-from-square share-icon" style="cursor:pointer"></i>
-                    <i class="fa-regular fa-thumbs-up like-icon" style="cursor:pointer"></i>
-                    <i class="fa-regular fa-comment-dots comment-icon" style="cursor:pointer"></i>
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="cursor:pointer"></i>
+                    <i class="fa-regular fa-share-from-square share-icon" 
+                       data-tablero="{$tablero.id_tablero}" 
+                       style="cursor:pointer" 
+                       title="Compartir"></i>
+                    <i class="fa-regular fa-thumbs-up like-icon" 
+                       data-tablero="{$tablero.id_tablero}" 
+                       style="cursor:pointer" 
+                       title="Me gusta"></i>
+                    <i class="fa-regular fa-comment-dots comment-icon" 
+                       data-tablero="{$tablero.id_tablero}" 
+                       style="cursor:pointer" 
+                       title="Comentar"></i>
+                    <i class="fa-regular fa-bookmark bookmark-icon" style="cursor:pointer" title="Guardar"></i>
                     {if $user_session!=''}
                         {if $id_user==$tablero.id_user}
-                            <i class="fa fa-trash delete-icon" data-value="{$tablero.id_tablero}" style="cursor: pointer;" aria-hidden="true"></i>
+                            <i class="fa fa-trash delete-icon" data-value="{$tablero.id_tablero}" style="cursor: pointer;" aria-hidden="true" title="Eliminar"></i>
                         {/if}
                     {/if}
                 </div>
@@ -107,12 +122,53 @@
     margin-top: 5px;
 }
 
+.board-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
 .board-image {
     object-fit: cover;
     width: 100%;
     max-height: 300px;
     border-radius: 5px;
-    margin-top: 5px;
+    transition: opacity 0.3s ease;
+    display: block;
+}
+
+.board-image-container:hover .board-main-image,
+.board-image-container.touch-active .board-main-image {
+    opacity: 0;
+}
+
+.board-image-container[data-has-preview="true"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.board-image-container[data-has-preview="true"]:hover::after,
+.board-image-container[data-has-preview="true"].hover-active::after,
+.board-image-container[data-has-preview="true"].touch-active::after {
+    opacity: 1;
+}
+
+.board-image-container[data-has-preview="true"] .board-main-image {
+    position: relative;
+    z-index: 0;
 }
 
 .footer-icons i {

@@ -136,8 +136,13 @@ Class Like extends EncryptToken{
                 $estado
             );
             $data->execute();
-            $likes_count = $data->get_result();
-            $likes_count = mysqli_fetch_object($likes_count);
+            $result = $data->get_result();
+            // Compatible con PHP 7.2 y PHP 8+
+            if (PHP_VERSION_ID >= 80000) {
+                $likes_count = $result->fetch_object();
+            } else {
+                $likes_count = mysqli_fetch_object($result);
+            }
 
             if($config=='json'){
 

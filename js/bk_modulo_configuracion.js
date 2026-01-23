@@ -94,7 +94,7 @@
             FormDatas.append('logo_sitio',logo_sitio);
             FormDatas.append('descripcion_sitio',descripcion_sitio);
             FormDatas.append('copyright_descripcion',copyright_descripcion);
-            FormDatas.append('pagina_descripcion',copyright_descripcion);
+            FormDatas.append('pagina_descripcion',pagina_descripcion);
             FormDatas.append('email_sitio',email_sitio);
             FormDatas.append('busqueda_descripcion',busqueda_descripcion);
             FormDatas.append('titulo_descripcion',titulo_descripcion);
@@ -115,16 +115,47 @@
 
             axios.post(api_config,
                 FormDatas,
-                config).then(data=>{
-                alertify.message(data.data);
-                console.log(data.data);
+                config).then(response=>{
+                // Manejar respuesta JSON o texto
+                let data = response.data;
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data);
+                    } catch (e) {
+                        // Si no es JSON, mostrar el mensaje directamente
+                        alertify.success(data);
+                        cagar_configuracion();
+                        return;
+                    }
+                }
+                
+                if (data.success) {
+                    alertify.success(data.message || 'Configuración guardada correctamente');
+                } else {
+                    alertify.error(data.message || 'Error al guardar la configuración');
+                }
+                
+                console.log(data);
                 cagar_configuracion();
 
             }).catch(error=>{
-
-                alertify.message('Error actualizando sitio');
-                console.log(error);
-
+                console.error('Error:', error);
+                let errorMsg = 'Error actualizando sitio';
+                
+                if (error.response && error.response.data) {
+                    if (typeof error.response.data === 'string') {
+                        try {
+                            const errorData = JSON.parse(error.response.data);
+                            errorMsg = errorData.message || errorMsg;
+                        } catch (e) {
+                            errorMsg = error.response.data.substring(0, 100);
+                        }
+                    } else if (error.response.data.message) {
+                        errorMsg = error.response.data.message;
+                    }
+                }
+                
+                alertify.error(errorMsg);
             });
 
 

@@ -31,7 +31,7 @@ CREATE TABLE configuracion (
 );
 
 -- Tabla de usuarios
-CREATE TABLE user (
+CREATE TABLE users (
   id_user INT PRIMARY KEY AUTO_INCREMENT,
   bio TEXT,
   nombre VARCHAR(100),
@@ -57,7 +57,7 @@ CREATE TABLE tableros (
   tipo_tablero VARCHAR(10),
   imagen_tablero VARCHAR(120) DEFAULT NULL,
   preview_tablero VARCHAR(120) DEFAULT NULL,
-  FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE
+  FOREIGN KEY (id_usuario) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
 -- Tabla de multimedia asignada a tableros
@@ -85,7 +85,7 @@ CREATE TABLE comentario (
   fecha_publicacion DATETIME,
   tipo_comentario VARCHAR(10),
   tipo_post VARCHAR(255) NOT NULL,
-  FOREIGN KEY (usuario_id) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (usuario_id) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE
 );
 
@@ -96,19 +96,19 @@ CREATE TABLE action_coment (
   id_coment INT,
   id_user INT,
   fecha_creacion DATETIME,
-  FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (id_coment) REFERENCES comentario(id_comentario) ON DELETE CASCADE
 );
 
 -- Tabla de respuestas en comentarios
 CREATE TABLE reply_coment (
-  id_reply_id INT PRIMARY KEY AUTO_INCREMENT,
+  id_reply INT PRIMARY KEY AUTO_INCREMENT,
   text_coment TEXT,
   estado VARCHAR(15),
   user_id INT,
   coment_id INT,
   fecha_creacion DATETIME,
-  FOREIGN KEY (user_id) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (coment_id) REFERENCES comentario(id_comentario) ON DELETE CASCADE
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE favoritos (
   id_favorito INT PRIMARY KEY AUTO_INCREMENT,
   id_post INT,
   id_usuario INT,
-  FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE
+  FOREIGN KEY (id_usuario) REFERENCES users(id_user) ON DELETE CASCADE
   -- Asegúrate de que la tabla 'posts' esté creada y 'id_post' sea una columna válida
 );
 
@@ -152,7 +152,7 @@ CREATE TABLE views (
   id_usuario INT,
   cantidad INT DEFAULT NULL,
   FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE,
-  FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE
+  FOREIGN KEY (id_usuario) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
 -- Tabla de botones de menú
@@ -170,7 +170,7 @@ CREATE TABLE reportes (
   estado VARCHAR(15),
   id_usuario INT, 
   id_board INT,
-  FOREIGN KEY (id_usuario) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (id_board) REFERENCES tableros(id_tablero)
 );
 
@@ -190,8 +190,8 @@ CREATE TABLE notificacion (
   fecha DATETIME,
   tipo VARCHAR(50),
   estado VARCHAR(15),
-  FOREIGN KEY (id_usuario_emisor) REFERENCES user(id_user) ON DELETE CASCADE,
-  FOREIGN KEY (id_usuario_receptor) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario_emisor) REFERENCES users(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_usuario_receptor) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE
 );
 
@@ -201,7 +201,7 @@ CREATE TABLE ads (
   titulo VARCHAR(200),
   descripcion TEXT,
   id_user  INT,
-  FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
   imagen_ruta VARCHAR(250),
   tipo VARCHAR(30),
   script_banner TEXT,
@@ -218,6 +218,6 @@ CREATE TABLE likes (
   id_tablero INT,
   estado VARCHAR(50),
   fecha_like DATETIME,
-  FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE,
+  FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE,
   FOREIGN KEY (id_tablero) REFERENCES tableros(id_tablero) ON DELETE CASCADE
 );

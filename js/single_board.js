@@ -201,11 +201,20 @@ function interface_comentarios_hijos(data, id_coment_master) {
 
     let child_comments = `<ul id='comments_child${id_coment_master}'>`;
     let btn_eliminar;
-    data.forEach(key => {
-
-        child_comments += Component_comentario_hijo(key);
-
-    });
+    
+    console.log('interface_comentarios_hijos - data recibida:', data);
+    console.log('interface_comentarios_hijos - id_coment_master:', id_coment_master);
+    
+    // Asegurar que data sea un array
+    if (Array.isArray(data) && data.length > 0) {
+        console.log('Procesando', data.length, 'comentarios hijos');
+        data.forEach(key => {
+            console.log('Procesando comentario hijo:', key);
+            child_comments += Component_comentario_hijo(key);
+        });
+    } else {
+        console.log('No hay comentarios hijos o data no es un array:', data);
+    }
 
     return child_comments += `</ul>`;
 
@@ -244,14 +253,73 @@ function cargar_comentarios(id_tablero) {
         .then(info => {
             //console.log("DEBUG "+data.info.comentarios_hijos);
 
-            console.log('Datos recibidos:', info.data); // Verifica los datos recibidos
+            console.log('Datos recibidos (raw):', info.data);
+            console.log('Tipo de datos:', typeof info.data);
 
+            // Validar que la respuesta sea un array
+            let comentarios = [];
+            if (Array.isArray(info.data)) {
+                comentarios = info.data;
+            } else if (typeof info.data === 'string') {
+                try {
+                    const parsed = JSON.parse(info.data);
+                    comentarios = Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                    comentarios = [];
+                }
+            } else if (info.data && Array.isArray(info.data.data)) {
+                comentarios = info.data.data;
+            } else if (info.data && typeof info.data === 'object') {
+                // Si es un objeto, intentar extraer el array
+                if (Array.isArray(info.data.comentarios)) {
+                    comentarios = info.data.comentarios;
+                }
+            }
+
+            console.log('Comentarios procesados:', comentarios);
+            console.log('Total comentarios:', comentarios.length);
+
+            if (comentarios.length === 0) {
+                console.log('No hay comentarios disponibles');
+                return;
+            }
 
             let domain;
-            info.data.forEach(data => {
+            comentarios.forEach(data => {
 
-
-                let childs_comments = interface_comentarios_hijos(data.comentarios_hijos, data.id_comentario);
+                // Asegurar que comentarios_hijos sea un array
+                let comentarios_hijos = [];
+                
+                // Verificar si comentarios_hijos existe y tiene datos
+                if (data.comentarios_hijos !== undefined && data.comentarios_hijos !== null) {
+                    if (Array.isArray(data.comentarios_hijos)) {
+                        comentarios_hijos = data.comentarios_hijos;
+                    } else if (typeof data.comentarios_hijos === 'object') {
+                        // Si es un objeto, convertirlo a array
+                        const keys = Object.keys(data.comentarios_hijos);
+                        if (keys.length > 0) {
+                            // Si las keys son numéricas, es un array-like object
+                            const isNumericKeys = keys.every(k => !isNaN(parseInt(k)));
+                            if (isNumericKeys) {
+                                comentarios_hijos = keys.map(k => data.comentarios_hijos[k]).filter(v => v !== null && v !== undefined);
+                            } else {
+                                comentarios_hijos = Object.values(data.comentarios_hijos).filter(v => v !== null && v !== undefined);
+                            }
+                        }
+                    } else if (typeof data.comentarios_hijos === 'string' && data.comentarios_hijos.trim() !== '') {
+                        // Si viene como string JSON, parsearlo
+                        try {
+                            const parsed = JSON.parse(data.comentarios_hijos);
+                            comentarios_hijos = Array.isArray(parsed) ? parsed : [parsed];
+                        } catch (e) {
+                            console.error('Error parsing comentarios_hijos JSON:', e);
+                        }
+                    }
+                }
+                
+                // Generar HTML de comentarios hijos
+                let childs_comments = interface_comentarios_hijos(comentarios_hijos, data.id_comentario);
 
                 if (data.data_og !== "[]") {
                     data_ogs = JSON.parse(data.data_og);
@@ -342,50 +410,45 @@ function cargar_comentarios(id_tablero) {
 
 
 
-let enviar_comentario = document.getElementById('send_coment');
-
-cargar_comentarios(id_tablero);
-
-
-
-enviar_comentario.addEventListener("click", () => {
-
-
-
-    let texto_comentario = document.querySelector('#text_coment').value;
-
-
-    if (texto_comentario !== '') {
-
-
-        comentarios.unshift({
-            usuario: usuario,
-            texto: texto_comentario,
-            foto_url: foto_url
-
-        });
-
-        // cargar_comentarios(id_tablero,'board');
-
-        if (action_comment == 'reply') {
-            //add_reply_comment(id_usuario);
-            let text_coment = document.querySelector('.textComent').value;
-
-            reply_coment(id_coment, text_coment, id_usuario);
-            //cargar_comentarios(id_tablero);
-
-            action_comment = 'normal';
-
-        } else {
-            guardar_comentario(id_usuario, id_tablero, texto_comentario, 'board');
-        }
-
-
-        document.querySelector('#text_coment').value = '';
-
+// Inicializar sistema de comentarios
+document.addEventListener('DOMContentLoaded', function() {
+    const enviar_comentario = document.getElementById('send_coment');
+    let id_tablero = null;
+    
+    // Intentar obtener id_tablero de diferentes formas
+    const idTableroEl = document.getElementById('id_tablero');
+    if (idTableroEl) {
+        id_tablero = idTableroEl.value;
+    } else if (typeof window.id_tablero !== 'undefined') {
+        id_tablero = window.id_tablero;
+    } else {
+        // Intentar obtener de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        id_tablero = urlParams.get('id');
     }
 
+    if (enviar_comentario && id_tablero) {
+        // Cargar comentarios al iniciar
+        cargarComentarios(id_tablero);
 
+        // Evento para enviar comentario
+        enviar_comentario.addEventListener("click", () => {
+            enviarComentario(id_tablero);
+        });
+
+        // Permitir enviar con Enter
+        const textField = document.querySelector('.textComent');
+        if (textField) {
+            textField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    enviarComentario(id_tablero);
+                }
+            });
+        }
+    } else {
+        console.warn('No se pudo inicializar el sistema de comentarios: elementos no encontrados');
+    }
 });
 
 
