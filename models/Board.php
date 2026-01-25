@@ -19,64 +19,91 @@
             $this->SetConection();
         }
 
+        /**
+         * Procesa una imagen: la guarda, la asigna como portada (si es la primera) 
+         * y la registra en asignar_multimedia_t
+         * @return string|null Ruta donde se guardó la imagen, o null si falló
+         */
+        public function procesar_imagen($tipo_archivo, $id_tablero, $archivo_temp, $titulo)
+        {
+            // Solo procesar imágenes
+            if (!in_array($tipo_archivo, ['jpeg', 'png', 'gif', 'webp'])) {
+                return null;
+            }
+            
+            // Asegurar conexión
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->SetConection();
+            }
+            
+            $fecha = new DateTime();
+            $fecha_a = $fecha->getTimestamp();
+            $estado = $this->enable();
+            $titulo_limpio = $this->titleList($this->limitarTexto($titulo));
+            
+            // Directorio de imágenes (ruta absoluta)
+            $img_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'imagenes_tablero';
+            if (!is_dir($img_dir)) {
+                @mkdir($img_dir, 0777, true);
+            }
+            @chmod($img_dir, 0777);
+            
+            // Nombre del archivo
+            $nombre_archivo = $fecha_a . $titulo_limpio . '.jpg';
+            $ruta_absoluta = $img_dir . DIRECTORY_SEPARATOR . $nombre_archivo;
+            
+            // Ruta relativa para guardar en BD (sin ../)
+            $ruta_relativa = 'imagenes_tablero/' . $nombre_archivo;
+            
+            // Mover el archivo
+            if (!@move_uploaded_file($archivo_temp, $ruta_absoluta)) {
+                $this->TrackingLog(date('ymdis').' Error al mover imagen: ' . $ruta_absoluta, 'errores');
+                return null;
+            }
+            
+            @chmod($ruta_absoluta, 0666);
+            
+            // Si es la primera imagen, usarla como PORTADA del tablero
+            if ($this->portada_board == false) {
+                $sql = 'UPDATE tableros SET imagen_tablero = ? WHERE id_tablero = ?';
+                $stmt = $this->conection->prepare($sql);
+                if ($stmt) {
+                    $stmt->bind_param('si', $ruta_relativa, $id_tablero);
+                    $stmt->execute();
+                    $stmt->close();
+                    $this->TrackingLog(date('ymdis').'Portada asignada: ' . $ruta_relativa, 'eventos');
+                }
+                $this->portada_board = true;
+            }
+            
+            // Guardar en asignar_multimedia_t
+            $sql = 'INSERT INTO asignar_multimedia_t (id_tablero, ruta_multimedia, tipo_multimedia, estado) VALUES (?, ?, ?, ?)';
+            $tipo_asset = 'imagen';
+            try {
+                $stmt = $this->conection->prepare($sql);
+                if ($stmt) {
+                    $stmt->bind_param('isss', $id_tablero, $ruta_relativa, $tipo_asset, $estado);
+                    $stmt->execute();
+                    $stmt->close();
+                    $this->TrackingLog(date('ymdis').'Imagen guardada en multimedia: ' . $ruta_relativa, 'eventos');
+                }
+            } catch(Exception $e) {
+                $this->TrackingLog(date('ymdis').'Error al guardar imagen en multimedia: '.$e, 'errores');
+            }
+            
+            return $ruta_relativa;
+        }
+        
+        // Funciones legacy (mantener por compatibilidad)
         public function detectar_imagen_portada($portada, $id_tablero, $archivo_temp)
         {
-         //   echo ' PORTADA LEIDA ' || $portada;
-
-            if ($portada == 'jpeg' || $portada == 'png') {
-                if ($this->portada_board == false) {
-                    /*la primera imagen que encuentre
-                        se le pondra de portada al
-                    */
-                    $fecha = new DateTime();
-                    $estado = $this->enable();
-                    $fecha_a = $fecha->getTimestamp();
-                    $guardar_c = "../imagenes_tablero/$fecha_a.jpg";
-                    $this->asignar_portada_tablero(
-                        $id_tablero,
-                        $archivo_temp,
-                        $guardar_c
-                    );
-                    $this->portada_board = true;
-                }
-            }
+            // Redirigir a la nueva función
+            return $this->procesar_imagen($portada, $id_tablero, $archivo_temp, $this->description ?? '');
         }
 
         public function asignar_portada_tablero($id_tablero, $ruta_temp, $guardar_como)
         {
-            $sql = 'update tableros set imagen_tablero=? where id_tablero=?';
-            $guardar = $this->conection->prepare($sql);
-           
-            try {
-                // Asegurar que el directorio existe
-                $dir = dirname($guardar_como);
-                if (!is_dir($dir)) {
-                    @mkdir($dir, 0777, true);
-                }
-                
-                // Intentar mover el archivo
-                if (move_uploaded_file($ruta_temp, $guardar_como)) {
-                    $ruta_portada = str_replace('..', '', $guardar_como);
-                    $guardar->bind_param('si', $ruta_portada, $id_tablero);
-                    $guardar->execute();
-                } else {
-                    // Si falla, intentar con ruta absoluta
-                    $abs_path = __DIR__ . '/../' . ltrim($guardar_como, './');
-                    if (move_uploaded_file($ruta_temp, $abs_path)) {
-                        $ruta_portada = str_replace('..', '', $guardar_como);
-                        $guardar->bind_param('si', $ruta_portada, $id_tablero);
-                        $guardar->execute();
-                    } else {
-                        throw new Exception("No se pudo mover el archivo. Verifique permisos del directorio: " . $dir);
-                    }
-                }
-
-            } catch (Exception $e) {
-
-                $fecha = date('ymdis');
-
-                $this->TrackingLog($fecha.' No se puedo asignar la portada '.$e->getMessage(),'errores');
-            }
+            // Esta función ya no se usa, se mantiene por compatibilidad
         }
 
     public function guardar_tablero()
@@ -103,24 +130,11 @@
             $stmt->execute();
             $last_id = $this->conection->insert_id;
             $stmt->close();
-            // Validar tipo de archivo permitido
-            $allowed_types = ['image/jpeg', 'image/png', 'video/mp4'];
-
-            // Enviar multimedia a procesar
-            if (isset($_FILES['media']['type'])) {
-
-                $tipo = $_FILES['media']['type'];
-
-                if($tipo=='video/mp4') {
-                    $this->enviar_a_procesar_multimedia($_FILES['media']['tmp_name'], $tipo, $last_id);
-                } 
-
-            }else if(isset($_POST['media'])){
-
-                $this->enviar_a_procesar_multimedia($_POST['media'], 'transfer_video', $last_id);
-            }
-
             
+            // Tipos de archivo permitidos
+            $allowed_images = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $allowed_videos = ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm', 'video/x-matroska', 'video/avi'];
+            $allowed_types = array_merge($allowed_images, $allowed_videos);
 
             // Procesar archivos subidos si existen
             if (isset($_FILES['media']['tmp_name'])) {
@@ -133,31 +147,22 @@
                     $tmp_name = is_array($_FILES['media']['tmp_name']) ? $_FILES['media']['tmp_name'][$i] : $_FILES['media']['tmp_name'];
                     $type     = is_array($_FILES['media']['type']) ? $_FILES['media']['type'][$i] : $_FILES['media']['type'];
                     
-
-                    if (!in_array($type, $allowed_types)) continue;
+                    // Saltar archivos vacíos o no permitidos
+                    if (empty($tmp_name) || !in_array($type, $allowed_types)) continue;
 
                     $tipo_archivo = $this->detectar_archivo($type);
                     
-                    if($type=='image/jpeg' || $type=='image/png'){
-                        // Si es imagen, comprimir antes de enviar
-                        $this->detectar_imagen_portada($tipo_archivo, $last_id, $tmp_name);
-                    }else if ($type=='video/mp4'){
-                        // Si es video, detectar portada
-                        $this->enviar_a_procesar_multimedia($_FILES['media']['tmp_name'][$i], $tipo_archivo, $last_id);
+                    if (in_array($type, $allowed_images)) {
+                        // IMÁGENES: guardar, asignar portada (primera) y registrar en asignar_multimedia_t
+                        $this->procesar_imagen($tipo_archivo, $last_id, $tmp_name, $this->description);
+                    } elseif (in_array($type, $allowed_videos)) {
+                        // VIDEOS: enviar a RabbitMQ para procesar con FFmpeg
+                        // El consumer_resultado.php guardará en asignar_multimedia_t
+                        $this->enviar_a_procesar_multimedia($tmp_name, $tipo_archivo, $last_id);
                     }
-
-                    // Detectar portada
-
-                    // Asignar multimedia al tablero
-                    $this->asignador_de_multimedia_tablero(
-                        $last_id,
-                        $tmp_name,
-                        $type,
-                        $this->limitarTexto($this->description)
-                    );
                 }
-            }else if(isset($_POST['media'])){
-
+            } elseif (isset($_POST['media'])) {
+                // Video por URL (transferencia)
                 $this->enviar_a_procesar_multimedia($_POST['media'], 'transfer_video', $last_id);
             }
 
@@ -499,86 +504,63 @@
 
         public function asignador_de_multimedia_tablero($id_tablero, $url_temp, $tipo_archivo, $titulo)
         {
-            $this->conection;
+            // Asegurar conexión
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->SetConection();
+            }
 
             $fecha = new DateTime();
             $estado = $this->enable();
-            sleep(1);
             $fecha_a = $fecha->getTimestamp();
             $tipo_a = $this->detectar_archivo($tipo_archivo);
             $titulo_de_assets = $this->titleList($titulo);
-            $guardar_como = '';
-            //echo $tipo_a;
+            
+            // Solo procesar IMÁGENES aquí. Los videos se procesan en consumer_service/consumer_resultado
             if ($tipo_a == 'jpeg' || $tipo_a == 'png') {
                 $tipo_asset = 'imagen';
-                $guardar_como = "../imagenes_tablero/$fecha_a$titulo_de_assets.jpg";
                 
-                // Asegurar que el directorio existe
-                $dir = dirname($guardar_como);
-                if (!is_dir($dir)) {
-                    @mkdir($dir, 0777, true);
+                // Directorio de imágenes (ruta absoluta)
+                $img_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'imagenes_tablero';
+                if (!is_dir($img_dir)) {
+                    @mkdir($img_dir, 0777, true);
                 }
+                @chmod($img_dir, 0777);
                 
-                sleep(1);
+                // Nombre del archivo
+                $nombre_archivo = $fecha_a . $titulo_de_assets . '.jpg';
+                $ruta_absoluta = $img_dir . DIRECTORY_SEPARATOR . $nombre_archivo;
                 
-                // Intentar mover el archivo
-                if (!move_uploaded_file($url_temp, $guardar_como)) {
-                    // Intentar con ruta absoluta
-                    $abs_path = __DIR__ . '/../' . ltrim($guardar_como, './');
-                    if (!move_uploaded_file($url_temp, $abs_path)) {
-                        $this->TrackingLog(date('ymdis').' Error al mover imagen: ' . $guardar_como, 'errores');
-                        return;
-                    }
-                }
-            } elseif ($tipo_a == 'mp4' || $tipo_a == 'webm' || $tipo_a == 'avi') {
-                $tipo_asset = 'video';
+                // Ruta relativa para guardar en BD (sin ../)
+                $guardar_como = 'imagenes_tablero/' . $nombre_archivo;
                 
-                // Asegurar que el directorio videos existe
-                $videos_dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'videos';
-                if (!is_dir($videos_dir)) {
-                    @mkdir($videos_dir, 0777, true);
-                }
-                @chmod($videos_dir, 0777);
-                
-                $guardar_como = $videos_dir . DIRECTORY_SEPARATOR . $fecha_a . $titulo_de_assets . '.mp4';
-                sleep(1);
-                
-                if (!@move_uploaded_file($url_temp, $guardar_como)) {
-                    $error = error_get_last();
-                    $errorMsg = $error ? $error['message'] : 'Error desconocido al mover el archivo';
-                    $this->TrackingLog(date('ymdis') . ' No se pudo asignar el video: ' . $errorMsg, 'errores');
+                // Mover el archivo
+                if (!@move_uploaded_file($url_temp, $ruta_absoluta)) {
+                    $this->TrackingLog(date('ymdis').' Error al mover imagen: ' . $ruta_absoluta, 'errores');
                     return;
                 }
                 
-                // Establecer permisos en el archivo
-                @chmod($guardar_como, 0666);
+                @chmod($ruta_absoluta, 0666);
                 
-                // Actualizar guardar_como para usar ruta relativa en la base de datos
-                $guardar_como = '/videos/' . $fecha_a . $titulo_de_assets . '.mp4';
+                // Insertar en asignar_multimedia_t
+                $sql = 'INSERT INTO asignar_multimedia_t (id_tablero, ruta_multimedia, tipo_multimedia, estado) VALUES (?, ?, ?, ?)';
+                try {
+                    $guardar = $this->conection->prepare($sql);
+                    if ($guardar) {
+                        $guardar->bind_param('isss', $id_tablero, $guardar_como, $tipo_asset, $estado);
+                        $guardar->execute();
+                        $guardar->close();
+                        $this->TrackingLog(date('ymdis').'Imagen agregada: ' . $guardar_como, 'eventos');
+                    }
+                } catch(Exception $e) {
+                    $this->TrackingLog(date('ymdis').'No se pudo asignar la imagen: '.$e, 'errores');
+                }
+                
+            } elseif ($tipo_a == 'mp4' || $tipo_a == 'webm' || $tipo_a == 'avi' || $tipo_a == 'mov' || $tipo_a == 'mkv') {
+                // Los videos NO se procesan aquí - se envían a RabbitMQ y el consumer los maneja
+                $this->TrackingLog(date('ymdis').'Video detectado, será procesado por consumer_service', 'eventos');
             } else {
                 $this->TrackingLog(date('ymdis') . ' Tipo de archivo no permitido: ' . $tipo_a, 'errores');
             }
-
-            //$guardar_como = str_replace('../','',$guardar_como);
-
-            $sql = 'insert into asignar_multimedia_t(id_tablero,
-                ruta_multimedia,
-                tipo_multimedia,
-                estado)values(?,?,?,?)';
-            //echo $id_tablero . ", " . $guardar_como . ", " . $tipo_asset . ", " . $estado;
-            try{
-                $guardar = $this->conection->prepare($sql);
-                $guardar->bind_param('isss', $id_tablero, $guardar_como, $tipo_asset, $estado);
-                $guardar->execute();
-                $guardar->close();
-                $this->TrackingLog(date('ymdis').'Multimedia agregada con exito','eventos');
-
-            }catch(Exception $e){
-
-                $this->TrackingLog(date('ymdis').'No se pudo asignar la multimedia '.$e,'errores');
-
-            }
-
         }
 
         public function cargar_tablerosx($id_usuario = 'general', $opcion = 'json')
@@ -706,14 +688,16 @@
 
         public function cargar_multimedias_de_tablero($id_tablero, $config = 'json')
         {
-            $this->conection;
+            // Asegurar conexión
+            if (!isset($this->conection) || !($this->conection instanceof mysqli)) {
+                $this->SetConection();
+            }
+            
             $estado = $this->enable();
 
-
-            $sql = 'select * from tableros AS t 
-                inner join asignar_multimedia_t as m
-                on t.id_tablero=m.id_tablero where t.id_tablero=? 
-                and t.estado=?';
+            // Buscar multimedias del tablero (filtrando por estado de la multimedia, no del tablero)
+            $sql = 'SELECT m.* FROM asignar_multimedia_t m
+                    WHERE m.id_tablero = ? AND m.estado = ?';
             $cargar = $this->conection->prepare($sql);
             $cargar->bind_param('is', $id_tablero, $estado);
             $cargar->execute();

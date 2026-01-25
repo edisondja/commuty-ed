@@ -301,3 +301,38 @@ Bloqueando tablero
 26-01-23 06:30:43Inicio de sesion usaurio ed_admin
 Enviando multimedia a procesar para Board: 10
 2601235026Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 12
+2601242340Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 13
+2601242552Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 14
+2601243219Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 15
+2601243544Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 16
+2601244733Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 17
+2601245135Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 18
+2601245528Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 19
+2601245830Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 20
+2601245938Multimedia agregada con exito
+Enviando multimedia a procesar para Board: 21
+2601242519Video guardado, esperando procesamiento FFmpeg
+Enviando multimedia a procesar para Board: 22
+2601243110Video guardado, esperando procesamiento FFmpeg
+Enviando multimedia a procesar para Board: 23
+2601243144Video guardado, esperando procesamiento FFmpeg
+Enviando multimedia a procesar para Board: 23
+2601243146Video guardado, esperando procesamiento FFmpeg
+2601243528Imagen agregada: imagenes_tablero/1769232928segunda_prueba.jpg
+Enviando multimedia a procesar para Board: 24
+26-01-24 06:38:48 Cerrando sesion 
+26-01-24 06:39:36Inicio de sesion usaurio marcopolo
+2026-01-24 06:40:04 - Notificación guardada correctamente
+26-01-25 04:33:54 Cerrando sesion 
+26-01-25 04:34:19Inicio de sesion usaurio ed_admin
+Bloqueando tablero
+2026-01-25 15:12:07 - Notificación guardada correctamente

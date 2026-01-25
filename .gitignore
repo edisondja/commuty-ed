@@ -1,6 +1,54 @@
+# Configuración sensible
 config/config.php
+
+# NOTA: El archivo install.php debe eliminarse después de la instalación
+# No lo excluimos del repo porque es necesario para nuevas instalaciones
+
+# Logs y tracking
 traking/*.txt
-compile
-uploads
-imagenes_tablero
-videos
+logs/*.log
+*.log
+
+# Directorios de caché y compilación
+compile/*
+!compile/.gitkeep
+
+# Archivos subidos por usuarios
+uploads/*
+!uploads/.gitkeep
+imagenes_tablero/*
+!imagenes_tablero/.gitkeep
+videos/*
+!videos/.gitkeep
+previa/*
+!previa/.gitkeep
+temp_downloads/*
+!temp_downloads/.gitkeep
+
+# Dependencias (se instalan con composer install)
+# vendor/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos temporales
+*.tmp
+*.temp
+*.bak
+
+# Seguridad - nunca subir estos archivos
+.env
+.env.local
+.env.*.local
+*.pem
+*.key

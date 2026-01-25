@@ -37,53 +37,59 @@ $callback = function ($msg) use ($channel) {
         $board_id     = (int)$data['board_id'];
         $fecha        = date('YmdHis');
         
-        
-        echo "rita:".$rutaOriginal."\n";
-        if($data['tipo_archivo']=='transfer_video'){
-            echo "Procesando video transferido para board {$board_id}\n";
-        }else{
-            
+        if (!file_exists($rutaOriginal)) {
             throw new Exception("Archivo no encontrado en: $rutaOriginal");
-
         }
+        echo "Archivo existe: $rutaOriginal\n";
         
-        // 1. Obtener información de duración
-        if($data['tipo_archivo']!=='transfer_video'){
-            
-            $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal " . escapeshellarg($rutaOriginal));
-            // Formato esperado de ffprobe con -sexagesimal: 00:05:30.123456
-            $partesTiempo = explode(':', $duracionRaw);
-            $tiempo_cut   = (int)$partesTiempo[1]; // Minutos
-            $tiempo_cut_s = (int)explode('.', $partesTiempo[2])[0]; // Segundos
-        }
+        echo "Ruta original: $rutaOriginal\n";
+        echo "Tipo archivo: " . ($data['tipo_archivo'] ?? 'video') . "\n";
         // 2. Definir rutas de salida
         $rutaImagen      = "imagenes_tablero/{$fecha}_{$board_id}.jpg";
         $reciduo_video   = "previa/{$fecha}_{$board_id}.mp4";
-        $video_completo = "videos/{$fecha}_{$board_id}.mp4";
+        $video_completo  = "videos/{$fecha}_{$board_id}.mp4";
 
+        // 3. SIEMPRE comprimir y convertir a MP4 (sin importar el formato original)
+        echo "🔄 Comprimiendo y convirtiendo video a MP4...\n";
         
-        if($data['tipo_archivo']=='transfer_video'){
-
-            $ruta_ffmpeg = $data['ruta_tmp'];
-            echo "$ruta_ffmpeg Es una transferencia de archivo, preparando para ffmpeg...\n";
-
-            //exec("ffmpeg -y -i $ruta_ffmpeg -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k $video_completo 2>&1");
-             exec("ffmpeg -i {$ruta_ffmpeg}  {$video_completo}");
-
-            $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal '$video_completo'");
-            // Formato esperado de ffprobe con -sexagesimal: 00:05:30.123456
-            $partesTiempo = explode(':', $duracionRaw);
-            $tiempo_cut   = (int)$partesTiempo[1]; // Minutos
-            $tiempo_cut_s = (int)explode('.', $partesTiempo[2])[0]; // Segundos
-
-            echo "se ha guardado el video transfrido en: ".$video_completo."\n";
+        // Comando FFmpeg para comprimir: 
+        // -c:v libx264 = codec de video H.264
+        // -preset fast = balance entre velocidad y compresión
+        // -crf 23 = calidad (menor = mejor, 18-28 es rango típico)
+        // -c:a aac = codec de audio AAC
+        // -b:a 128k = bitrate de audio
+        // -movflags +faststart = optimiza para streaming web
+        $cmd_compress = "ffmpeg -y -i " . escapeshellarg($rutaOriginal) . " -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k -movflags +faststart " . escapeshellarg($video_completo) . " 2>&1";
+        echo "Ejecutando: $cmd_compress\n";
+        $output_compress = [];
+        exec($cmd_compress, $output_compress, $return_code);
         
-           
-            $rutaTemVideo=$video_completo;
-        }else{
-           $rutaTemVideo    = escapeshellarg($rutaOriginal);
+        if ($return_code !== 0 || !file_exists($video_completo)) {
+            // Si falla la compresión, intentar copia directa
+            echo "⚠ Compresión falló, intentando copia directa...\n";
+            exec("ffmpeg -y -i " . escapeshellarg($rutaOriginal) . " -c copy " . escapeshellarg($video_completo) . " 2>&1");
         }
-        $prefix          = "tmp_{$board_id}_"; // Prefijo para archivos temporales .ts
+        
+        if (!file_exists($video_completo)) {
+            throw new Exception("No se pudo crear el video comprimido: $video_completo");
+        }
+        
+        $filesize_original = filesize($rutaOriginal);
+        $filesize_compressed = filesize($video_completo);
+        $ratio = round(($filesize_compressed / $filesize_original) * 100, 1);
+        echo "✅ Video comprimido: " . round($filesize_original/1024/1024, 2) . "MB → " . round($filesize_compressed/1024/1024, 2) . "MB ({$ratio}%)\n";
+        
+        // Obtener duración del video comprimido
+        $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal " . escapeshellarg($video_completo));
+        $partesTiempo = explode(':', trim($duracionRaw));
+        $tiempo_cut   = isset($partesTiempo[1]) ? (int)$partesTiempo[1] : 0; // Minutos
+        $tiempo_cut_s = isset($partesTiempo[2]) ? (int)explode('.', $partesTiempo[2])[0] : 0; // Segundos
+        
+        echo "Duración: {$tiempo_cut} minutos, {$tiempo_cut_s} segundos\n";
+        
+        // Usar el video comprimido para generar preview y thumbnail
+        $rutaTemVideo = escapeshellarg($video_completo);
+        $prefix       = "tmp_{$board_id}_"; // Prefijo para archivos temporales .ts
 
         // 3. Lógica de Cortes de Video (Tu lógica integrada)
         $cortes = [];

@@ -1,283 +1,175 @@
-<div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
-    <div class="container mt-5">
-        <input type="hidden" id="modulo_select" value="config"/>
-        <h2>Administrador de Banners <i class="fa-solid fa-gears"></i></h2>
+<link rel="stylesheet" href="{$dominio}/css/backoffice.css">
 
-        <!-- Pestañas de Navegación -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="publicar-banner-tab" data-toggle="tab" href="#publicar_banner_tab" role="tab" aria-controls="publicar_banner_tab" aria-selected="true">
-                    Crear Banners <i class="fa-regular fa-file"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="administrar-banner-tab" data-toggle="tab" href="#administrar_banner_tab" role="tab" aria-controls="administrar_banner_tab" aria-selected="false">
-                    Administrar Banners <i class="fa-solid fa-envelope"></i>
-                </a>
-            </li>
-        </ul>
-        <hr/>
-
-        <div class="tab-content" id="myTabContent">
-        <!-- Modal Banner -->
-            <div class="modal fade" id="modalBanner" tabindex="-1" aria-labelledby="modalBannerLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalBannerLabel">Editar Banner</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formBanner">
-                    <input type="hidden" id="id_banner"> <!-- Para editar -->
-                    <input type="hidden" id="id_usuario" value="1"> <!-- Cambia según tu sesión -->
-                    <input type="hidden" id="imagen_original" value="1"> <!-- Cambia según tu sesión -->
-                    <div class="mb-3">
-                        <label for="titulo" class="form-label">Título</label>
-                        <input type="text" class="form-control" id="titulo" placeholder="Título del banner">
+<div class="col-md-9 col-12 mx-auto bo-module">
+    <input type="hidden" id="modulo_select" value="banners"/>
+    
+    <div class="bo-module-header">
+        <h2><i class="fa-solid fa-rectangle-ad"></i> Administrador de Banners</h2>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="bo-tabs">
+        <button class="bo-tab active" onclick="mostrarTabBanner('crear')">
+            <i class="fa-solid fa-plus"></i> Crear Banner
+        </button>
+        <button class="bo-tab" onclick="mostrarTabBanner('administrar')">
+            <i class="fa-solid fa-list"></i> Administrar
+        </button>
+    </div>
+    
+    <!-- Tab: Crear Banner -->
+    <div id="tab-crear" class="tab-content-banner">
+        <div class="bo-card">
+            <div class="bo-card-header">
+                <h5><i class="fa-solid fa-plus-circle"></i> Nuevo Banner</h5>
+            </div>
+            <div class="bo-card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Título</label>
+                        <input type="text" class="form-control" id="titulo_nuevo" placeholder="Título del banner">
                     </div>
-
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" placeholder="Descripción"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="imagen_banner" class="form-label">Imagen</label>
-                        <input type="file" class="form-control" id="imagen_banner">
-                        <img id="previewImagen" src="" alt="Preview" class="img-fluid mt-2" style="max-width: 150px; display: none;">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tipo" class="form-label">Tipo</label>
-                        <select class="form-select" id="tipo">
-                        <option>Selecciona el tipo de banner</option>
-                        <option value="banner">banner</option>
-                        <option value="imagen">Imagen</option>
-                        <option value="texto">texto</option>
-                        <option value="video">Video</option>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Tipo de Banner</label>
+                        <select class="form-control" id="tipo_nuevo">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="banner">Banner</option>
+                            <option value="imagen">Imagen</option>
+                            <option value="video">Video</option>
+                            <option value="texto">Texto</option>
                         </select>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="script_banner" class="form-label">Script</label>
-                        <textarea class="form-control" id="script_banner"></textarea>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion_nuevo" rows="2" placeholder="Descripción del banner"></textarea>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="posicion" class="form-label">Posición</label>
-                        <input type="number" class="form-control" id="posicion" min="1">
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Imagen/Video</label>
+                        <input type="file" class="form-control" id="imagen_banner_nuevo" accept="image/*,video/*">
                     </div>
-
-                    <div class="mb-3">
-                        <label for="link_banner" class="form-label">Link</label>
-                        <input type="text" class="form-control" id="link_banner" placeholder="https://">
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Posición</label>
+                        <input type="number" class="form-control" id="posicion_nuevo" min="1" placeholder="1">
                     </div>
-
-                    <div class="mb-3 form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="estado_banner">
-                        <label class="form-check-label" for="estado_banner">Activo</label>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Link (URL destino)</label>
+                        <input type="url" class="form-control" id="link_nuevo" placeholder="https://ejemplo.com">
                     </div>
-                    </form>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Script del Banner (opcional)</label>
+                        <textarea class="form-control" id="script_nuevo" rows="3" placeholder="<script>...</script>"></textarea>
+                    </div>
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="actualizar_ads()">Guardar</button>
-                </div>
+                <div class="text-center mt-3">
+                    <button class="bo-btn bo-btn-primary" id="guardar_ads">
+                        <i class="fa-solid fa-save"></i> Guardar Banner
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- Tab: Administrar Banners -->
+    <div id="tab-administrar" class="tab-content-banner" style="display: none;">
+        <div class="bo-card">
+            <div class="bo-card-header">
+                <h5><i class="fa-solid fa-list"></i> Listado de Banners</h5>
             </div>
-            <!-- Formulario de creación de banner -->
-            <div class="tab-pane fade show active" id="publicar_banner_tab" role="tabpanel" aria-labelledby="publicar-banner-tab">
-        
-                <div class="card-body">
-                    <div>
-                        <div class="mb-3">
-                            <label for="titulo" class="form-label">Título</label>
-                            <input type="text" class="form-control" id="titulo" placeholder="Ingresa el título del anuncio">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="descripcion" rows="3" placeholder="Escribe la descripción del anuncio"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="imagen_ruta" class="form-label">Subir imagen</label>
-                            <input type="file" class="form-control" id="imagen_banner">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="tipo" class="form-label">Tipo de Anuncio</label>
-                            <select class="form-select" id="tipo">
-                                <option value="">Selecciona el tipo de anuncio</option>
-                                <option value="banner">Banner</option>
-                                <option value="imagen">Imagen</option>
-                                <option value="video">Video</option>
-                                <option value="texto">Texto</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="script_banner" class="form-label">Script Banner</label>
-                            <textarea class="form-control" id="script_banner" rows="3" placeholder="Ingresa el script del banner"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="posicion" class="form-label">Posición del Anuncio</label>
-                            <input type="number" class="form-control" id="posicion" placeholder="Ingresa la posición del anuncio">
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100" id="guardar_ads">Guardar Anuncio</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pestaña Administrar Banners -->
-            <div class="tab-pane fade" id="administrar_banner_tab" role="tabpanel" aria-labelledby="administrar-banner-tab">
-                <div class="container mt-4">
-                        <h3 class="mb-3">Listado de Anuncios (ADS)</h3>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered align-middle" id="tablaAds">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Título</th>
-                                        <th>Descripción</th>
-                                        <th>Imagen</th>
-                                        <th>Posición</th>
-                                        <th>Fecha</th>
-                                        <th>Script Banner</th>
-                                        <th>Tipo</th>
-                                        <th>Link</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Aquí van los registros dinámicos -->
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Banner Promo</td>
-                                        <td>Descripción de ejemplo</td>
-                                        <td><img src="ruta/imagen.jpg" alt="Banner" class="img-fluid" width="80"></td>
-                                        <td>1</td>
-                                        <td>2025-09-24 10:30:00</td>
-                                        <td><code>&lt;script&gt;...&lt;/script&gt;</code></td>
-                                        <td>HTML</td>
-                                        <td><a href="https://ejemplo.com" target="_blank">Ver Link</a></td>
-                                        <td><span class="badge bg-success">Activo</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-primary">Editar</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+            <div class="bo-card-body" style="padding: 0; overflow-x: auto;">
+                <table class="bo-table" id="tablaAds">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Posición</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista_banners">
+                        <tr>
+                            <td colspan="6" class="bo-empty">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <p>Cargando banners...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
-<script src="{$dominio}/js/bk_modulo_banner.js"></script>
+<!-- Modal Editar Banner -->
+<div class="modal fade" id="modalBanner" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: #2d3436; color: white; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <h5 class="modal-title"><i class="fa-solid fa-edit"></i> Editar Banner</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="id_banner">
+                <input type="hidden" id="imagen_original">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Tipo</label>
+                        <select class="form-control" id="tipo" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);">
+                            <option value="banner">Banner</option>
+                            <option value="imagen">Imagen</option>
+                            <option value="video">Video</option>
+                            <option value="texto">Texto</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" rows="2" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Imagen</label>
+                        <input type="file" class="form-control" id="imagen_banner" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);">
+                        <img id="previewImagen" src="" class="mt-2" style="max-width: 100px; display: none; border-radius: 5px;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Posición</label>
+                        <input type="number" class="form-control" id="posicion" min="1" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Link</label>
+                        <input type="url" class="form-control" id="link_banner" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="bo-label">Script</label>
+                        <textarea class="form-control" id="script_banner" rows="2" style="background: rgba(0,0,0,0.3); color: white; border-color: rgba(255,255,255,0.2);"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="estado_banner">
+                            <label class="bo-label" style="margin: 0;">Banner Activo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                <button type="button" class="bo-btn bo-btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="bo-btn bo-btn-primary" onclick="actualizar_ads()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- jQuery y Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-
-<style>
-/* Contenedor principal */
-.content-container_s {
-    margin-top: 50px;
-    padding: 30px;
-    background-color: #ffffff; /* Fondo blanco */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+<script>
+function mostrarTabBanner(tab) {
+    document.querySelectorAll('.tab-content-banner').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.bo-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).style.display = 'block';
+    event.target.closest('.bo-tab').classList.add('active');
 }
-
-/* Body general */
-body {
-    background-color: #e6e6e6; /* Gris muy claro */
-    color: #333333;
-}
-
-/* Títulos */
-h2, h3 {
-    color: #009688; /* Verde azulado */
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Form Controls */
-.form-control, .form-select {
-    background-color: #ffffff;
-    color: #333333;
-    border: 2px solid #009688;
-    border-radius: 8px;
-    padding: 10px;
-    transition: 0.3s;
-}
-
-.form-control::placeholder {
-    color: #707070;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #FF6F61; /* Coral al enfocar */
-    box-shadow: 0 0 5px rgba(255,111,97,0.3);
-}
-
-/* Botón */
-.btn-primary {
-    background-color: #009688; /* Verde azulado */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #00796b; /* Verde azulado oscuro */
-    transform: translateY(-2px);
-}
-
-/* Tabs */
-.nav-tabs .nav-link {
-    color: #ffffff;
-    background-color: #495057; /* Gris oscuro */
-    border: 1px solid #6c757d;
-    border-radius: 8px 8px 0 0;
-    margin-right: 5px;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: #009688; /* Verde azulado */
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: #00796b;
-    color: #ffffff;
-}
-</style>
-
+</script>
 
 <script src="{$dominio}/js/bk_modulo_banner.js"></script>
-
-<!-- Incluye jQuery y Bootstrap JS -->
-<!-- 
-    Usa la libreria de jquery para desplegar los tab del menu
-    y la de bootstrap 4.5.2
--->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

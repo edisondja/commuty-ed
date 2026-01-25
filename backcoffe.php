@@ -65,6 +65,12 @@
 
                     break;
 
+                    case 'reproductores':
+
+                        $smarty->assign('option','reproductores');
+
+                    break;
+
                     default:
                     
                      $smarty->assign('option','usuarios');

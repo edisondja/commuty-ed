@@ -875,4 +875,242 @@ if (isset($_POST['action'])) {
         
             break;
 
+        // ==================== REPRODUCTORES VAST ====================
+        
+        case 'listar_reproductores':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                if ($db->connect_error) {
+                    throw new Exception("Error de conexión: " . $db->connect_error);
+                }
+                
+                $result = $db->query("SELECT * FROM reproductores_vast ORDER BY es_default DESC, id_reproductor ASC");
+                $reproductores = [];
+                
+                while ($row = $result->fetch_assoc()) {
+                    $reproductores[] = $row;
+                }
+                
+                echo json_encode(['success' => true, 'reproductores' => $reproductores]);
+                $db->close();
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'obtener_reproductor':
+            header('Content-Type: application/json');
+            try {
+                $id = (int)$_POST['id_reproductor'];
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                $stmt = $db->prepare("SELECT * FROM reproductores_vast WHERE id_reproductor = ?");
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $reproductor = $result->fetch_assoc();
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'reproductor' => $reproductor]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'crear_reproductor':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                $nombre = $_POST['nombre'] ?? '';
+                $descripcion = $_POST['descripcion'] ?? '';
+                $vast_url = $_POST['vast_url'] ?? '';
+                $vast_url_mid = $_POST['vast_url_mid'] ?? '';
+                $vast_url_post = $_POST['vast_url_post'] ?? '';
+                $skip_delay = (int)($_POST['skip_delay'] ?? 5);
+                $mid_roll_time = (int)($_POST['mid_roll_time'] ?? 30);
+                $activo = (int)($_POST['activo'] ?? 1);
+                $es_default = (int)($_POST['es_default'] ?? 0);
+                
+                // Si es default, quitar default a los demás
+                if ($es_default == 1) {
+                    $db->query("UPDATE reproductores_vast SET es_default = 0");
+                }
+                
+                $stmt = $db->prepare("INSERT INTO reproductores_vast 
+                    (nombre, descripcion, vast_url, vast_url_mid, vast_url_post, skip_delay, mid_roll_time, activo, es_default) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param('sssssiiii', $nombre, $descripcion, $vast_url, $vast_url_mid, $vast_url_post, 
+                                  $skip_delay, $mid_roll_time, $activo, $es_default);
+                $stmt->execute();
+                $newId = $db->insert_id;
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'message' => 'Reproductor creado', 'id' => $newId]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'actualizar_reproductor':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                $id = (int)$_POST['id_reproductor'];
+                $nombre = $_POST['nombre'] ?? '';
+                $descripcion = $_POST['descripcion'] ?? '';
+                $vast_url = $_POST['vast_url'] ?? '';
+                $vast_url_mid = $_POST['vast_url_mid'] ?? '';
+                $vast_url_post = $_POST['vast_url_post'] ?? '';
+                $skip_delay = (int)($_POST['skip_delay'] ?? 5);
+                $mid_roll_time = (int)($_POST['mid_roll_time'] ?? 30);
+                $activo = (int)($_POST['activo'] ?? 1);
+                $es_default = (int)($_POST['es_default'] ?? 0);
+                
+                // Si es default, quitar default a los demás
+                if ($es_default == 1) {
+                    $db->query("UPDATE reproductores_vast SET es_default = 0");
+                }
+                
+                $stmt = $db->prepare("UPDATE reproductores_vast SET 
+                    nombre = ?, descripcion = ?, vast_url = ?, vast_url_mid = ?, vast_url_post = ?,
+                    skip_delay = ?, mid_roll_time = ?, activo = ?, es_default = ?
+                    WHERE id_reproductor = ?");
+                $stmt->bind_param('sssssiiiii', $nombre, $descripcion, $vast_url, $vast_url_mid, $vast_url_post,
+                                  $skip_delay, $mid_roll_time, $activo, $es_default, $id);
+                $stmt->execute();
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'message' => 'Reproductor actualizado']);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'set_reproductor_default':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                $id = (int)$_POST['id_reproductor'];
+                
+                // Quitar default a todos
+                $db->query("UPDATE reproductores_vast SET es_default = 0");
+                
+                // Poner default al seleccionado
+                $stmt = $db->prepare("UPDATE reproductores_vast SET es_default = 1 WHERE id_reproductor = ?");
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'message' => 'Reproductor establecido como predeterminado']);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'eliminar_reproductor':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                $id = (int)$_POST['id_reproductor'];
+                
+                // No permitir eliminar el default
+                $check = $db->query("SELECT es_default FROM reproductores_vast WHERE id_reproductor = $id");
+                $row = $check->fetch_assoc();
+                if ($row && $row['es_default'] == 1) {
+                    throw new Exception("No se puede eliminar el reproductor predeterminado");
+                }
+                
+                $stmt = $db->prepare("DELETE FROM reproductores_vast WHERE id_reproductor = ?");
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'message' => 'Reproductor eliminado']);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'obtener_reproductor_default':
+            header('Content-Type: application/json');
+            try {
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                $result = $db->query("SELECT * FROM reproductores_vast WHERE es_default = 1 AND activo = 1 LIMIT 1");
+                $reproductor = $result->fetch_assoc();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'reproductor' => $reproductor]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'obtener_reproductor_tablero':
+            header('Content-Type: application/json');
+            try {
+                $id_tablero = (int)($_POST['id_tablero'] ?? $_GET['id_tablero'] ?? 0);
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                // Obtener el reproductor asignado al tablero
+                $stmt = $db->prepare("SELECT r.* FROM reproductores_vast r 
+                                      INNER JOIN tableros t ON t.id_reproductor = r.id_reproductor 
+                                      WHERE t.id_tablero = ? AND r.activo = 1");
+                $stmt->bind_param('i', $id_tablero);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $reproductor = $result->fetch_assoc();
+                $stmt->close();
+                
+                // Si no tiene asignado, buscar el default
+                if (!$reproductor) {
+                    $result = $db->query("SELECT * FROM reproductores_vast WHERE es_default = 1 AND activo = 1 LIMIT 1");
+                    $reproductor = $result->fetch_assoc();
+                }
+                
+                $db->close();
+                
+                echo json_encode(['success' => true, 'reproductor' => $reproductor]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+            
+        case 'asignar_reproductor_tablero':
+            header('Content-Type: application/json');
+            try {
+                $id_tablero = (int)($_POST['id_tablero'] ?? 0);
+                $id_reproductor = $_POST['id_reproductor'] ?? '';
+                
+                // Si está vacío, poner NULL
+                $id_reproductor = $id_reproductor === '' ? null : (int)$id_reproductor;
+                
+                $db = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                
+                if ($id_reproductor === null) {
+                    $stmt = $db->prepare("UPDATE tableros SET id_reproductor = NULL WHERE id_tablero = ?");
+                    $stmt->bind_param('i', $id_tablero);
+                } else {
+                    $stmt = $db->prepare("UPDATE tableros SET id_reproductor = ? WHERE id_tablero = ?");
+                    $stmt->bind_param('ii', $id_reproductor, $id_tablero);
+                }
+                
+                $stmt->execute();
+                $stmt->close();
+                $db->close();
+                
+                echo json_encode(['success' => true, 'message' => 'Reproductor asignado correctamente']);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            break;
+
        }

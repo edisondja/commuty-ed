@@ -482,10 +482,6 @@ function enviarRespuesta(id_coment, texto, id_user) {
                 // Resetear variables
                 action_comment = 'normal';
                 currentCommentId = null;
-                
-                if (typeof alertify !== 'undefined') {
-                    alertify.success('Respuesta enviada correctamente');
-                }
             } else {
                 console.error('Respuesta inválida del servidor:', respuestaData);
                 throw new Error('El servidor no retornó datos válidos');
@@ -655,9 +651,6 @@ function guardarComentario(id_usuario, id_tablero, texto, tipo_post) {
     .then(response => {
         // Recargar comentarios
         cargarComentarios(id_tablero);
-        if (typeof alertify !== 'undefined') {
-            alertify.success('Comentario publicado');
-        }
     })
     .catch(error => {
         console.error('Error al guardar comentario:', error);

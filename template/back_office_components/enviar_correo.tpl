@@ -1,73 +1,51 @@
-<div class="col-md-8 mx-auto"><hr>
-    <div class="mail-container p-4">
-        <div style="text-align: center;">
-            <h3>Enviar correos masivos</h3>
+<link rel="stylesheet" href="{$dominio}/css/backoffice.css">
+
+<div class="col-md-9 col-12 mx-auto bo-module">
+    <input type="hidden" id="modulo_select" value="mails">
+    
+    <div class="bo-module-header">
+        <h2><i class="fa-solid fa-envelope"></i> Correo Masivo</h2>
+    </div>
+    
+    <div class="bo-card">
+        <div class="bo-card-header">
+            <h5><i class="fa-solid fa-paper-plane"></i> Enviar mensaje a todos los usuarios</h5>
         </div>
-
-        <p style="text-align:center;">
-            El mensaje que pongas en este campo será enviado a todos los usuarios de la plataforma por correo electrónico.
-        </p>
-
-        <input type="text" id="asunto" class="form-control custom-input mb-3" placeholder="Asunto">
-
-        <textarea class="form-control custom-input mb-3" id="texto_correo" rows="12" placeholder="Escribe el mensaje aquí..."></textarea>
-
-        <div style="text-align: center;">
-            <button class="btn btn-send" id="send_mail">Enviar</button>
+        <div class="bo-card-body">
+            <div class="bo-alert bo-alert-info">
+                <i class="fa-solid fa-info-circle"></i>
+                <span>El mensaje será enviado a todos los usuarios registrados en la plataforma.</span>
+            </div>
+            
+            <div class="mb-4">
+                <label class="bo-label">Asunto del correo</label>
+                <input type="text" id="asunto" class="form-control" placeholder="Escribe el asunto del correo...">
+            </div>
+            
+            <div class="mb-4">
+                <label class="bo-label">Mensaje</label>
+                <textarea class="form-control bo-textarea" id="texto_correo" rows="10" placeholder="Escribe el contenido del mensaje..."></textarea>
+            </div>
+            
+            <div class="text-center">
+                <button class="bo-btn bo-btn-primary" id="send_mail">
+                    <i class="fa-solid fa-paper-plane"></i> Enviar Correo Masivo
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bo-card mt-4">
+        <div class="bo-card-header">
+            <h5><i class="fa-solid fa-history"></i> Historial de Envíos</h5>
+        </div>
+        <div class="bo-card-body">
+            <div class="bo-empty">
+                <i class="fa-solid fa-inbox"></i>
+                <p>No hay correos enviados recientemente</p>
+            </div>
         </div>
     </div>
 </div>
-
-<style>
-    /* Contenedor oscuro del módulo */
-    .mail-container {
-        background-color: #343a40; /* fondo oscuro */
-        border-radius: 10px;
-        color: white;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .mail-container h3 {
-        color: white;
-        margin-bottom: 20px;
-    }
-
-    .mail-container p {
-        color:#343a40;
-        margin-bottom: 20px;
-    }
-
-    /* Inputs y textarea */
-    .custom-input {
-        background-color: #2b2929; /* fondo oscuro */
-        color: white; /* texto blanco */
-        border: 1px solid #495057;
-        border-radius: 5px;
-        transition: border 0.3s, box-shadow 0.3s;
-    }
-
-    .custom-input:focus {
-        border-color: #20c997; /* verde azulado al enfocar */
-        box-shadow: 0 0 5px #20c997;
-        outline: none;
-    }
-
-    /* Botón enviar */
-    .btn-send {
-        background-color: #343a40; /* fondo oscuro */
-        color: white;
-        border: 1px solid #20c997;
-        border-radius: 5px;
-        width: 30%;
-        transition: all 0.3s;
-    }
-
-    .btn-send:hover {
-        background-color: #20c997; /* verde azulado al pasar mouse */
-        color: white;
-        border-color: #20c997;
-        cursor: pointer;
-    }
-</style>
 
 <script src="{$dominio}/js/bk_modulo_mail.js"></script>

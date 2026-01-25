@@ -292,32 +292,33 @@ class Config extends EncryptToken
         }
 
         try {
-            $guardar->bind_param('ssssssssssssssssssssiiiiis',
-                $this->dominio,
-                $this->nombre_sitio,
-                $this->descripcion_slogan,
-                $this->descripcion_sitio,
-                $this->copyright_descripcion,
-                $this->email_sitio,
-                $this->busqueda_descripcion,
-                $this->pagina_descripcion,
-                $this->titulo_descripcion,
-                $this->busqueda_hastag,
-                $this->favicon_url,
-                $this->sitio_logo_url,
-                $this->email_remitente,
-                $this->nombre_remitente,
-                $this->servidor_smtp,
-                $this->puerto_smtp,
-                $this->usuario_smtp,
-                $this->clave_smtp,
-                $this->autenticacion_ssl, // 'i' para integer
-                $this->publicar_sin_revision, // 'i' para integer
-                $this->verificar_cuenta, // 'i' para integer
-                $this->rabbit_mq, // 'i' para integer
-                $this->ffmpeg, // 'i' para integer
-                $this->redis_cache, // 'i' para integer
-                $this->estilos_json
+            // 18 strings + 6 integers + 1 string = 25 parámetros
+            $guardar->bind_param('ssssssssssssssssssiiiiiis',
+                $this->dominio,           // 1 s
+                $this->nombre_sitio,      // 2 s
+                $this->descripcion_slogan,// 3 s
+                $this->descripcion_sitio, // 4 s
+                $this->copyright_descripcion, // 5 s
+                $this->email_sitio,       // 6 s
+                $this->busqueda_descripcion, // 7 s
+                $this->pagina_descripcion, // 8 s
+                $this->titulo_descripcion, // 9 s
+                $this->busqueda_hastag,   // 10 s
+                $this->favicon_url,       // 11 s
+                $this->sitio_logo_url,    // 12 s
+                $this->email_remitente,   // 13 s
+                $this->nombre_remitente,  // 14 s
+                $this->servidor_smtp,     // 15 s
+                $this->puerto_smtp,       // 16 s
+                $this->usuario_smtp,      // 17 s
+                $this->clave_smtp,        // 18 s
+                $this->autenticacion_ssl, // 19 i
+                $this->publicar_sin_revision, // 20 i
+                $this->verificar_cuenta,  // 21 i
+                $this->rabbit_mq,         // 22 i
+                $this->ffmpeg,            // 23 i
+                $this->redis_cache,       // 24 i
+                $this->estilos_json       // 25 s
             );
             
             if (!$guardar->execute()) {
@@ -443,32 +444,33 @@ class Config extends EncryptToken
         }
 
         try {
+            // 18 strings + 6 integers = 24 parámetros (sin estilos_json en UPDATE)
             $actualizar->bind_param(
-                'ssssssssssssssssssssiiiiis',
-                $this->dominio,
-                $this->nombre_sitio,
-                $this->descripcion_slogan,
-                $this->descripcion_sitio,
-                $this->copyright_descripcion,
-                $this->email_sitio,
-                $this->busqueda_descripcion,
-                $this->pagina_descripcion,
-                $this->titulo_descripcion,
-                $this->busqueda_hastag,
-                $this->favicon_url,
-                $this->sitio_logo_url,
-                $this->email_remitente,
-                $this->nombre_remitente,
-                $this->servidor_smtp,
-                $this->puerto_smtp,
-                $this->usuario_smtp,
-                $this->clave_smtp,
-                $this->autenticacion_ssl, // 'i' para integer
-                $this->publicar_sin_revision, // 'i' para integer
-                $this->verificar_cuenta, // 'i' para integer
-                $this->rabbit_mq, // 'i' para integer
-                $this->ffmpeg, // 'i' para integer
-                $this->redis_cache // 'i' para integer
+                'ssssssssssssssssssiiiiii',
+                $this->dominio,           // 1 s
+                $this->nombre_sitio,      // 2 s
+                $this->descripcion_slogan,// 3 s
+                $this->descripcion_sitio, // 4 s
+                $this->copyright_descripcion, // 5 s
+                $this->email_sitio,       // 6 s
+                $this->busqueda_descripcion, // 7 s
+                $this->pagina_descripcion, // 8 s
+                $this->titulo_descripcion, // 9 s
+                $this->busqueda_hastag,   // 10 s
+                $this->favicon_url,       // 11 s
+                $this->sitio_logo_url,    // 12 s
+                $this->email_remitente,   // 13 s
+                $this->nombre_remitente,  // 14 s
+                $this->servidor_smtp,     // 15 s
+                $this->puerto_smtp,       // 16 s
+                $this->usuario_smtp,      // 17 s
+                $this->clave_smtp,        // 18 s
+                $this->autenticacion_ssl, // 19 i
+                $this->publicar_sin_revision, // 20 i
+                $this->verificar_cuenta,  // 21 i
+                $this->rabbit_mq,         // 22 i
+                $this->ffmpeg,            // 23 i
+                $this->redis_cache        // 24 i
             );
 
             if (!$actualizar->execute()) {

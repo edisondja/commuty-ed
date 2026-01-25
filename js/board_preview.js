@@ -1,6 +1,6 @@
 /**
  * Script para activar vista previa de video en hover y touch
- * Cuando una publicación tiene video, muestra el preview_tablero al pasar el mouse o tocar
+ * Cuando una publicación tiene video, reproduce el preview_tablero al pasar el mouse o tocar
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,43 +14,33 @@ function initBoardPreview() {
     const boardContainers = document.querySelectorAll('.board-image-container[data-has-preview="true"]');
     
     boardContainers.forEach(container => {
-        const previewSrc = container.getAttribute('data-preview');
-        const mainImage = container.querySelector('.board-main-image');
+        // Evitar inicializar múltiples veces
+        if (container.dataset.previewInit === 'true') {
+            return;
+        }
+        container.dataset.previewInit = 'true';
         
-        if (!previewSrc || previewSrc === '' || !mainImage) {
+        const video = container.querySelector('.board-preview-video');
+        
+        if (!video) {
             return;
         }
         
-        // Construir la URL completa del preview
-        const dominio = document.getElementById('dominio')?.value || '';
-        const previewUrl = previewSrc.startsWith('http') ? previewSrc : `${dominio}/${previewSrc.replace(/^\//, '')}`;
-        
-        // Establecer el background-image del pseudo-elemento ::after
-        container.style.setProperty('--preview-url', `url(${previewUrl})`);
-        
-        // Agregar estilos dinámicos si no existen
-        if (!document.getElementById('board-preview-styles')) {
-            const style = document.createElement('style');
-            style.id = 'board-preview-styles';
-            style.textContent = `
-                .board-image-container[data-has-preview="true"]::after {
-                    background-image: var(--preview-url);
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        // Evento hover para desktop
+        // Evento hover para desktop - reproducir video
         container.addEventListener('mouseenter', function() {
-            if (previewSrc && previewSrc !== '') {
-                this.classList.add('hover-active');
-                // Asegurar que el preview se muestre
-                this.style.setProperty('--preview-url', `url(${previewUrl})`);
+            if (video) {
+                video.currentTime = 0;
+                video.play().catch(e => {
+                    console.log('Error reproduciendo video preview:', e);
+                });
             }
         });
         
         container.addEventListener('mouseleave', function() {
-            this.classList.remove('hover-active');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
         });
         
         // Eventos touch para móviles
@@ -60,11 +50,14 @@ function initBoardPreview() {
         container.addEventListener('touchstart', function(e) {
             touchStartTime = Date.now();
             
-            // Activar preview después de un breve delay para evitar activación accidental
+            // Activar preview después de un breve delay
             touchTimer = setTimeout(() => {
-                if (previewSrc && previewSrc !== '') {
-                    this.classList.add('touch-active');
-                    this.style.setProperty('--preview-url', `url(${previewUrl})`);
+                this.classList.add('touch-active');
+                if (video) {
+                    video.currentTime = 0;
+                    video.play().catch(e => {
+                        console.log('Error reproduciendo video preview en touch:', e);
+                    });
                 }
             }, 100);
         }, { passive: true });
@@ -72,20 +65,29 @@ function initBoardPreview() {
         container.addEventListener('touchend', function(e) {
             const touchDuration = Date.now() - touchStartTime;
             
-            // Si fue un toque rápido, podría ser un click, mantener preview un poco más
+            // Si fue un toque rápido, mantener preview un poco más
             if (touchDuration < 300) {
-                if (previewSrc && previewSrc !== '') {
-                    this.classList.add('touch-active');
-                    this.style.setProperty('--preview-url', `url(${previewUrl})`);
-                    
-                    // Mantener activo por 2 segundos
-                    setTimeout(() => {
-                        this.classList.remove('touch-active');
-                    }, 2000);
+                this.classList.add('touch-active');
+                if (video) {
+                    video.currentTime = 0;
+                    video.play().catch(e => {});
                 }
+                
+                // Mantener activo por 3 segundos
+                setTimeout(() => {
+                    this.classList.remove('touch-active');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                }, 3000);
             } else {
                 // Si fue un toque largo, desactivar al soltar
                 this.classList.remove('touch-active');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
             }
             
             if (touchTimer) {
@@ -95,15 +97,22 @@ function initBoardPreview() {
         
         container.addEventListener('touchcancel', function(e) {
             this.classList.remove('touch-active');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
             if (touchTimer) {
                 clearTimeout(touchTimer);
             }
         }, { passive: true });
         
         // Desactivar preview cuando se hace scroll en móvil
-        let scrollTimer = null;
         container.addEventListener('touchmove', function(e) {
             this.classList.remove('touch-active');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
             if (touchTimer) {
                 clearTimeout(touchTimer);
             }

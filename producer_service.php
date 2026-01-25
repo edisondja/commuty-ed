@@ -25,7 +25,11 @@ if (!is_dir($directorio)) {
     mkdir($directorio, 0777, true);
 }
 
-$nombreSeguro = date('YmdHis') . '_' . basename($archivo['name']);
+$baseName = basename($archivo['name']);
+if (pathinfo($baseName, PATHINFO_EXTENSION) === '') {
+    $baseName .= '.mp4';
+}
+$nombreSeguro = date('YmdHis') . '_' . $baseName;
 $rutaFinal = $directorio . $nombreSeguro;
 
 

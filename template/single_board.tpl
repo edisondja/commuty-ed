@@ -104,15 +104,17 @@
 
             {* CASO 1: Más de una multimedia (Se activa el Carrusel) *}
             {if $total_multimedia > 1}
-                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
                     <div class="carousel-inner fixed-size-carousel">
                         {foreach from=$multimedias_t item=multimedia name=mediaLoop}
+                            {* Limpiar la ruta: quitar ../ y /videos/ -> videos/ *}
+                            {assign var="ruta_limpia" value=$multimedia.ruta_multimedia|replace:"../":""|replace:"/videos/":"videos/"|replace:"/imagenes_tablero/":"imagenes_tablero/"}
                             <div class="carousel-item {if $smarty.foreach.mediaLoop.first}active{/if}">
                                 {if $multimedia.tipo_multimedia == 'imagen'}
-                                    <img src="{$multimedia.ruta_multimedia|replace:"../":""}" 
+                                    <img src="{$dominio}/{$ruta_limpia}" 
                                         class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
                                 {else}
-                                    <video src="{$multimedia.ruta_multimedia|replace:"../":""}" 
+                                    <video src="{$dominio}/{$ruta_limpia}" 
                                         class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
                                 {/if}
                             </div>
@@ -133,11 +135,12 @@
             {elseif $total_multimedia == 1}
                 <div class="fixed-size-carousel">
                     {assign var="solo_uno" value=$multimedias_t[0]}
+                    {assign var="ruta_limpia" value=$solo_uno.ruta_multimedia|replace:"../":""|replace:"/videos/":"videos/"|replace:"/imagenes_tablero/":"imagenes_tablero/"}
                     {if $solo_uno.tipo_multimedia == 'imagen'}
-                        <img src="{$solo_uno.ruta_multimedia|replace:"../":""}" 
+                        <img src="{$dominio}/{$ruta_limpia}" 
                             class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
                     {else}
-                        <video src="{$solo_uno.ruta_multimedia|replace:"../":""}" 
+                        <video src="{$dominio}/{$ruta_limpia}" 
                             class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
                     {/if}
                 </div>
@@ -280,7 +283,56 @@
 <script type="text/javascript" src='js/comments_system.js'></script>
 <script type="text/javascript" src='js/single_board.js'></script>
 <script type="text/javascript" src='js/rating_system.js'></script>
+<script type="text/javascript" src='js/vast_player.js'></script>
 {/literal}
+<script type="text/javascript">
+    // Inicializar reproductor VAST para videos del tablero
+    document.addEventListener('DOMContentLoaded', function() {
+        const idTablero = '{$id_tablero}';
+        const videos = document.querySelectorAll('.fixed-size-video');
+        
+        videos.forEach(function(video, index) {
+            // Asignar ID único si no tiene
+            if (!video.id) {
+                video.id = 'tablero-video-' + index;
+            }
+            // Inicializar VAST Player con el reproductor específico del tablero
+            initVastPlayerForTablero(video.id, idTablero).then(player => {
+                if (player) {
+                    console.log('VAST Player inicializado para:', video.id);
+                }
+            });
+        });
+    });
+    
+    // Función para inicializar reproductor VAST desde el tablero específico
+    async function initVastPlayerForTablero(videoElementId, idTablero) {
+        try {
+            const formData = new FormData();
+            formData.append('action', 'obtener_reproductor_tablero');
+            formData.append('id_tablero', idTablero);
+            
+            const response = await axios.post(
+                (document.getElementById('dominio')?.value || '') + '/controllers/actions_board.php',
+                formData
+            );
+            
+            if (response.data.success && response.data.reproductor) {
+                const rep = response.data.reproductor;
+                return new VastPlayer(videoElementId, {
+                    vastPreroll: rep.vast_url || null,
+                    vastMidroll: rep.vast_url_mid || null,
+                    vastPostroll: rep.vast_url_post || null,
+                    skipDelay: parseInt(rep.skip_delay) || 5,
+                    midrollTime: parseInt(rep.mid_roll_time) || 30
+                });
+            }
+        } catch (e) {
+            console.warn('No se pudo cargar configuración VAST:', e);
+        }
+        return null;
+    }
+</script>
 
 <style>
 .card-custom {

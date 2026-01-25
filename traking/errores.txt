@@ -128,3 +128,7 @@ Error en Guardar_configuracion: Error al ejecutar: Incorrect integer value: '' f
 Error en Guardar_configuracion: Error al ejecutar: Incorrect integer value: 'NO' for column `edcommunity`.`configuracion`.`publicar_sin_revision` at row 1
 Error en Guardar_configuracion: Error al ejecutar: No data supplied for parameters in prepared statement
 Error en Guardar_configuracion: Error al ejecutar: No data supplied for parameters in prepared statement
+Error en Guardar_configuracion: Error al ejecutar: No data supplied for parameters in prepared statement
+2601243148 Error al mover imagen: ../imagenes_tablero/1769232706miren_que_marav.jpg
+2601243528 Error al mover imagen: /Applications/XAMPP/xamppfiles/htdocs/commuty-ed/imagenes_tablero/1769232928segunda_prueba.jpg
+26-01-24 06:39:15Error Enviando mail tipo: registrer

@@ -1,265 +1,257 @@
+<link rel="stylesheet" href="{$dominio}/css/backoffice.css">
 
-<div class="col-md-8 col-12 content-container_s mx-auto tabla_buscar">
-    <div class="container mt-5">
+<div class="col-md-9 col-12 mx-auto bo-module">
     <input type="hidden" id="modulo_select" value="config"/>
-    <h2>Configuración del Sitio <i class="fa-solid fa-gears"></i></h2>
-    <select class="" id="search" style="float: right;">
-
-
-    </select><hr/>
-    <div class="container mt-5">
-    <!-- Pestañas de Navegación -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="configuracion-sitio-tab" data-toggle="tab" href="#configuracion-sitio" role="tab" aria-controls="configuracion-sitio" aria-selected="true">Configuración del Sitio <i class="fa-regular fa-file"></i></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="configuracion-correo-tab" data-toggle="tab" href="#configuracion-correo" role="tab" aria-controls="configuracion-correo" aria-selected="false">Configuración de Correo <i class="fa-solid fa-envelope"></i></a>
-        </li>
-           <li class="nav-item">
-            <a class="nav-link" id="configuracion-reglas-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Reglas <i class="fa-solid fa-photo-film""></i></a>
-        </li>
-
-         </li>
-           <li class="nav-item">
-            <a class="nav-link" id="configuracion-correso-tab" data-toggle="tab" href="#configuracion-reglas" role="tab" aria-controls="configuracion-reglas" aria-selected="false">Cambiar colores <i class="fa-solid fa-photo-film""></i></a>
-        </li>
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        <!-- Contenido de la pestaña de Configuración del Sitio -->
-        <div class="tab-pane fade show active" id="configuracion-sitio" role="tabpanel" aria-labelledby="configuracion-sitio-tab">
-          
-        
-        <div class="form-group mt-3">
-            <label for="nombre_sitio">Dominio</label>
-            <input type="text" class="form-control" id="dominio_c" name="dominio_c" maxlength="150" placeholder="Ingrese el nombre del sitio">
-        </div>
-
-            <div class="form-group mt-3">
-            <label for="nombre_sitio">Nombre del Sitio</label>
-            <input type="text" class="form-control" id="nombre_sitio" name="nombre_sitio" maxlength="150" placeholder="Ingrese el nombre del sitio">
-        </div>
-            <div class="form-group">
-                <label for="descripcion_slogan">Descripción del Slogan</label>
-                <textarea class="form-control" id="descripcion_slogan" name="descripcion_slogar" rows="3" placeholder="Ingrese la descripción del slogan"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="descripcion_sitio">Descripción del Sitio</label>
-                <textarea class="form-control" id="descripcion_sitio" name="descripcion_sitio" rows="3" placeholder="Ingrese la descripción del sitio"></textarea>
-            </div>
-            <div class="form-group">
-                <hr/>
-                <img class="imagenPerfil" id="favicon_img" src=""/>
-                <pre>Puede subir su favicon formato JPG o PNG para ser visualizado en su web.</pre>
-                <label for="favicon">Subir Favicon</label>
-                <input type="file" class="form-control" id="favicon" name="favicon" maxlength="200" placeholder="Ingrese el URL del favicon">
-            </div>
-            <div class="form-group">
-                <hr/>
-                <img class="imagenPerfil" id="logo_img" src="" style="width: 230px; height:50px;" /> 
-                <pre>
-                    La dimensión para un logo de la plataforma debe de ser de 230px de anchura y 50px de altura,
-                    para que se pueda visualizar de una manera correcta.
-                </pre>
-                <label for="sitio_logo">Subir Logo</label>
-                <input type="file" class="form-control" id="sitio_logo" name="sitio_logo" maxlength="200" placeholder="Ingrese el URL del logo del sitio">
-            </div>
-            <div class="form-group">
-                <label for="copyright_descripcion">Descripción de Copyright</label>
-                <textarea class="form-control" id="copyright_descripcion" name="copyright_descripcion" rows="3" placeholder="Ingrese la descripción del copyright"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="email_sitio">Email del Sitio</label>
-                <input type="email" class="form-control" id="email_sitio" name="email_sitio" maxlength="180" placeholder="Ingrese el email del sitio">
-            </div>
-            <hr/>
-            <div class="form-group form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="publicar_sin_revision" name="publicar_sin_revision">
-            <label class="form-check-label" for="publicar_sin_revision">Publicar sin revisión ( Al activar esta opcion las publicaciones deben ser 
-            verificadas por el administrador, antes de ser publicas. )</label>
-            </div>
-            <hr/>
-            <hr/>
-                <div class="form-group form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="verificar_cuenta" name="publicar_sin_revision">
-                <label class="form-check-label" for="publicar_sin_revision">Verificar cuenta ( Si se activa esta opcion las cuentas creadas deben de ser verificadas por email. )</label>
-                </div>
-            <hr/>
-                <hr/>
-                <div class="form-group form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="rabbit_mq" name="publicar_sin_revision">
-                <label class="form-check-label" for="rabbit_mq">Broker Rabbit MQ (Colas de mensajes asincronas para evitar cuellos de botellas en procesos de alto de rendimiento.)</label>
-                </div>
-            <hr/>
-                <hr/>
-                <div class="form-group form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="ffmpeg" name="ffmpeg">
-                <label class="form-check-label" for="rabbit_mq">Motor multimedia FFMPEG (Renderizaje de multimedias y generacion de vistas previas automaticas.)</label>
-                </div>
-            <hr/>
-
-            <hr/>
-                <hr/>
-                <div class="form-group form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="redis_cache" name="redis_cache">
-                <label class="form-check-label" for="rabbit_mq">Redis Cache</label>
-                </div>
-            <hr/>
-
-            <div class="form-group">
-                <label for="busqueda_descripcion">Descripción de Búsqueda</label>
-                <textarea class="form-control" id="busqueda_descripcion" name="busqueda_descripcion" rows="3" placeholder="Ingrese la descripción de búsqueda"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="pagina_descripcion">Descripción de la Página</label>
-                <textarea class="form-control" id="pagina_descripcion" name="pagina_descripcion" rows="3" placeholder="Ingrese la descripción de la página"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="titulo_descripcion">Descripción del Título</label>
-                <textarea class="form-control" id="titulo_descripcion" name="titulo_descripcion" rows="3" placeholder="Ingrese la descripción del título"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="busqueda_hastag">Hashtags de Búsqueda</label>
-                <input type="text" class="form-control" id="busqueda_hastag" name="busqueda_hastag" placeholder="Ingrese los hashtags de búsqueda">
-            </div>
-            <hr/>
-            <div style="text-align: center;">
-                <button type="submit" id="guardar_config" class="btn btn-dark">Guardar Configuración</button>
-            </div>
-        </div>
-
-        <!-- Contenido de la pestaña de Configuración de Correo -->
-        <div class="tab-pane fade" id="configuracion-correo" role="tabpanel" aria-labelledby="configuracion-correo-tab">
-            <div class="form-group mt-3">
-                <label for="email_remitente">Email Remitente</label>
-                <input type="email" class="form-control" id="email_remitente" name="email_remitente" maxlength="180" placeholder="Ingrese el email remitente">
-            </div>
-            <div class="form-group">
-                <label for="nombre_remitente">Nombre del Remitente</label>
-                <input type="text" class="form-control" id="nombre_remitente" name="nombre_remitente" maxlength="150" placeholder="Ingrese el nombre del remitente">
-            </div>
-            <div class="form-group">
-                <label for="servidor_smtp">Servidor SMTP</label>
-                <input type="text" class="form-control" id="servidor_smtp" name="servidor_smtp" maxlength="200" placeholder="Ingrese el servidor SMTP">
-            </div>
-            <div class="form-group">
-                <label for="puerto_smtp">Puerto SMTP</label>
-                <input type="number" class="form-control" id="puerto_smtp" name="puerto_smtp" placeholder="Ingrese el puerto SMTP">
-            </div>
-            <div class="form-group">
-                <label for="usuario_smtp">Usuario SMTP</label>
-                <input type="text" class="form-control" id="usuario_smtp" name="usuario_smtp" maxlength="200" placeholder="Ingrese el usuario SMTP">
-            </div>
-            <div class="form-group">
-                <label for="contrasena_smtp">Contraseña SMTP</label>
-                <input type="password" class="form-control" id="contrasena_smtp" name="contrasena_smtp" maxlength="200" placeholder="Ingrese la contraseña SMTP">
-            </div>
-            <div class="form-group">
-                <label for="autenticacion_ssl">Autenticación SSL</label>
-                <select class="form-control" id="autenticacion_ssl" name="autenticacion_ssl">
-                    <option value="si">Sí</option>
-                    <option value="no">No</option>
-                </select>
-            </div>
-            <hr/>
-            <div style="text-align: center;">
-                <button type="submit" id="guardar_config_correo" class="btn btn-dark">Guardar Configuración de Correo</button>
-            </div>
-        </div>
-            </div>
-        </div>
-
+    
+    <div class="bo-module-header">
+        <h2><i class="fa-solid fa-gear"></i> Configuración del Sitio</h2>
     </div>
     
+    <!-- Tabs de navegación -->
+    <div class="bo-tabs" id="configTabs">
+        <button class="bo-tab active" onclick="mostrarTab('sitio')">
+            <i class="fa-solid fa-globe"></i> Sitio
+        </button>
+        <button class="bo-tab" onclick="mostrarTab('correo')">
+            <i class="fa-solid fa-envelope"></i> Correo SMTP
+        </button>
+        <button class="bo-tab" onclick="mostrarTab('opciones')">
+            <i class="fa-solid fa-sliders"></i> Opciones
+        </button>
+    </div>
+    
+    <!-- Tab: Configuración del Sitio -->
+    <div id="tab-sitio" class="tab-content-panel">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="bo-card">
+                    <div class="bo-card-header">
+                        <h5><i class="fa-solid fa-info-circle"></i> Información Básica</h5>
+                    </div>
+                    <div class="bo-card-body">
+                        <div class="mb-3">
+                            <label class="bo-label">Dominio</label>
+                            <input type="text" class="form-control" id="dominio_c" placeholder="https://tudominio.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Nombre del Sitio</label>
+                            <input type="text" class="form-control" id="nombre_sitio" placeholder="Mi Sitio">
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Slogan</label>
+                            <textarea class="form-control" id="descripcion_slogan" rows="2" placeholder="Tu slogan aquí..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Descripción del Sitio</label>
+                            <textarea class="form-control" id="descripcion_sitio" rows="3" placeholder="Descripción para SEO..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Email del Sitio</label>
+                            <input type="email" class="form-control" id="email_sitio" placeholder="contacto@tudominio.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="bo-card">
+                    <div class="bo-card-header">
+                        <h5><i class="fa-solid fa-image"></i> Imágenes del Sitio</h5>
+                    </div>
+                    <div class="bo-card-body">
+                        <div class="mb-4">
+                            <label class="bo-label">Logo del Sitio</label>
+                            <div class="text-center mb-2">
+                                <img id="logo_img" src="" alt="Logo" style="max-width: 200px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px;">
+                            </div>
+                            <input type="file" class="form-control" id="sitio_logo" accept="image/*">
+                            <small style="color: rgba(255,255,255,0.5);">Recomendado: 230x50 px</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Favicon</label>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <img id="favicon_img" src="" alt="Favicon" style="width: 32px; height: 32px; border-radius: 4px;">
+                                <span style="color: rgba(255,255,255,0.5);">Vista previa</span>
+                            </div>
+                            <input type="file" class="form-control" id="favicon" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bo-card">
+                    <div class="bo-card-header">
+                        <h5><i class="fa-solid fa-copyright"></i> Copyright y SEO</h5>
+                    </div>
+                    <div class="bo-card-body">
+                        <div class="mb-3">
+                            <label class="bo-label">Texto de Copyright</label>
+                            <textarea class="form-control" id="copyright_descripcion" rows="2" placeholder="© 2024 Tu Empresa"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="bo-label">Hashtags de Búsqueda</label>
+                            <input type="text" class="form-control" id="busqueda_hastag" placeholder="#hashtag1, #hashtag2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bo-card">
+            <div class="bo-card-header">
+                <h5><i class="fa-solid fa-file-alt"></i> Descripciones Adicionales</h5>
+            </div>
+            <div class="bo-card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="bo-label">Descripción de Búsqueda</label>
+                        <textarea class="form-control" id="busqueda_descripcion" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="bo-label">Descripción de Página</label>
+                        <textarea class="form-control" id="pagina_descripcion" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="bo-label">Descripción del Título</label>
+                        <textarea class="form-control" id="titulo_descripcion" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button class="bo-btn bo-btn-primary" id="guardar_config">
+                <i class="fa-solid fa-save"></i> Guardar Configuración
+            </button>
+        </div>
+    </div>
+    
+    <!-- Tab: Configuración de Correo -->
+    <div id="tab-correo" class="tab-content-panel" style="display: none;">
+        <div class="bo-card">
+            <div class="bo-card-header">
+                <h5><i class="fa-solid fa-server"></i> Servidor SMTP</h5>
+            </div>
+            <div class="bo-card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Email Remitente</label>
+                        <input type="email" class="form-control" id="email_remitente" placeholder="noreply@tudominio.com">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Nombre del Remitente</label>
+                        <input type="text" class="form-control" id="nombre_remitente" placeholder="Mi Sitio">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Servidor SMTP</label>
+                        <input type="text" class="form-control" id="servidor_smtp" placeholder="smtp.gmail.com">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Puerto SMTP</label>
+                        <input type="number" class="form-control" id="puerto_smtp" placeholder="587">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Usuario SMTP</label>
+                        <input type="text" class="form-control" id="usuario_smtp" placeholder="usuario@gmail.com">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Contraseña SMTP</label>
+                        <input type="password" class="form-control" id="contrasena_smtp" placeholder="••••••••">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bo-label">Autenticación SSL</label>
+                        <select class="form-control" id="autenticacion_ssl">
+                            <option value="si">Sí (TLS/SSL)</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button class="bo-btn bo-btn-primary" id="guardar_config_correo">
+                <i class="fa-solid fa-save"></i> Guardar Configuración de Correo
+            </button>
+        </div>
+    </div>
+    
+    <!-- Tab: Opciones -->
+    <div id="tab-opciones" class="tab-content-panel" style="display: none;">
+        <div class="bo-card">
+            <div class="bo-card-header">
+                <h5><i class="fa-solid fa-toggle-on"></i> Opciones del Sistema</h5>
+            </div>
+            <div class="bo-card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="publicar_sin_revision">
+                            <div>
+                                <label class="bo-label" style="margin-bottom: 0;">Publicar sin Revisión</label>
+                                <small style="color: rgba(255,255,255,0.5); display: block;">Las publicaciones requieren aprobación del admin</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="verificar_cuenta">
+                            <div>
+                                <label class="bo-label" style="margin-bottom: 0;">Verificar Cuenta por Email</label>
+                                <small style="color: rgba(255,255,255,0.5); display: block;">Los usuarios deben verificar su email</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="rabbit_mq">
+                            <div>
+                                <label class="bo-label" style="margin-bottom: 0;">RabbitMQ</label>
+                                <small style="color: rgba(255,255,255,0.5); display: block;">Colas de mensajes para procesos asíncronos</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="ffmpeg">
+                            <div>
+                                <label class="bo-label" style="margin-bottom: 0;">FFmpeg</label>
+                                <small style="color: rgba(255,255,255,0.5); display: block;">Procesamiento de video y generación de previews</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="bo-switch">
+                            <input type="checkbox" id="redis_cache">
+                            <div>
+                                <label class="bo-label" style="margin-bottom: 0;">Redis Cache</label>
+                                <small style="color: rgba(255,255,255,0.5); display: block;">Caché en memoria para mejor rendimiento</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <button class="bo-btn bo-btn-primary" id="guardar_config">
+                <i class="fa-solid fa-save"></i> Guardar Opciones
+            </button>
+        </div>
+    </div>
 </div>
 
-
-<style>
-
-.content-container_s {
-    background-color: #495057; /* Gris del menú */
-    color: #ffffff; /* Texto blanco */
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+<script>
+function mostrarTab(tab) {
+    // Ocultar todos los paneles
+    document.querySelectorAll('.tab-content-panel').forEach(p => p.style.display = 'none');
+    // Desactivar todos los tabs
+    document.querySelectorAll('.bo-tab').forEach(t => t.classList.remove('active'));
+    
+    // Mostrar panel seleccionado
+    document.getElementById('tab-' + tab).style.display = 'block';
+    // Activar tab clickeado
+    event.target.closest('.bo-tab').classList.add('active');
 }
-
-/* Body general */
-body {
-    background-color: #e6e6e6; /* Gris muy claro */
-    color: #333333;
-}
-
-/* Inputs y textarea */
-.form-control {
-    background-color: #ffffff; /* Fondo blanco limpio */
-    color: #333333;            /* Texto oscuro */
-    border: 2px solid #009688; /* Verde azulado */
-    border-radius: 8px;
-    padding: 10px;
-    transition: 0.3s;
-}
-
-.form-control::placeholder {
-    color: #707070; /* Placeholder gris suave */
-}
-
-.form-control:focus {
-    border-color: #FF6F61; /* Coral al enfocar */
-    box-shadow: 0 0 5px rgba(255,111,97,0.3);
-}
-
-/* Botones */
-.btn-dark {
-    background-color: #009688; /* Verde azulado */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-dark:hover {
-    background-color: #00796b; /* Verde azulado oscuro al hover */
-    transform: translateY(-2px);
-}
-
-/* Títulos y encabezados */
-h2, h3 {
-    color: #009688; /* Verde azulado */
-}
-
-/* Tabs de Bootstrap personalizados */
-.nav-tabs .nav-link {
-    color: #ffffff; /* Texto blanco en tabs */
-    background-color: #495057;
-    border: 1px solid #6c757d;
-    border-radius: 8px 8px 0 0;
-    margin-right: 5px;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: #009688; /* Verde azulado en tab activo */
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: #00796b; /* Verde azulado oscuro al hover */
-    color: #ffffff;
-}
-
-</style>
+</script>
 
 <script src="{$dominio}/js/bk_modulo_configuracion.js"></script>
-
-<!-- Incluye jQuery y Bootstrap JS -->
-<!-- 
-    Usa la libreria de jquery para desplegar los tab del menu
-    y la de bootstrap 4.5.2
--->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -39,6 +39,18 @@
                     <label for="fotoPortada" class="form-label fw-bold">📷 Foto de portada</label>
                     <input class="form-control" type="file" id="fotoPortada" name="foto" accept="image/*">
                 </div>
+
+                <!-- Reproductor VAST -->
+                <div class="mb-3">
+                    <label for="selectReproductor" class="form-label fw-bold">
+                        <i class="fa-solid fa-play-circle"></i> Reproductor de Video (VAST)
+                    </label>
+                    <select class="form-select" id="selectReproductor" name="id_reproductor">
+                        <option value="">Sin reproductor asignado</option>
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                    <small class="text-muted">Selecciona un reproductor para mostrar anuncios en los videos de este tablero</small>
+                </div>
                 </form>
             </div>
 
@@ -84,6 +96,9 @@
         
         {else if $option=='estilos'}    
             {include file='back_office_components/modulo_estilos.tpl'}
+        
+        {else if $option=='reproductores'}    
+            {include file='back_office_components/modulo_reproductores.tpl'}
         {/if}
 
 </div>

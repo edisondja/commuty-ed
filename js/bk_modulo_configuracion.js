@@ -208,41 +208,21 @@
                         document.getElementById('puerto_smtp').value = data.data.puerto_smtp;
                         document.getElementById('usuario_smtp').value = data.data.usuario_smtp;
                         document.getElementById('contrasena_smtp').value = data.data.clave_smtp;
-                        document.getElementById('autenticacion_ssl').value = data.data.autenticacion_ssl;
-                        //servicios
-                        document.getElementById('rabbit_mq').value = data.data.rabbit_mq;
-                        document.getElementById('ffmpeg').value = data.data.ffmpeg;
-                        document.getElementById('redis_cache').value = data.data.redis_cache;
+                        // autenticacion_ssl se maneja abajo con los switches
 
 
-                        //Edejesusa 27-09-2025
-                        if(data.data.rabbit_mq=='SI'){
-                            document.getElementById('rabbit_mq').checked=true;
-                        }else{
-                            document.getElementById('rabbit_mq').checked=false;
-                        }
+                        // Marcar switches según el valor (puede ser 1, '1', 'SI' o true)
+                        const isChecked = (val) => val == 1 || val === '1' || val === 'SI' || val === true;
                         
-                        if(data.data.ffmpeg=='SI'){
-                            document.getElementById('ffmpeg').checked=true;
-                        }else{
-                            document.getElementById('ffmpeg').checked=false;
-                        }
+                        document.getElementById('rabbit_mq').checked = isChecked(data.data.rabbit_mq);
+                        document.getElementById('ffmpeg').checked = isChecked(data.data.ffmpeg);
+                        document.getElementById('redis_cache').checked = isChecked(data.data.redis_cache);
+                        document.getElementById('publicar_sin_revision').checked = isChecked(data.data.publicar_sin_revision);
+                        document.getElementById('verificar_cuenta').checked = isChecked(data.data.verificar_cuenta);
                         
-                        if(data.data.redis_cache=='SI'){
-                            document.getElementById('redis_cache').checked=true;
-                        }
-                            
-
-                        if(data.data.publicar_sin_revision=='SI'){
-                            document.getElementById('publicar_sin_revision').checked=true;
-                        }else{
-                            document.getElementById('publicar_sin_revision').checked=false;
-                        }
-
-                        if(data.data.verificar_cuenta=='SI'){
-                            document.getElementById('verificar_cuenta').checked=true;
-                        }else{
-                            document.getElementById('verificar_cuenta').checked=false;
+                        // También marcar autenticación SSL si existe
+                        if (document.getElementById('autenticacion_ssl')) {
+                            document.getElementById('autenticacion_ssl').value = isChecked(data.data.autenticacion_ssl) ? 'si' : 'no';
                         }
 
                 }).catch(error=>{

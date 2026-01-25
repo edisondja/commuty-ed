@@ -40,14 +40,21 @@
             
                 {if $tablero.imagen_tablero!==''}
                     <div class='content_image board-image-container' 
-                         data-preview="{$tablero.preview_tablero|default:''}" 
+                         data-preview="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}{$dominio}/{$tablero.preview_tablero}{/if}" 
                          data-image="{$tablero.imagen_tablero}"
                          data-has-preview="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}true{else}false{/if}">
                     <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
                         <img src="{$dominio}/{$tablero.imagen_tablero}" 
                              class="card-img-top board-image board-main-image" 
-                             alt="..."
-                             data-preview-src="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}{$dominio}/{$tablero.preview_tablero}{else}{/if}">
+                             alt="...">
+                        {if $tablero.preview_tablero && $tablero.preview_tablero!==''}
+                        <video class="board-preview-video" 
+                               src="{$dominio}/{$tablero.preview_tablero}" 
+                               muted 
+                               loop 
+                               playsinline
+                               preload="metadata"></video>
+                        {/if}
                      </a>
                      </div>
                 {/if}
@@ -138,37 +145,33 @@
     display: block;
 }
 
-.board-image-container:hover .board-main-image,
-.board-image-container.touch-active .board-main-image {
-    opacity: 0;
-}
-
-.board-image-container[data-has-preview="true"]::after {
-    content: '';
+/* Video preview styles */
+.board-preview-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    object-fit: cover;
+    border-radius: 5px;
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 2;
     pointer-events: none;
-    border-radius: 5px;
-    z-index: 1;
 }
 
-.board-image-container[data-has-preview="true"]:hover::after,
-.board-image-container[data-has-preview="true"].hover-active::after,
-.board-image-container[data-has-preview="true"].touch-active::after {
+.board-image-container[data-has-preview="true"]:hover .board-main-image {
+    opacity: 0;
+}
+
+.board-image-container[data-has-preview="true"]:hover .board-preview-video,
+.board-image-container[data-has-preview="true"].touch-active .board-preview-video {
     opacity: 1;
 }
 
 .board-image-container[data-has-preview="true"] .board-main-image {
     position: relative;
-    z-index: 0;
+    z-index: 1;
 }
 
 .footer-icons i {

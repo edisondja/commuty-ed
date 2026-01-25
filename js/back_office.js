@@ -48,10 +48,6 @@ var config = {
 
 
     function cargarInfoTablero(id_tablero) {
-       
-
-        // Aquí podrías hacer un fetch/axios para cargar la info actual del tablero
-        // Ejemplo:
         document.getElementById("idTablero").value = id_tablero;
         let FormDatas = new FormData();
         FormDatas.append('action','load_info_board');
@@ -61,12 +57,46 @@ var config = {
         axios.post(api_user, FormDatas, config).then(response => {
             let data = response.data;
             console.log(data);
-                document.getElementById("descripcionTablero").value = data.descripcion;
-            // Si tienes la URL de la imagen, podrías mostrarla en una vista previa
-             document.getElementById("vistaPreviaImagen").src = `${get_domain}/${data.imagen_tablero}`;
+            document.getElementById("descripcionTablero").value = data.descripcion;
+            document.getElementById("vistaPreviaImagen").src = `${get_domain}/${data.imagen_tablero}`;
+            
+            // Cargar reproductores disponibles
+            cargarReproductoresSelect(data.id_reproductor);
         });
+    }
 
+    // Cargar reproductores en el select
+    function cargarReproductoresSelect(idReproductorActual) {
+        let FormDatas = new FormData();
+        FormDatas.append('action', 'listar_reproductores');
+        let api_user = `${get_domain}/controllers/actions_board.php`;
 
+        axios.post(api_user, FormDatas, config).then(response => {
+            const data = response.data;
+            const select = document.getElementById('selectReproductor');
+            
+            if (!select) return;
+            
+            // Limpiar opciones actuales excepto la primera
+            select.innerHTML = '<option value="">Sin reproductor asignado</option>';
+            
+            if (data.reproductores && data.reproductores.length > 0) {
+                data.reproductores.forEach(rep => {
+                    const option = document.createElement('option');
+                    option.value = rep.id_reproductor;
+                    option.textContent = rep.nombre + (rep.es_default == 1 ? ' (Default)' : '');
+                    
+                    // Marcar el actual
+                    if (idReproductorActual && parseInt(idReproductorActual) === parseInt(rep.id_reproductor)) {
+                        option.selected = true;
+                    }
+                    
+                    select.appendChild(option);
+                });
+            }
+        }).catch(error => {
+            console.error('Error cargando reproductores:', error);
+        });
     }
 
     // Función para guardar cambios
@@ -75,22 +105,22 @@ var config = {
         let descripcion = document.getElementById("descripcionTablero").value;
         let foto = document.getElementById("fotoPortada").files[0];
         let id_usuario = document.getElementById("id_usuario").value;
+        let id_reproductor = document.getElementById("selectReproductor")?.value || '';
 
-        // Aquí puedes enviar la información al backend con fetch/axios
         console.log("ID Tablero:", id_tablero);
         console.log("Descripción:", descripcion);
         console.log("Foto:", foto);
+        console.log("Reproductor:", id_reproductor);
 
         let FormDatas = new FormData();
         FormDatas.append('action','update_board');
-        FormDatas.append('id_usuario',id_usuario);
-
+        FormDatas.append('id_usuario', id_usuario);
         FormDatas.append('id_tablero', id_tablero);
         FormDatas.append('descripcion', descripcion);
+        
         if (foto) {
             FormDatas.append('foto', foto);
-        }else{
-
+        } else {
             FormDatas.append('imagen_actual', document.getElementById("vistaPreviaImagen").src.replace(`${get_domain}/`, ''));
         }
 
@@ -98,15 +128,32 @@ var config = {
         
         axios.post(api_user, FormDatas, config).then(response => {
             console.log("Respuesta del servidor:", response);
+            
+            // Guardar reproductor asignado
+            if (document.getElementById("selectReproductor")) {
+                let FormReproductor = new FormData();
+                FormReproductor.append('action', 'asignar_reproductor_tablero');
+                FormReproductor.append('id_tablero', id_tablero);
+                FormReproductor.append('id_reproductor', id_reproductor);
+                
+                axios.post(api_user, FormReproductor, config).then(resp => {
+                    console.log("Reproductor asignado:", resp.data);
+                    alertify.success('Tablero actualizado correctamente');
+                });
+            } else {
+                alertify.success('Tablero actualizado');
+            }
         }).catch(error => {
             console.error("Error al guardar cambios:", error);
+            alertify.error('Error al guardar cambios');
         });
 
         // Cerrar modal después de guardar
         let modalElement = document.getElementById('modalActualizarTablero');
         let modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) modalInstance.hide();
 
-         cargarInfoTablero(id_tablero);
+        cargarInfoTablero(id_tablero);
     }
 
     function BuscarUsuarios(contexto){
@@ -264,39 +311,33 @@ var config = {
 
 
     function tabla_usuario(data){
+        let estadoBadge = data.estado == 'activo' 
+            ? '<span class="bo-badge bo-badge-success">Activo</span>' 
+            : '<span class="bo-badge bo-badge-danger">Inactivo</span>';
         
-        let Row =
-         `<tr>
-           <td>${data.nombre}</td>
-                <td>${data.apellido}</td>
-                <td>${data.email}</td>
-                <td>${data.type_user}</td>
-                <td><img class="imagenPerfil" src="${get_domain}/${data.foto_url}"/></td>
+        let switchChecked = data.estado == 'activo' ? 'checked' : '';
+        
+        let Row = `
+            <tr>
                 <td>
-                <div class="form-check form-switch">`;
-                if(data.estado=='activo'){
-
-                 Row+=`<input class="form-check-input" 
-                    type="checkbox" role="switch" checked=true  
-                    value="${data.id_user}"/>
-                    <label class="form-check-label" 
-                    for="flexSwitchCheckDefault">Bloquear a ${data.nombre}</label>`;
-                
-                }else{
-
-                    Row+=`<input class="form-check-input" 
-                    type="checkbox" role="switch" 
-                    value="${data.id_user}"/>
-                    <label class="form-check-label" 
-                    for="flexSwitchCheckDefault">Bloquear a ${data.nombre}</label>`;
-                }
-                Row+=`
-                </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img class="bo-avatar" src="${get_domain}/${data.foto_url}" onerror="this.src='${get_domain}/assets/user_profile.png'"/>
+                        <div>
+                            <strong>${data.nombre} ${data.apellido}</strong>
+                            <br><small style="color: rgba(255,255,255,0.5);">@${data.usuario || 'usuario'}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>${data.email}</td>
+                <td><span class="bo-badge bo-badge-info">${data.type_user}</span></td>
+                <td>${estadoBadge}</td>
+                <td>
+                    <div class="bo-switch">
+                        <input type="checkbox" ${switchChecked} value="${data.id_user}"/>
+                    </div>
                 </td>
             </tr>`;
-
-            return Row;
-
+        return Row;
     }
 
     function tabla_publicacion(){
@@ -433,50 +474,49 @@ var config = {
 
 
     function tabla_board(data) {
-
-       
+        let estadoBadge = data.estado == 'activo' 
+            ? '<span class="bo-badge bo-badge-success">Activo</span>' 
+            : '<span class="bo-badge bo-badge-danger">Inactivo</span>';
+        
+        let switchChecked = data.estado == 'activo' ? 'checked' : '';
+        let descripcion = data.descripcion ? data.descripcion.substring(0, 60) + '...' : 'Sin descripción';
+        
+        // Formatear fecha
+        let fecha = data.fecha_creacion ? new Date(data.fecha_creacion).toLocaleDateString('es-ES') : '-';
+        
         let Row = `
-                <tr>  
-                    <td>${data.descripcion.substring(0,80)}..</td>
-                    <td><img class="imagenPerfil" 
+            <tr>
+                <td>
+                    <div style="max-width: 200px;">
+                        <small style="color: rgba(255,255,255,0.7);">${descripcion}</small>
+                    </div>
+                </td>
+                <td>
+                    <img class="bo-avatar" style="border-radius: 8px; width: 50px; height: 50px;" 
                         src="${get_domain}/${data.imagen_tablero}" 
-                         onerror="this.onerror=null; this.src='${get_domain}/assets/no_found.png'"/>
-                    </td>
-                    <td>${data.fecha_creacion}</td>
-                    <td>${data.estado}</td>
-                    <td><img class="imagenPerfil" src="${get_domain}/${data.foto_url}" /></td>
-                    <td>${data.usuario}</td>
-                    <td>
-                        <div class="form-check form-switch">`;
-                        
-            if (data.estado == 'activo') {
-                Row += `<input class="form-check-input" 
-                                type="checkbox" 
-                                role="switch" 
-                                checked=true  
-                                value="${data.id_tablero}" />
-                            <label class="form-check-label" 
-                                for="flexSwitchCheckDefault">
-                                Bloquear tablero
-                            </label>`;
-            } else {
-                Row += `<input class="form-check-input" 
-                                type="checkbox" 
-                                role="switch" 
-                                value="${data.id_tablero}" />
-                            <label class="form-check-label" 
-                                for="flexSwitchCheckDefault">
-                                Bloquear tablero
-                            </label>`;
-            }
-            
-            Row += `</div>
-                    </td>
-                    <td>
-                       <button class="btn btn-primary btn-sm" onClick="EditarTablero(${data.id_tablero})">Editar</button>
-                    </td>
-                </tr>`;
-            
+                        onerror="this.src='${get_domain}/assets/no_found.png'"/>
+                </td>
+                <td><small>${fecha}</small></td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <img class="bo-avatar" style="width: 30px; height: 30px;" 
+                            src="${get_domain}/${data.foto_url}" 
+                            onerror="this.src='${get_domain}/assets/user_profile.png'"/>
+                        <span>${data.usuario || 'Usuario'}</span>
+                    </div>
+                </td>
+                <td>${estadoBadge}</td>
+                <td>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <div class="bo-switch">
+                            <input type="checkbox" ${switchChecked} value="${data.id_tablero}"/>
+                        </div>
+                        <button class="bo-btn bo-btn-primary bo-btn-sm" onClick="EditarTablero(${data.id_tablero})">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
         return Row;
     }
     
