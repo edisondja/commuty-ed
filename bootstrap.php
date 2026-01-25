@@ -2,6 +2,10 @@
 
     session_start();
    // session_destroy();
+    
+    // Suprimir warnings de deprecación de Smarty en PHP 8.2+
+    error_reporting(E_ALL & ~E_DEPRECATED);
+    
     require_once 'vendor/autoload.php';
     require_once 'config/config.php';
     
