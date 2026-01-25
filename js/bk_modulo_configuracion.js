@@ -199,8 +199,8 @@
                         document.getElementById('pagina_descripcion').innerHTML = data.data.pagina_descripcion;
                         document.getElementById('titulo_descripcion').innerHTML= data.data.titulo_descripcion;
                         document.getElementById('busqueda_hastag').value = data.data.busqueda_hastag;
-                        document.getElementById('favicon_img').src =`${dominio.value}/${data.data.favicon_url}`;
-                        document.getElementById('logo_img').src =`${dominio.value}/${data.data.sitio_logo_url}`;
+                        document.getElementById('favicon_img').src =`/${data.data.favicon_url}`;
+                        document.getElementById('logo_img').src =`/${data.data.sitio_logo_url}`;
                         //datos de cofiguracion de correo
                         document.getElementById('email_remitente').value = data.data.email_remitente;
                         document.getElementById('nombre_remitente').value = data.data.nombre_remitente;

@@ -323,7 +323,11 @@ function cargar_comentarios(id_tablero) {
 
                 if (data.data_og !== "[]") {
                     data_ogs = JSON.parse(data.data_og);
-                    domain = (new URL(data_ogs.url));
+                    try {
+                        domain = (new URL(data_ogs.url));
+                    } catch(e) {
+                        domain = { hostname: '' };
+                    }
                     description_og = data_ogs.description;
                     description_og = description_og.substr(0, 80);
                     interface_ogs = `

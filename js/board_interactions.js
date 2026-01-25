@@ -69,8 +69,13 @@ function loadBoardDataForEdit(idTablero) {
                     if (imagen) {
                         document.getElementById('edit_imagen_actual').src = imagen;
                         // Extraer path relativo
-                        const url = new URL(imagen);
-                        const path = url.pathname.replace(/^\//, '');
+                        let path = imagen;
+                        try {
+                            const url = new URL(imagen, window.location.origin);
+                            path = url.pathname.replace(/^\//, '');
+                        } catch(e) {
+                            path = imagen.replace(/^\//, '');
+                        }
                         document.getElementById('edit_imagen_actual_path').value = path;
                     }
                     
@@ -117,8 +122,13 @@ function loadBoardDataForEdit(idTablero) {
             
             if (imagen) {
                 document.getElementById('edit_imagen_actual').src = imagen;
-                const url = new URL(imagen);
-                const path = url.pathname.replace(/^\//, '');
+                let path = imagen;
+                try {
+                    const url = new URL(imagen, window.location.origin);
+                    path = url.pathname.replace(/^\//, '');
+                } catch(e) {
+                    path = imagen.replace(/^\//, '');
+                }
                 document.getElementById('edit_imagen_actual_path').value = path;
             }
             

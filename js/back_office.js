@@ -1,7 +1,7 @@
 
 
 
-var get_domain = '';
+var get_domain = window.location.origin;
 var count= 0;
 var config = {
     headers: {
@@ -165,14 +165,9 @@ var config = {
         FormDatas.append('config','json');
         FormDatas.append('context',contexto);
         FormDatas.append('id_user',document.getElementById('id_usuario').value);
-        let api_user = `${get_domain}/controllers/actions_board.php`;
+        let api_user = '/controllers/actions_board.php';
 
-        let url = new URL(api_user);
-        url.searchParams.append('action', 'search_users');
-        url.searchParams.append('config', 'json');
-        url.searchParams.append('context', contexto);
-
-        axios.get(url.toString(),config).then(data=>{
+        axios.get(`${api_user}?action=search_users&config=json&context=${encodeURIComponent(contexto)}`, config).then(data=>{
                         
                       registros = data.data;
 
@@ -439,14 +434,9 @@ var config = {
         FormDatas.append('action','ssearch_boards');
         FormDatas.append('config','json');
         FormDatas.append('context',contexto);
-        let api_user = `${get_domain}/controllers/actions_board.php`;
+        let api_user = '/controllers/actions_board.php';
 
-        let url = new URL(api_user);
-        url.searchParams.append('action', 'search_boards');
-        url.searchParams.append('config', 'json');
-        url.searchParams.append('context', contexto);
-
-        axios.get(url.toString(),config).then(data=>{
+        axios.get(`${api_user}?action=search_boards&config=json&context=${encodeURIComponent(contexto)}`, config).then(data=>{
                         
                       registros = data.data;
 

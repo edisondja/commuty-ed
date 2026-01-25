@@ -41,11 +41,11 @@ document.getElementById('pdfForm').addEventListener('submit', function(event) {
         const data = response.data;
         if (data.success) {
             document.getElementById('pdfResult').innerHTML = `
-                <a href="${dominio.value}${data.pdfUrl}" class="btn btn-success mt-3" download="Generado.pdf">Descargar PDF</a>
+                <a href="${data.pdfUrl}" class="btn btn-success mt-3" download="Generado.pdf">Descargar PDF</a>
             `;
             let embed = document.querySelector('#pdfViewer');
 
-            embed.src = `${dominio.value}${data.pdfUrl}`;
+            embed.src = `${data.pdfUrl}`;
 
 
         } else {

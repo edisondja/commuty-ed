@@ -62,7 +62,7 @@ function loadReports_admin() {
                 <td>${data.usuario}</td>
                 <td>
                     <img class="imagenPerfil" 
-                        src="${dominio.value}/${data.imagen_tablero}" 
+                        src="/${data.imagen_tablero}" 
                         alt="media" 
                         width="50" />
                 </td>
