@@ -10,6 +10,7 @@
     Class EncryptToken extends Prop{
      
         public $key = 'meteorito62410';
+        public $conection = null;
         
 
         function __construct(){
