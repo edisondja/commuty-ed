@@ -4,7 +4,7 @@
     Edejesusa 3-08-2024
 */
 
-
+var baseUrl = window.BASE_URL || '';
 var FormDatas_u = new FormData();
 
 
@@ -13,7 +13,7 @@ async function VerificarUsuario(usuario){
         FormDatas_u.append('action','verify_user_exist');
         FormDatas_u.append('username',document.getElementById('username').value);
 
-        await axios.post('/controllers/actions_board.php',FormDatas_u).then(data=>{        
+        await axios.post(baseUrl + '/controllers/actions_board.php',FormDatas_u).then(data=>{        
                 
         if(data.data==usuario){
 
@@ -39,7 +39,7 @@ async function VerificarUsuario(usuario){
         FormDatas_u.append('action','verify_email_exist');
         FormDatas_u.append('email',email);
 
-        await axios.post('/controllers/actions_board.php',FormDatas_u).then(data=>{
+        await axios.post(baseUrl + '/controllers/actions_board.php',FormDatas_u).then(data=>{
                 
             
         if(data.data==email){
@@ -136,7 +136,7 @@ let btn_join = document.getElementById('btn_join');
         var boton = document.getElementById('btn_join');   
         boton.disabled = true;
 
-        axios.post('/controllers/actions_board.php',FormDatas_u).then(data=>{
+        axios.post(baseUrl + '/controllers/actions_board.php',FormDatas_u).then(data=>{
         
           //  alertify.message(data.data);
           //alert(data.data);

@@ -8,7 +8,7 @@
                 <div class="title">
                 <div class="board-header">
                         <!-- Perfil -->
-                        <a href="{$url_board}/profile_user.php?user={$tablero.usuario}" class="profile-link">
+                        <a href="{$dominio}/profile/{$tablero.usuario}" class="profile-link">
                             <img class="imagenPerfil" src="{$dominio}/{$tablero.foto_url}" />
                             <strong>{$tablero.nombre} {$tablero.apellido}</strong>
                            vb
@@ -28,7 +28,7 @@
                                 {/if}
                             {/if}
 
-                            <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:' ':'_'}">
+                            <a href="{$dominio}/post/{$tablero.id_tablero}/{$tablero.titulo|replace:' ':'-'|lower}">
                                 <i class="fa-solid fa-eye view-icon"></i>
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                          data-preview="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}{$dominio}/{$tablero.preview_tablero}{/if}" 
                          data-image="{$tablero.imagen_tablero}"
                          data-has-preview="{if $tablero.preview_tablero && $tablero.preview_tablero!==''}true{else}false{/if}">
-                    <a href="{$dominio}/single_board.php?id={$tablero.id_tablero}/{$tablero.titulo|replace:" ":"_"}">
+                    <a href="{$dominio}/post/{$tablero.id_tablero}/{$tablero.titulo|replace:' ':'-'|lower}">
                         <img src="{$dominio}/{$tablero.imagen_tablero}" 
                              class="card-img-top board-image board-main-image" 
                              alt="...">

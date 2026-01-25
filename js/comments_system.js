@@ -10,6 +10,8 @@ if (typeof currentCommentId === 'undefined') {
 if (typeof action_comment === 'undefined') {
     var action_comment = 'normal';
 }
+// Base URL para subdirectorios (XAMPP)
+var baseUrl = window.BASE_URL || '';
 
 /**
  * Carga todos los comentarios de un tablero
@@ -28,7 +30,7 @@ function cargarComentarios(id_tablero) {
     FormDatas.append('action', 'load_comments');
     FormDatas.append('id_board', id_tablero);
 
-    axios.post('/controllers/actions_board.php', FormDatas)
+    axios.post(baseUrl + '/controllers/actions_board.php', FormDatas)
         .then(response => {
             let comentarios = [];
             let respuestasIndex = {}; // Índice de respuestas por comentario padre
@@ -230,9 +232,13 @@ function renderizarRespuestas(respuestas, id_comentario) {
             <li class="reply-item" id="reply_${id_reply}">
                 <img src="/${respuesta.foto_url || 'assets/user_profile.png'}" class="rounded reply-avatar" alt="${respuesta.usuario || 'Usuario'}">
                 <div class="reply-content">
-                    <strong class="reply-username">${respuesta.usuario || 'Usuario'}</strong>
-                    <span class="reply-date">${formatearFecha(respuesta.fecha_creacion || '')}</span>
-                    ${botonEliminar}
+                    <div class="reply-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                        <div class="reply-info">
+                            <strong class="reply-username">${respuesta.usuario || 'Usuario'}</strong>
+                            <span class="reply-date" style="margin-left:8px; color:#888; font-size:0.85em;">${formatearFecha(respuesta.fecha_creacion || '')}</span>
+                        </div>
+                        ${botonEliminar ? '<div class="reply-actions" style="margin-left:auto;">' + botonEliminar + '</div>' : ''}
+                    </div>
                     <div class="reply-text">${escapeHtml(respuesta.text_coment || '')}</div>
                 </div>
             </li>
@@ -402,7 +408,7 @@ function enviarRespuesta(id_coment, texto, id_user) {
     FormDatas.append('id_user', id_user);
     FormDatas.append('action', 'reply_coment');
 
-    axios.post('/controllers/actions_board.php', FormDatas, {
+    axios.post(baseUrl + '/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },
@@ -642,7 +648,7 @@ function guardarComentario(id_usuario, id_tablero, texto, tipo_post) {
     FormDatas.append('data_og', '[]');
     FormDatas.append('type_post', tipo_post);
 
-    axios.post('/controllers/actions_board.php', FormDatas, {
+    axios.post(baseUrl + '/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
@@ -679,7 +685,7 @@ function eliminarComentario(id_comentario) {
                 FormDatas.append('action', 'delete_comment');
                 FormDatas.append('id_comentario', id_comentario);
 
-                axios.post('/controllers/actions_board.php', FormDatas)
+                axios.post(baseUrl + '/controllers/actions_board.php', FormDatas)
                     .then(() => {
                         document.querySelector(`#comment_${id_comentario}`).remove();
                         alertify.success('Comentario eliminado');
@@ -713,7 +719,7 @@ function eliminarRespuesta(id_reply) {
                 FormDatas.append('action', 'delete_reply_coment');
                 FormDatas.append('id_coment', id_reply);
 
-                axios.post('/controllers/actions_board.php', FormDatas)
+                axios.post(baseUrl + '/controllers/actions_board.php', FormDatas)
                     .then(() => {
                         document.querySelector(`#reply_${id_reply}`).remove();
                         alertify.success('Respuesta eliminada');

@@ -17,7 +17,7 @@
                         <div class="ms-3">      
                                 <p><strong>{$key['nombre']}</strong> te ha mencionado en una publicación.</p>
                                 <small class="text-muted">{$key['fecha']}</small>
-                            <a href="single_board.php?id={$key['id_tablero']}">
+                            <a href="{$dominio}/post/{$key['id_tablero']}">
                                 <button type="button" class="btn btn-sm btn-dark" 
                                 data-bs-toggle="modal" data-bs-target="#notificacionModal" 
                                style="padding: 0.25rem 0.5rem; font-size: 0.8rem; float:right">🔔 Ver</button>

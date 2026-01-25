@@ -3,13 +3,31 @@
     Módulo de Monitoreo RabbitMQ
 */
 
-// Obtener dominio - intentar desde el elemento DOM primero
-var dominioElement = document.getElementById('dominio');
-var dominio = dominioElement ? dominioElement.value : window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-var api_rabbitmq = '/controllers/rabbitmq_monitor.php';
+var baseUrl = '';
+var api_rabbitmq = '';
+
+// Función para obtener baseUrl
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    var dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        var domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            var match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) return match[1].replace(/\/$/, '');
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
 
 // Actualizar estado al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
+    baseUrl = getBaseUrl();
+    api_rabbitmq = (baseUrl || window.BASE_URL || '') + '/controllers/rabbitmq_monitor.php';
+    console.log('bk_modulo_rabbitmq baseUrl:', baseUrl);
+    
     actualizarEstado();
     // Actualizar cada 10 segundos
     setInterval(actualizarEstado, 10000);

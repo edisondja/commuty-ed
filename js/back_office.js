@@ -1,30 +1,53 @@
 
 
 
-var get_domain = window.location.origin;
-var count= 0;
+// Variables globales
+var baseUrl = '';
+var get_domain = window.location.origin + (window.BASE_URL || '');
+var count = 0;
+var token_get = localStorage.getItem('token');
 var config = {
     headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${token_get}`
-    }};
-    
-
-    if(detectar_modulo()=='users'){
-
-        BuscarUsuarios('');
-
-    }else if(detectar_modulo()=='boards'){
-
-        BuscarTableros('');
-
     }
+};
+
+// Función para obtener baseUrl de manera robusta
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    
+    var dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        var domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            var match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) {
+                return match[1].replace(/\/$/, '');
+            }
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    baseUrl = getBaseUrl();
+    // Actualizar get_domain con el baseUrl correcto
+    get_domain = window.location.origin + (baseUrl || window.BASE_URL || '');
+    
+    var modulo = detectar_modulo();
+    if(modulo=='users'){
+        BuscarUsuarios('');
+    }else if(modulo=='boards'){
+        BuscarTableros('');
+    }
+});
     
 
    // var btn = document.querySelector('#flexSwitchCheckDefault');
-
-
-    var token_get = localStorage.getItem('token');
 
       /*
         Modulo usuarios
@@ -52,7 +75,7 @@ var config = {
         let FormDatas = new FormData();
         FormDatas.append('action','load_info_board');
         FormDatas.append('id_tablero', id_tablero);
-        let api_user = `${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.post(api_user, FormDatas, config).then(response => {
             let data = response.data;
@@ -69,7 +92,7 @@ var config = {
     function cargarReproductoresSelect(idReproductorActual) {
         let FormDatas = new FormData();
         FormDatas.append('action', 'listar_reproductores');
-        let api_user = `${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.post(api_user, FormDatas, config).then(response => {
             const data = response.data;
@@ -124,7 +147,7 @@ var config = {
             FormDatas.append('imagen_actual', document.getElementById("vistaPreviaImagen").src.replace(`${get_domain}/`, ''));
         }
 
-        let api_user = `${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
         
         axios.post(api_user, FormDatas, config).then(response => {
             console.log("Respuesta del servidor:", response);
@@ -165,7 +188,8 @@ var config = {
         FormDatas.append('config','json');
         FormDatas.append('context',contexto);
         FormDatas.append('id_user',document.getElementById('id_usuario').value);
-        let api_user = '/controllers/actions_board.php';
+        
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.get(`${api_user}?action=search_users&config=json&context=${encodeURIComponent(contexto)}`, config).then(data=>{
                         
@@ -200,7 +224,7 @@ var config = {
             let FormDatas = new FormData();
             FormDatas.append('action','disable_user');
             FormDatas.append('id_user',id_usuario);
-            let api_user =`${get_domain}/controllers/actions_board.php`;
+            let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
             axios.post(api_user,
                         FormDatas,
@@ -291,7 +315,7 @@ var config = {
         let FormDatas = new FormData();
         FormDatas.append('action','enable_user');
         FormDatas.append('id_user',id_user);
-        let api_user =`${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.post(api_user,
                     FormDatas,
@@ -316,7 +340,7 @@ var config = {
             <tr>
                 <td>
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img class="bo-avatar" src="${get_domain}/${data.foto_url}" onerror="this.src='${get_domain}/assets/user_profile.png'"/>
+                        <img class="bo-avatar" src="${get_domain}/${data.foto_url}" onerror="this.onerror=null; this.src='${get_domain}/assets/user_profile.png'"/>
                         <div>
                             <strong>${data.nombre} ${data.apellido}</strong>
                             <br><small style="color: rgba(255,255,255,0.5);">@${data.usuario || 'usuario'}</small>
@@ -355,7 +379,7 @@ var config = {
         let FormDatas = new FormData();
         FormDatas.append('action','search_boards');
         FormDatas.append('id_user',document.getElementById('id_usuario').value);
-        let api_user =`${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.get(api_user,
                     FormDatas,
@@ -434,7 +458,8 @@ var config = {
         FormDatas.append('action','ssearch_boards');
         FormDatas.append('config','json');
         FormDatas.append('context',contexto);
-        let api_user = '/controllers/actions_board.php';
+        
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.get(`${api_user}?action=search_boards&config=json&context=${encodeURIComponent(contexto)}`, config).then(data=>{
                         
@@ -484,14 +509,14 @@ var config = {
                 <td>
                     <img class="bo-avatar" style="border-radius: 8px; width: 50px; height: 50px;" 
                         src="${get_domain}/${data.imagen_tablero}" 
-                        onerror="this.src='${get_domain}/assets/no_found.png'"/>
+                        onerror="this.onerror=null; this.src='${get_domain}/assets/no_found.png'"/>
                 </td>
                 <td><small>${fecha}</small></td>
                 <td>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <img class="bo-avatar" style="width: 30px; height: 30px;" 
                             src="${get_domain}/${data.foto_url}" 
-                            onerror="this.src='${get_domain}/assets/user_profile.png'"/>
+                            onerror="this.onerror=null; this.src='${get_domain}/assets/user_profile.png'"/>
                         <span>${data.usuario || 'Usuario'}</span>
                     </div>
                 </td>
@@ -520,7 +545,7 @@ var config = {
         FormDatas.append('id_board',id_tablero);
         FormDatas.append('id_usuario',id_usuario.value);
 
-        let api_user =`${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.post(api_user,
                     FormDatas,
@@ -545,7 +570,7 @@ var config = {
         FormDatas.append('id_usuario',id_usuario.value);
         
 
-        let api_user =`${get_domain}/controllers/actions_board.php`;
+        let api_user = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
 
         axios.post(api_user,
                     FormDatas,

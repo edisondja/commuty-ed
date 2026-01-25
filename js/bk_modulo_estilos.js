@@ -2,8 +2,29 @@
     Módulo de Gestión de Estilos y Colores
 */
 
+var baseUrl = '';
+
+// Función para obtener baseUrl
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    var dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        var domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            var match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) return match[1].replace(/\/$/, '');
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    const dominio = document.getElementById('dominio_js').value;
+    baseUrl = getBaseUrl();
+    console.log('bk_modulo_estilos baseUrl:', baseUrl);
+    
+    const dominio = document.getElementById('dominio_js')?.value || '';
     
     // Cargar estilos guardados al iniciar
     cargarEstilos();
@@ -87,7 +108,7 @@ function cargarEstilos() {
     const FormDatas = new FormData();
     FormDatas.append('action', 'load_styles');
     
-    axios.post('/controllers/actions_board.php', FormDatas)
+    axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', FormDatas)
         .then(response => {
             if (response.data && response.data.success) {
                 const estilos = response.data.estilos || {};
@@ -167,7 +188,7 @@ function guardarEstilos() {
     FormDatas.append('color_borde', document.getElementById('color_borde').value);
     FormDatas.append('color_header', document.getElementById('color_header').value);
     
-    axios.post('/controllers/actions_board.php', FormDatas)
+    axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', FormDatas)
         .then(response => {
             const mensajeDiv = document.getElementById('mensaje_estilos');
             if (response.data && response.data.success) {

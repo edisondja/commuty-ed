@@ -1,6 +1,7 @@
 var id =0;
 var id_reply_coment = 0;
 var id_coment = 0;
+var baseUrl = window.BASE_URL || '';
 
 
 
@@ -216,7 +217,7 @@ function reply_coment(id_coment,text_coment,id_user){
 
     console.log('Enviando respuesta al comentario:', {id_coment, text_coment: texto_limpio, id_user});
 
-    axios.post('/controllers/actions_board.php',FormDatas).then(datos=>{
+    axios.post(baseUrl + '/controllers/actions_board.php',FormDatas).then(datos=>{
 
             console.log('Respuesta del servidor completa:', datos);
             console.log('Datos recibidos:', datos.data);

@@ -336,3 +336,7 @@ Enviando multimedia a procesar para Board: 24
 26-01-25 04:34:19Inicio de sesion usaurio ed_admin
 Bloqueando tablero
 2026-01-25 15:12:07 - Notificación guardada correctamente
+2026-01-25 22:52:11 - Notificación guardada correctamente
+Enviando multimedia a procesar para Board: 27
+2026-01-25 22:53:55 - Notificación guardada correctamente
+2026-01-25 23:11:03 - Notificación guardada correctamente

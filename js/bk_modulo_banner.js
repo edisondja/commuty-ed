@@ -1,11 +1,35 @@
 
-cargar_banners();
+var baseUrl = '';
 
-document.querySelector("#guardar_ads").addEventListener('click',()=>{
+// Función para obtener baseUrl
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    var dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        var domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            var match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) return match[1].replace(/\/$/, '');
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
 
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    baseUrl = getBaseUrl();
+    console.log('bk_modulo_banner baseUrl:', baseUrl);
+    
+    cargar_banners();
 
-        guardar_banner();
-
+    var guardarBtn = document.querySelector("#guardar_ads");
+    if (guardarBtn) {
+        guardarBtn.addEventListener('click', function() {
+            guardar_banner();
+        });
+    }
 });
 
 
@@ -44,7 +68,7 @@ function abrirModalEditar(id_banner) {
   FormDatas.append('action','cargar_ads_s');
   FormDatas.append('ads_id',id_banner);
 
- axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+ axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
                 }  
@@ -114,7 +138,7 @@ function actualizar_ads() {
     formData.append('imagen_ruta', document.getElementById('imagen_original').value);
   }
 
-  axios.post('/controllers/actions_board.php', formData, {
+  axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
       // 'Authorization': `Bearer ${token_get}`
@@ -195,7 +219,7 @@ function renderAdsTable(data) {
             FormDatas.append('estado',nuevoEstado);
             FormDatas.append('ads_id',id);
             
-                axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+                axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
             }}).then(data=>{
@@ -243,7 +267,7 @@ function renderAdsTable(data) {
         FormDatas.append('action','cargar_banners');
     
 
-        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+        axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
             }}).then(data=>{
@@ -331,7 +355,7 @@ function renderAdsTable(data) {
             }
 
             
-        axios.post('/controllers/actions_board.php', FormDatas, {
+        axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', FormDatas, {
             headers: {
                 'Content-Type': 'multipart/form-data'
                 /*'Authorization': `Bearer ${token}`*/
@@ -390,7 +414,7 @@ function actualizar_banner() {
         FormDatas.append('imagen_ads', '');
     }
 
-    axios.post('/controllers/actions_board.php', FormDatas, {
+    axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

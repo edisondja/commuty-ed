@@ -5,6 +5,7 @@ window.onload=function(){
  
     var login = document.querySelector('#login');
     var dominio = document.querySelector('#dominio').value;
+    var baseUrl = window.BASE_URL || '';
     var public_post = document.querySelector('#public_post');
     var foto_perfil = document.querySelector('#foto_perfil').value;
     var nombre_usuario = document.querySelector('#nombre_usuario').value;
@@ -45,7 +46,7 @@ window.onload=function(){
                         FormDatas.append('id_board',id_board);
 
                         //board${$table.id_tablero}
-                        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+                        axios.post(baseUrl + '/controllers/actions_board.php',FormDatas,{headers:{
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }}).then(info=>{
                 
@@ -109,7 +110,7 @@ window.onload=function(){
         FormDatas.append('id_board',id_board);
 
         //board${$table.id_tablero}
-        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+        axios.post(baseUrl + '/controllers/actions_board.php',FormDatas,{headers:{
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }}).then(info=>{
 
@@ -181,7 +182,7 @@ window.onload=function(){
         FormDatas.append('user_id',document.getElementById('id_usuario').value);
 ;
 
-        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
+        axios.post(baseUrl + '/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token_get}`
         }
@@ -312,7 +313,7 @@ window.onload=function(){
                 
                 }
 
-                axios.post('/controllers/actions_board.php',formDatas,{headers:{
+                axios.post(baseUrl + '/controllers/actions_board.php',formDatas,{headers:{
                             'Content-Type': 'multipart/form-data',
                             'Authorization': `Bearer ${token_get}`
 
@@ -554,7 +555,7 @@ window.onload=function(){
         };
     
         // Envía la solicitud POST usando Axios
-        axios.post('/controllers/actions_board.php', FormDatas_board, config)
+        axios.post(baseUrl + '/controllers/actions_board.php', FormDatas_board, config)
             .then(data => {
                 // Oculta la barra de progreso al completar la solicitud
 
@@ -643,17 +644,17 @@ window.onload=function(){
                         <div class='body' style='padding:5px'>
                         <div class='title'>
                             <strong>
-                            <a href='/profile_user.php?user=${usuario}'>
+                            <a href='${window.BASE_URL || ''}/profile/${usuario}'>
                                 <img class='imagenPerfil' src='${foto_perfil}'/>
                             </a>
                             ${nombre_usuario}
-                            <a href="/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
+                            <a href="${window.BASE_URL || ''}/post/${id_tablero}${url_slug ? '/' + url_slug : ''}">
                                 <i class="fa-solid fa-highlighter"></i>
                             </a>
                             </strong>
                         </div>
                         <p style='padding-left: 10px;'>${descripcion}</p>
-                        <a href="/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
+                        <a href="${window.BASE_URL || ''}/post/${id_tablero}${url_slug ? '/' + url_slug : ''}">
                     `;
                     
                     if (imagen_tablero && imagen_tablero !== '' && imagen_tablero !== 'undefined' && imagen_tablero !== null) {
@@ -815,7 +816,7 @@ window.onload=function(){
         FormDatas.append('usuario',document.querySelector('#usuario').value);
         FormDatas.append('action','sigout');
 
-        axios.post('/controllers/actions_board.php',FormDatas).then(data=>{
+        axios.post(baseUrl + '/controllers/actions_board.php',FormDatas).then(data=>{
                 console.log(data.data);
 
             // alertify.message('cerrando sesión');
@@ -858,21 +859,28 @@ window.onload=function(){
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 // Si se alcanza el final de la página, carga más datos
                // alertify.message('llego al final de la pagina');
-               // Obtener la URL actual
+               // Obtener la URL actual y base URL
                 const url = new URL(window.location.href);
+                const baseUrl = window.BASE_URL || '';
 
-                // Obtener el valor del parámetro 'leaf'
-                const leafValue = url.searchParams.get('leaf');
+                // Obtener el valor del parámetro 'leaf' o de la URL moderna /page/N
+                let leafValue = url.searchParams.get('leaf');
+                // Intentar extraer de URL moderna /page/N
+                const pageMatch = window.location.pathname.match(/\/page\/(\d+)/);
+                if (pageMatch) {
+                    leafValue = pageMatch[1];
+                }
+                
                 if(boards>5){
                     if(leafValue==null){
 
-                            window.location=`/?leaf=2`;     
+                            window.location=`${baseUrl}/page/2`;     
                             
                     }else{
         
                         let page = parseInt(leafValue) + 1;
         
-                        window.location=`/?leaf=${page}`;     
+                        window.location=`${baseUrl}/page/${page}`;     
         
         
                     }
@@ -893,22 +901,32 @@ window.onload=function(){
 
                
                 const url = new URL(window.location.href);
+                const baseUrl = window.BASE_URL || '';
 
-                // Obtener el valor del parámetro 'leaf'
-                const leafValue = url.searchParams.get('leaf');
-                const UserNAME = url.searchParams.get('user');
+                // Obtener el valor del parámetro 'leaf' o de la URL moderna
+                let leafValue = url.searchParams.get('leaf');
+                let UserNAME = url.searchParams.get('user');
+                
+                // Intentar extraer de URL moderna /profile/username o /profile/username/page/N
+                const profileMatch = window.location.pathname.match(/\/profile\/([^\/]+)(?:\/page\/(\d+))?/);
+                if (profileMatch) {
+                    UserNAME = profileMatch[1];
+                    if (profileMatch[2]) {
+                        leafValue = profileMatch[2];
+                    }
+                }
                 
                 if(boards>5){
 
                     if(leafValue==null){
 
-                            window.location=`/profile_user.php?leaf=2&user=${UserNAME}`;     
+                            window.location=`${baseUrl}/profile/${UserNAME}/page/2`;     
                             
                     }else{
         
                         let page = parseInt(leafValue) + 1;
         
-                        window.location=`/profile_user.php?leaf=${page}&user=${UserNAME}`;     
+                        window.location=`${baseUrl}/profile/${UserNAME}/page/${page}`;     
         
         
                     }
@@ -965,7 +983,7 @@ window.onload=function(){
                     form.append('media', ruta_limpia);
                     form.append('video_txt', video_txt);
 
-                    axios.post('/controllers/actions_board.php', form, {
+                    axios.post(baseUrl + '/controllers/actions_board.php', form, {
                         headers:{
                             'Authorization': `Bearer ${token_get}`
                         }

@@ -137,23 +137,23 @@
 
 <nav class="col-md-2 col-12 mb-4 mb-md-0 menu-container">
     <div class="menu-title">
-        <img class="imagenPerfil" src="{$foto_perfil}" onerror="this.src='{$dominio}/assets/user_profile.png'"/> 
+        <img class="imagenPerfil" src="{$foto_perfil}" onerror="this.onerror=null; this.src='{$dominio}/assets/user_profile.png'"/> 
         <span>Panel Admin</span>
     </div>
     
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'users'}active{/if}" href="backcoffe.php?option=users">
+            <a class="nav-link {if $current_option == 'users'}active{/if}" href="{$dominio}/admin/users">
                 Usuarios <i class="fa-solid fa-users"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'boards'}active{/if}" href="backcoffe.php?option=boards">
+            <a class="nav-link {if $current_option == 'boards'}active{/if}" href="{$dominio}/admin/boards">
                 Publicaciones <i class="fa-solid fa-photo-film"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'reports'}active{/if}" href="backcoffe.php?option=reports">
+            <a class="nav-link {if $current_option == 'reports'}active{/if}" href="{$dominio}/admin/reports">
                 Reportes <i class="fa-solid fa-flag"></i>
             </a>
         </li>
@@ -161,22 +161,22 @@
         <div class="menu-separator"></div>
         
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'settings'}active{/if}" href="backcoffe.php?option=settings">
+            <a class="nav-link {if $current_option == 'settings'}active{/if}" href="{$dominio}/admin/settings">
                 Configuraciones <i class="fa-solid fa-gear"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'estilos'}active{/if}" href="backcoffe.php?option=estilos">
+            <a class="nav-link {if $current_option == 'estilos'}active{/if}" href="{$dominio}/admin/styles">
                 Estilos y Colores <i class="fa-solid fa-palette"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'banners'}active{/if}" href="backcoffe.php?option=banners">
+            <a class="nav-link {if $current_option == 'banners'}active{/if}" href="{$dominio}/admin/banners">
                 Banners <i class="fa-solid fa-rectangle-ad"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'reproductores'}active{/if}" href="backcoffe.php?option=reproductores">
+            <a class="nav-link {if $current_option == 'reproductores'}active{/if}" href="{$dominio}/admin/players">
                 Reproductores VAST <i class="fa-solid fa-play-circle"></i>
             </a>
         </li>
@@ -184,12 +184,12 @@
         <div class="menu-separator"></div>
         
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'mails'}active{/if}" href="backcoffe.php?option=mails">
+            <a class="nav-link {if $current_option == 'mails'}active{/if}" href="{$dominio}/admin/mail">
                 Correo Masivo <i class="fa-solid fa-envelope"></i>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {if $current_option == 'rabbitmq'}active{/if}" href="backcoffe.php?option=rabbitmq">
+            <a class="nav-link {if $current_option == 'rabbitmq'}active{/if}" href="{$dominio}/admin/rabbitmq">
                 RabbitMQ <i class="fa-solid fa-server"></i>
             </a>
         </li>
@@ -197,12 +197,12 @@
         <div class="menu-separator"></div>
         
         <li class="nav-item">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link" href="{$dominio}/">
                 <i class="fa-solid fa-home" style="margin-left:0; margin-right:8px;"></i> Volver al Sitio
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link logout-link" href="logout.php">
+            <a class="nav-link logout-link" href="{$dominio}/logout.php">
                 Cerrar Sesión <i class="fa-solid fa-right-from-bracket"></i>
             </a>
         </li>

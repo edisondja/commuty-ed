@@ -1,0 +1,12 @@
+# Permitir acceso a archivos PHP en este directorio
+Options -Indexes
+<FilesMatch "\.php$">
+    Require all granted
+</FilesMatch>
+
+# Configuración para subida de archivos grandes
+<IfModule mod_php.c>
+    php_value upload_max_filesize 250M
+    php_value post_max_size 260M
+    php_value max_execution_time 600
+</IfModule>

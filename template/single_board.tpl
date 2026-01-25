@@ -289,58 +289,59 @@
         window.id_usuario = document.getElementById('id_usuario')?.value || 0;
     }
 </script>
-<script type="text/javascript" src='js/comments_system.js'></script>
-<script type="text/javascript" src='js/single_board.js'></script>
-<script type="text/javascript" src='js/rating_system.js'></script>
-<script type="text/javascript" src='js/vast_player.js'></script>
 {/literal}
+<script type="text/javascript" src='{$dominio}/js/comments_system.js'></script>
+<script type="text/javascript" src='{$dominio}/js/single_board.js'></script>
+<script type="text/javascript" src='{$dominio}/js/rating_system.js'></script>
+<script type="text/javascript" src='{$dominio}/js/vast_player.js'></script>
 <script type="text/javascript">
     // Inicializar reproductor VAST para videos del tablero
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {ldelim}
         const idTablero = '{$id_tablero}';
+        const baseUrl = window.BASE_URL || '';
         const videos = document.querySelectorAll('.fixed-size-video');
         
-        videos.forEach(function(video, index) {
+        videos.forEach(function(video, index) {ldelim}
             // Asignar ID único si no tiene
-            if (!video.id) {
+            if (!video.id) {ldelim}
                 video.id = 'tablero-video-' + index;
-            }
+            {rdelim}
             // Inicializar VAST Player con el reproductor específico del tablero
-            initVastPlayerForTablero(video.id, idTablero).then(player => {
-                if (player) {
+            initVastPlayerForTablero(video.id, idTablero).then(player => {ldelim}
+                if (player) {ldelim}
                     console.log('VAST Player inicializado para:', video.id);
-                }
-            });
-        });
-    });
+                {rdelim}
+            {rdelim});
+        {rdelim});
+    {rdelim});
     
     // Función para inicializar reproductor VAST desde el tablero específico
-    async function initVastPlayerForTablero(videoElementId, idTablero) {
-        try {
+    async function initVastPlayerForTablero(videoElementId, idTablero) {ldelim}
+        try {ldelim}
             const formData = new FormData();
             formData.append('action', 'obtener_reproductor_tablero');
             formData.append('id_tablero', idTablero);
             
             const response = await axios.post(
-                '/controllers/actions_board.php',
+                baseUrl + '/controllers/actions_board.php',
                 formData
             );
             
-            if (response.data.success && response.data.reproductor) {
+            if (response.data.success && response.data.reproductor) {ldelim}
                 const rep = response.data.reproductor;
-                return new VastPlayer(videoElementId, {
+                return new VastPlayer(videoElementId, {ldelim}
                     vastPreroll: rep.vast_url || null,
                     vastMidroll: rep.vast_url_mid || null,
                     vastPostroll: rep.vast_url_post || null,
                     skipDelay: parseInt(rep.skip_delay) || 5,
                     midrollTime: parseInt(rep.mid_roll_time) || 30
-                });
-            }
-        } catch (e) {
+                {rdelim});
+            {rdelim}
+        {rdelim} catch (e) {ldelim}
             console.warn('No se pudo cargar configuración VAST:', e);
-        }
+        {rdelim}
         return null;
-    }
+    {rdelim}
 </script>
 
 <style>

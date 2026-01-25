@@ -7,6 +7,8 @@ window.onload=function(){
     let retroceder = document.getElementById('retroceder');
 
     var dominio = document.getElementById('dominio').value;
+    // Usar BASE_URL para soporte de subdirectorios (XAMPP)
+    var baseUrl = window.BASE_URL || '';
 
 
     var pagina = parseInt(document.getElementById('pagina').value);
@@ -17,7 +19,7 @@ window.onload=function(){
                 pagina++;
 
 
-               location=`/controllers/index.php?boards=${pagina}`;
+               location=`${baseUrl}/page/${pagina}`;
             
         });
 
@@ -31,11 +33,11 @@ window.onload=function(){
                 if(pagina<=0){
 
                     pagina=1;
-                    location=`/controllers/index.php?boards=${pagina}`;
+                    location=`${baseUrl}/page/${pagina}`;
 
                 }else{
 
-                    location=`/controllers/index.php?boards=${pagina}`;
+                    location=`${baseUrl}/page/${pagina}`;
 
                 }
             

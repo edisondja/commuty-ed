@@ -117,7 +117,7 @@
             $smarty->assign('foto_usuario', $dominio."/".($data_board['foto_url'] ?? 'assets/user_profile.png'));
             $smarty->assign('multimedias_t', $multimedias_tableros);
         }
-        $smarty->assign('url_board', "$dominio/single_board.php?id=".$_GET['id']);
+        $smarty->assign('url_board', "$dominio/post/".$_GET['id']);
         $smarty->display('../template/header.tpl');
 
     }

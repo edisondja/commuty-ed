@@ -18,6 +18,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
     <title>{$titulo}</title>
         <meta name="description" content="{$descripcion}">
+        <script>
+            // Base URL - definir directamente desde PHP/Smarty
+            window.SITE_DOMAIN = '{$dominio}';
+            window.BASE_URL = (function() {
+                var dominio = '{$dominio}';
+                if (!dominio) return '';
+                if (dominio.indexOf('http') === 0) {
+                    try {
+                        var url = new URL(dominio);
+                        return url.pathname.replace(/\/$/, '') || '';
+                    } catch(e) {
+                        var match = dominio.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+                        return (match && match[1]) ? match[1].replace(/\/$/, '') : '';
+                    }
+                } else if (dominio.indexOf('/') === 0) {
+                    return dominio.replace(/\/$/, '');
+                }
+                return '';
+            })();
+            console.log('BASE_URL:', window.BASE_URL);
+        </script>
         <meta name="rating" content="RTA-5042-1996-1400-1577-RTA" />
         <meta http-equiv="Content-Language" content="en-US">
         <meta name="Robots" content="all"/>
@@ -199,15 +220,15 @@
                               <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#exampleModal">Public Post</a></li>
                               <li><a class="dropdown-item" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#transferVideo">Transfer video</a></li>
                               {if $type_user=='admin'}
-                                  <li><a class="dropdown-item user_update" href="backcoffe.php" style='cursor:pointer'>Admin</a></li>
+                                  <li><a class="dropdown-item user_update" href="{$dominio}/admin" style='cursor:pointer'>Admin</a></li>
                               {/if}
                               <li><a class="dropdown-item user_update" data-bs-toggle="modal" style='cursor:pointer' data-bs-target="#updateUserModal">User Update</a></li>
                               <li><a class="dropdown-item" style='cursor:pointer' id='singout'>Sing out</a></li>
-                              <li><a class="dropdown-item" href="{$dominio}/profile_user.php?user={$user_session}">My Profile</a></li>
+                              <li><a class="dropdown-item" href="{$dominio}/profile/{$user_session}">My Profile</a></li>
                               <li class="dropdown-item" style='display:none' id='login' style='cursor:pointer'>Login</li>
                           {else}
                               <li class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal" style='cursor:pointer'>Login</li>
-                              <a href="registrer.php" style='text-decoration:none;'>
+                              <a href="{$dominio}/registrer.php" style='text-decoration:none;'>
                                   <li class="dropdown-item" style='cursor:pointer'>Registrer</li>
                               </a>
                           {/if}

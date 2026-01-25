@@ -1,3 +1,5 @@
+  var baseUrl = window.BASE_URL || '';
+
   // Función para mostrar la vista previa de las imágenes seleccionadas
   document.getElementById('images').addEventListener('change', function(event) {
     const imagePreview = document.getElementById('imagePreview');
@@ -32,7 +34,7 @@ document.getElementById('pdfForm').addEventListener('submit', function(event) {
         formData.append('images[]', files[i]);
     }
 
-    axios.post('/controllers/actions_board.php', formData, {
+    axios.post(baseUrl + '/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

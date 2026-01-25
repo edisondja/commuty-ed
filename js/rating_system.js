@@ -56,7 +56,7 @@ function initRatingSystem() {
  * Carga la calificación promedio y la del usuario
  */
 function loadRating(tableroId) {
-    const dominio = document.getElementById('dominio')?.value || window.location.origin || '';
+    const baseUrl = window.BASE_URL || '';
     let idUsuario = document.getElementById('id_usuario')?.value || 0;
     
     // Intentar obtener id_usuario de diferentes formas
@@ -69,7 +69,7 @@ function loadRating(tableroId) {
     }
     
     // Cargar promedio
-    axios.get('/controllers/actions_board.php', {
+    axios.get(baseUrl + '/controllers/actions_board.php', {
         params: {
             action: 'get_rating_average',
             id_tablero: tableroId
@@ -98,7 +98,7 @@ function loadRating(tableroId) {
     
     // Cargar calificación del usuario si está logueado
     if (idUsuario && idUsuario != '0' && idUsuario != '') {
-        axios.get('/controllers/actions_board.php', {
+        axios.get(baseUrl + '/controllers/actions_board.php', {
             params: {
                 action: 'get_my_rating',
                 id_tablero: tableroId,
@@ -136,7 +136,7 @@ function loadRating(tableroId) {
  * Califica una publicación
  */
 function rateBoard(tableroId, puntuacion) {
-    const dominio = document.getElementById('dominio')?.value || window.location.origin || '';
+    const baseUrl = window.BASE_URL || '';
     let idUsuario = document.getElementById('id_usuario')?.value;
     
     // Intentar obtener id_usuario de diferentes formas
@@ -158,7 +158,7 @@ function rateBoard(tableroId, puntuacion) {
         return;
     }
     
-    console.log('Calificando:', { tableroId, puntuacion, idUsuario, dominio });
+    console.log('Calificando:', { tableroId, puntuacion, idUsuario, baseUrl });
     
     const formData = new FormData();
     formData.append('action', 'save_rating');
@@ -166,7 +166,7 @@ function rateBoard(tableroId, puntuacion) {
     formData.append('id_usuario', idUsuario);
     formData.append('puntuacion', puntuacion);
     
-    axios.post('/controllers/actions_board.php', formData, {
+    axios.post(baseUrl + '/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

@@ -2,8 +2,8 @@
  * Módulo de gestión de Reproductores VAST
  */
 
-const dominioVal = document.getElementById('dominio')?.value || '';
-const apiUrl = '/controllers/actions_board.php';
+let baseUrl = '';
+let apiUrl = '';
 const configHeaders = {
     headers: {
         'Content-Type': 'multipart/form-data',
@@ -11,8 +11,28 @@ const configHeaders = {
     }
 };
 
+// Función para obtener baseUrl
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    const dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        const domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            const match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) return match[1].replace(/\/$/, '');
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
+
 // Cargar reproductores al iniciar
 document.addEventListener('DOMContentLoaded', function() {
+    baseUrl = getBaseUrl();
+    apiUrl = (baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php';
+    console.log('bk_modulo_reproductores baseUrl:', baseUrl);
+    
     cargarReproductores();
 });
 

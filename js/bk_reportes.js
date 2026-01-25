@@ -1,11 +1,29 @@
 //En este script se cargan los reportes por lo usuario para que lo pueda visualizar el admin
 
+var baseUrl = '';
+
+// Función para obtener baseUrl
+function getBaseUrl() {
+    if (window.BASE_URL) return window.BASE_URL;
+    var dominioEl = document.getElementById('dominio');
+    if (dominioEl && dominioEl.value) {
+        var domVal = dominioEl.value;
+        if (domVal.indexOf('http') === 0) {
+            var match = domVal.match(/^https?:\/\/[^\/]+(\/.*)?$/);
+            if (match && match[1]) return match[1].replace(/\/$/, '');
+        } else if (domVal.indexOf('/') === 0) {
+            return domVal.replace(/\/$/, '');
+        }
+    }
+    return '';
+}
+
 function loadReports_admin() {
     let formData = new FormData();
     formData.append('action', 'load_report_admin');
 
 
-    axios.post('/controllers/actions_board.php', formData, {
+    axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token_get}`
@@ -77,7 +95,7 @@ function loadReports_admin() {
         formData.append('action', 'buscar_reporte');
         formData.append('texto', texto);
 
-        axios.post('/controllers/actions_board.php', formData, {
+        axios.post((baseUrl || window.BASE_URL || '') + '/controllers/actions_board.php', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token_get}`
@@ -102,16 +120,22 @@ function loadReports_admin() {
     }
 
 
-loadReports_admin();
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    baseUrl = getBaseUrl();
+    console.log('bk_reportes baseUrl:', baseUrl);
+    
+    loadReports_admin();
 
-
-let searchInput = document.getElementById('search_report');
-
-searchInput.addEventListener('input', function() {
-    let query = searchInput.value.trim();
-    if (query.length > 0) {
-        searchReports_admin(query);
-    } else {
-        loadReports_admin(); // Cargar todos los reportes si el campo de búsqueda está vacío
+    let searchInput = document.getElementById('search_report');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            let query = searchInput.value.trim();
+            if (query.length > 0) {
+                searchReports_admin(query);
+            } else {
+                loadReports_admin();
+            }
+        });
     }
 });
