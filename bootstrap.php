@@ -5,6 +5,79 @@
     require_once 'vendor/autoload.php';
     require_once 'config/config.php';
     
+    // ============================================
+    // Auto-migración de base de datos
+    // Verifica y agrega columnas faltantes
+    // ============================================
+    function runAutoMigrations() {
+        static $migrationRan = false;
+        if ($migrationRan) return;
+        $migrationRan = true;
+        
+        try {
+            $conn = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+            if ($conn->connect_error) return;
+            
+            // Verificar si la columna publicar_sin_revision existe
+            $result = $conn->query("SHOW COLUMNS FROM configuracion LIKE 'publicar_sin_revision'");
+            if ($result && $result->num_rows == 0) {
+                // Agregar columnas faltantes
+                $conn->query("ALTER TABLE configuracion ADD COLUMN publicar_sin_revision tinyint(1) DEFAULT 1");
+                $conn->query("ALTER TABLE configuracion ADD COLUMN verificar_cuenta tinyint(1) DEFAULT 0");
+                $conn->query("ALTER TABLE configuracion ADD COLUMN rabbit_mq tinyint(1) DEFAULT 0");
+                $conn->query("ALTER TABLE configuracion ADD COLUMN ffmpeg tinyint(1) DEFAULT 0");
+                $conn->query("ALTER TABLE configuracion ADD COLUMN redis_cache tinyint(1) DEFAULT 0");
+            }
+            
+            // Verificar estilos_json
+            $result = $conn->query("SHOW COLUMNS FROM configuracion LIKE 'estilos_json'");
+            if ($result && $result->num_rows == 0) {
+                $conn->query("ALTER TABLE configuracion ADD COLUMN estilos_json text DEFAULT NULL");
+            }
+            
+            // Verificar id_reproductor en tableros
+            $result = $conn->query("SHOW COLUMNS FROM tableros LIKE 'id_reproductor'");
+            if ($result && $result->num_rows == 0) {
+                $conn->query("ALTER TABLE tableros ADD COLUMN id_reproductor int(11) DEFAULT NULL");
+            }
+            
+            // Crear tabla ratings si no existe
+            $conn->query("CREATE TABLE IF NOT EXISTS ratings (
+                id_rating int(11) NOT NULL AUTO_INCREMENT,
+                id_tablero int(11) NOT NULL,
+                id_usuario int(11) NOT NULL,
+                rating tinyint(1) NOT NULL,
+                fecha_creacion datetime DEFAULT current_timestamp(),
+                PRIMARY KEY (id_rating),
+                UNIQUE KEY unique_user_board_rating (id_tablero, id_usuario)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+            
+            // Crear tabla reproductores_vast si no existe
+            $conn->query("CREATE TABLE IF NOT EXISTS reproductores_vast (
+                id_reproductor int(11) NOT NULL AUTO_INCREMENT,
+                nombre varchar(100) NOT NULL,
+                descripcion text DEFAULT NULL,
+                vast_url text DEFAULT NULL,
+                vast_url_mid text DEFAULT NULL,
+                vast_url_post text DEFAULT NULL,
+                skip_delay int(11) DEFAULT 5,
+                mid_roll_time int(11) DEFAULT 30,
+                activo tinyint(1) DEFAULT 1,
+                es_default tinyint(1) DEFAULT 0,
+                fecha_creacion datetime DEFAULT current_timestamp(),
+                fecha_actualizacion datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+                PRIMARY KEY (id_reproductor)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+            
+            $conn->close();
+        } catch (Exception $e) {
+            // Silenciar errores de migración
+        }
+    }
+    
+    // Ejecutar migraciones automáticas
+    runAutoMigrations();
+    
     // Funciones de compatibilidad para PHP 7.2 y PHP 8+
     if (!function_exists('php_compat_fetch_object')) {
         function php_compat_fetch_object($result) {
