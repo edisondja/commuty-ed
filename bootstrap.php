@@ -139,6 +139,7 @@
     require_once 'models/Notificacion.php';
     require_once 'models/Like.php';
     
+    // Valor por defecto del config.php (se actualizará con BD más adelante)
     $dominio = DOMAIN;
     $libs = include 'libs/connect_cdn.php';
     $id_user=0;
@@ -173,43 +174,45 @@
     $smarty->setCompileDir('compile');
     $smarty->setCacheDir('cache');
     $smarty->assign('api_transfer_video', API_TRANSFER_VIDEO);
-    //Verificar si existe cofinguracion en la base de datos 
-
+    
+    // ============================================
+    // Cargar configuración del sitio desde BD
+    // Si existe en BD, sobrescribe los valores de config.php
+    // ============================================
     $configuracion = new Config();
+    $config_data = null;
 
-    if($configuracion->VerificarConfiguracion()>0){
-        /*
-            Si existe una configuracion registrada en la base de 
-            datos se cargaran en lugar de tomarse desde el archivo
-            de cofiguracion estatico /config/congfig.php.
-        */
+    if($configuracion->VerificarConfiguracion() > 0){
         $config_data = $configuracion->Cargar_configuracion('asoc');
-        $name_site = $config_data->nombre_sitio;
-
-        $smarty->assign('name',$config_data->nombre_sitio);
         
-        // Asegurar que logosite no tenga URL duplicada
-        $logosite = $config_data->sitio_logo_url;
-        if (!empty($logosite) && strpos($logosite, 'http') === 0) {
-            // Si ya tiene http, usar tal cual
-            $smarty->assign('logosite', $logosite);
-        } else {
-            // Si es relativa, agregar dominio
-            $dominio_config = !empty($config_data->dominio) ? $config_data->dominio : DOMAIN;
-            $smarty->assign('logosite', $dominio_config . '/' . ltrim($logosite, '/'));
+        // *** DOMINIO: Usar el de la BD si existe ***
+        if (!empty($config_data->dominio)) {
+            $dominio = rtrim($config_data->dominio, '/');
         }
         
-        $smarty->assign('copyright', $config_data->copyright_descripcion);
+        $name_site = !empty($config_data->nombre_sitio) ? $config_data->nombre_sitio : NAME_SITE;
+        $smarty->assign('name', $name_site);
         
-        // Asegurar que favicon esté definido
+        // Logo del sitio
+        $logosite = $config_data->sitio_logo_url ?? '';
+        if (!empty($logosite) && strpos($logosite, 'http') === 0) {
+            $smarty->assign('logosite', $logosite);
+        } elseif (!empty($logosite)) {
+            $smarty->assign('logosite', $dominio . '/' . ltrim($logosite, '/'));
+        } else {
+            $smarty->assign('logosite', LOGOSITE);
+        }
+        
+        $smarty->assign('copyright', $config_data->copyright_descripcion ?? COPYRIGHT_DESCRIPTION);
+        
+        // Favicon
         $favicon_url = !empty($config_data->favicon_url) ? $config_data->favicon_url : 'assets/favicon.ico';
         $smarty->assign('favicon', $favicon_url);
         
-        $smarty->assign('email_sitio',$config_data->email_sitio);
+        $smarty->assign('email_sitio', $config_data->email_sitio ?? MAIL_SITE);
         
-        // Asegurar que dominio esté definido
-        $dominio_final = !empty($config_data->dominio) ? $config_data->dominio : DOMAIN;
-        $smarty->assign('dominio', $dominio_final);
+        // Asignar dominio a Smarty (ya actualizado desde BD)
+        $smarty->assign('dominio', $dominio);
         
         // Cargar estilos personalizados si existen
         $estilos = [];
