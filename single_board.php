@@ -94,16 +94,30 @@
 
        }
 
-        $smarty->assign('board',$data_board);
-        $smarty->assign('estado',$data_board['estado']);
-        $smarty->assign('titulo',$data_board['titulo']);
-        $smarty->assign('descripcion',$data_board['descripcion']);
-        $smarty->assign('id_tablero',$data_board['id_tablero']);
-        $smarty->assign('og_imagen',$data_board['imagen_tablero']);
-        $smarty->assign('usuario',$data_board['usuario']);
-        $smarty->assign('foto_usuario',$dominio."/".$data_board['foto_url']);
-        $smarty->assign('multimedias_t',$multimedias_tableros);
-        $smarty->assign('url_board',"$dominio/controllers/single_board.php?id=$_GET[id]");
+        // Verificar que se cargaron los datos correctamente
+        if (!$data_board || empty($data_board)) {
+            $smarty->assign('estado', 'error');
+            $smarty->assign('titulo', 'Publicación no encontrada');
+            $smarty->assign('descripcion', 'La publicación que buscas no existe o ha sido eliminada.');
+            $smarty->assign('id_tablero', $_GET['id']);
+            $smarty->assign('og_imagen', '');
+            $smarty->assign('usuario', '');
+            $smarty->assign('foto_usuario', $dominio."/assets/user_profile.png");
+            $smarty->assign('multimedias_t', []);
+            $smarty->assign('likes', (object)['likes' => 0]);
+            $smarty->assign('board', []);
+        } else {
+            $smarty->assign('board', $data_board);
+            $smarty->assign('estado', $data_board['estado'] ?? 'activo');
+            $smarty->assign('titulo', $data_board['titulo'] ?? '');
+            $smarty->assign('descripcion', $data_board['descripcion'] ?? '');
+            $smarty->assign('id_tablero', $data_board['id_tablero'] ?? $_GET['id']);
+            $smarty->assign('og_imagen', $data_board['imagen_tablero'] ?? '');
+            $smarty->assign('usuario', $data_board['usuario'] ?? '');
+            $smarty->assign('foto_usuario', $dominio."/".($data_board['foto_url'] ?? 'assets/user_profile.png'));
+            $smarty->assign('multimedias_t', $multimedias_tableros);
+        }
+        $smarty->assign('url_board', "$dominio/single_board.php?id=".$_GET['id']);
         $smarty->display('../template/header.tpl');
 
     }
