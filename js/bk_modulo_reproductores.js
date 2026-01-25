@@ -3,7 +3,7 @@
  */
 
 const dominioVal = document.getElementById('dominio')?.value || '';
-const apiUrl = `${dominioVal}/controllers/actions_board.php`;
+const apiUrl = '/controllers/actions_board.php';
 const configHeaders = {
     headers: {
         'Content-Type': 'multipart/form-data',

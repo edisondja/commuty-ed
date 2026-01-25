@@ -20,7 +20,7 @@
             
             let texto_correo = document.getElementById('texto_correo').value;
 
-            let api_config =`${dominio.value}/controllers/actions_board.php`;
+            let api_config ='/controllers/actions_board.php';
 
             let asunto = document.getElementById('asunto').value;
 

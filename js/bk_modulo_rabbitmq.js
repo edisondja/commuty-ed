@@ -6,7 +6,7 @@
 // Obtener dominio - intentar desde el elemento DOM primero
 var dominioElement = document.getElementById('dominio');
 var dominio = dominioElement ? dominioElement.value : window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-var api_rabbitmq = `${dominio}/controllers/rabbitmq_monitor.php`;
+var api_rabbitmq = '/controllers/rabbitmq_monitor.php';
 
 // Actualizar estado al cargar la página
 document.addEventListener('DOMContentLoaded', function() {

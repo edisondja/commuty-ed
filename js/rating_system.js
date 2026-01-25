@@ -69,7 +69,7 @@ function loadRating(tableroId) {
     }
     
     // Cargar promedio
-    axios.get(`${dominio}/controllers/actions_board.php`, {
+    axios.get('/controllers/actions_board.php', {
         params: {
             action: 'get_rating_average',
             id_tablero: tableroId
@@ -98,7 +98,7 @@ function loadRating(tableroId) {
     
     // Cargar calificación del usuario si está logueado
     if (idUsuario && idUsuario != '0' && idUsuario != '') {
-        axios.get(`${dominio}/controllers/actions_board.php`, {
+        axios.get('/controllers/actions_board.php', {
             params: {
                 action: 'get_my_rating',
                 id_tablero: tableroId,
@@ -166,7 +166,7 @@ function rateBoard(tableroId, puntuacion) {
     formData.append('id_usuario', idUsuario);
     formData.append('puntuacion', puntuacion);
     
-    axios.post(`${dominio}/controllers/actions_board.php`, formData, {
+    axios.post('/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

@@ -5,7 +5,7 @@ function loadReports_admin() {
     formData.append('action', 'load_report_admin');
 
 
-    axios.post(`${dominio.value}/controllers/actions_board.php`, formData, {
+    axios.post('/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token_get}`
@@ -77,7 +77,7 @@ function loadReports_admin() {
         formData.append('action', 'buscar_reporte');
         formData.append('texto', texto);
 
-        axios.post(`${dominio.value}/controllers/actions_board.php`, formData, {
+        axios.post('/controllers/actions_board.php', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token_get}`

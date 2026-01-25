@@ -55,7 +55,7 @@ likes.addEventListener('click', function (key) {
     FormDatas.append('id_tablero', id_tablero);
 
     //  alert(action_comment);
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
@@ -130,7 +130,7 @@ function guardar_comentario(id_usuario, id_tablero, texto, tipo_post) {
 
     //  alert(action_comment);
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
@@ -181,7 +181,7 @@ function borrar_comentario(id_comentario, config) {
 
         Borrar_comentario.append('id_comentario', id_comentario);
 
-        axios.post(`${dominio}/controllers/actions_board.php`, Borrar_comentario).then(info => {
+        axios.post('/controllers/actions_board.php', Borrar_comentario).then(info => {
 
             console.log(info.data);
 
@@ -249,7 +249,7 @@ function cargar_comentarios(id_tablero) {
     FormDatas.append('action', 'load_comments');
     FormDatas.append('id_board', id_tablero);
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+    axios.post('/controllers/actions_board.php', FormDatas)
         .then(info => {
             //console.log("DEBUG "+data.info.comentarios_hijos);
 
@@ -474,7 +474,7 @@ function crear_vista_og(url = 'https://twitter.com/Crunchyroll/status/1586002419
         FormDatas.append('action', 'get_metaog');
         FormDatas.append('url', url);
 
-        axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+        axios.post('/controllers/actions_board.php', FormDatas, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
@@ -550,7 +550,7 @@ agregar_califiacion.addEventListener('click', function () {
         FormDatas.append('calificacion', calificacion);
         FormDatas.append('id_tablero', id_tablero);
 
-        axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+        axios.post('/controllers/actions_board.php', FormDatas, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
@@ -607,7 +607,7 @@ enviar_rpt.addEventListener('click', () => {
     formData.append('id_tablero', id_tablero.replace('#','')); // asegúrate que id_tablero esté definido en el scope
 
     // Enviar con axios
-    axios.post(`${dominio}/controllers/actions_board.php`, formData, {
+    axios.post('/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
@@ -640,7 +640,7 @@ agregar_a_favorito.addEventListener('click', function () {
     FormDatas.append('action', 'agregar_a_favorito');
     FormDatas.append('id_tablero', id_tablero);
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`

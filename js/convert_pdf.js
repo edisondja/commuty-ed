@@ -32,7 +32,7 @@ document.getElementById('pdfForm').addEventListener('submit', function(event) {
         formData.append('images[]', files[i]);
     }
 
-    axios.post(`${dominio.value}/controllers/actions_board.php`, formData, {
+    axios.post('/controllers/actions_board.php', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

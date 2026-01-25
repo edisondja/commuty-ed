@@ -41,7 +41,7 @@ function initEditBoard() {
 function loadBoardDataForEdit(idTablero) {
     const dominio = document.getElementById('dominio')?.value || '';
     
-    axios.get(`${dominio}/controllers/actions_board.php`, {
+    axios.get('/controllers/actions_board.php', {
         params: {
             action: 'cargar_un_tablero',
             id_tablero: idTablero
@@ -164,7 +164,7 @@ function guardarEdicionBoard() {
         FormData.append('imagen_actual', imagenActual);
     }
     
-    axios.post(`${dominio}/controllers/actions_board.php`, FormData, {
+    axios.post('/controllers/actions_board.php', FormData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -254,7 +254,7 @@ function toggleLike(idTablero, likeIcon) {
     FormData.append('id_tablero', idTablero);
     FormData.append('id_usuario', idUsuario);
     
-    axios.post(`${dominio}/controllers/actions_board.php`, FormData)
+    axios.post('/controllers/actions_board.php', FormData)
         .then(response => {
             const data = response.data;
             
@@ -317,7 +317,7 @@ function loadLikesForBoards() {
         
         // Verificar si el usuario ya dio like
         if (idUsuario && idUsuario != '0') {
-            axios.get(`${dominio}/controllers/actions_board.php`, {
+            axios.get('/controllers/actions_board.php', {
                 params: {
                     action: 'verificar_mi_like',
                     id_tablero: idTablero,
@@ -350,7 +350,7 @@ function loadLikesForBoards() {
         }
         
         // Cargar cantidad de likes
-        axios.get(`${dominio}/controllers/actions_board.php`, {
+        axios.get('/controllers/actions_board.php', {
             params: {
                 action: 'contar_likes_board',
                 id_tablero: idTablero

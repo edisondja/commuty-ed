@@ -45,7 +45,7 @@ window.onload=function(){
                         FormDatas.append('id_board',id_board);
 
                         //board${$table.id_tablero}
-                        axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+                        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
                             'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }}).then(info=>{
                 
@@ -84,7 +84,7 @@ window.onload=function(){
         const action = 'cargar_un_tablero';
     
         // Construir la URL con los parámetros
-        const url = `${dominio}/controllers/actions_board.php?action=${action}&id_board=${id_board}`;
+        const url = `/controllers/actions_board.php?action=${action}&id_board=${id_board}`;
     
         // Realizar la solicitud GET
         axios.get(url, {
@@ -109,7 +109,7 @@ window.onload=function(){
         FormDatas.append('id_board',id_board);
 
         //board${$table.id_tablero}
-        axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }}).then(info=>{
 
@@ -181,7 +181,7 @@ window.onload=function(){
         FormDatas.append('user_id',document.getElementById('id_usuario').value);
 ;
 
-        axios.post(`${dominio}/controllers/actions_board.php`,FormDatas,{headers:{
+        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token_get}`
         }
@@ -312,7 +312,7 @@ window.onload=function(){
                 
                 }
 
-                axios.post(`${dominio}/controllers/actions_board.php`,formDatas,{headers:{
+                axios.post('/controllers/actions_board.php',formDatas,{headers:{
                             'Content-Type': 'multipart/form-data',
                             'Authorization': `Bearer ${token_get}`
 
@@ -554,7 +554,7 @@ window.onload=function(){
         };
     
         // Envía la solicitud POST usando Axios
-        axios.post(`${dominio}/controllers/actions_board.php`, FormDatas_board, config)
+        axios.post('/controllers/actions_board.php', FormDatas_board, config)
             .then(data => {
                 // Oculta la barra de progreso al completar la solicitud
 
@@ -815,7 +815,7 @@ window.onload=function(){
         FormDatas.append('usuario',document.querySelector('#usuario').value);
         FormDatas.append('action','sigout');
 
-        axios.post(`${dominio}/controllers/actions_board.php`,FormDatas).then(data=>{
+        axios.post('/controllers/actions_board.php',FormDatas).then(data=>{
                 console.log(data.data);
 
             // alertify.message('cerrando sesión');
@@ -965,7 +965,7 @@ window.onload=function(){
                     form.append('media', ruta_limpia);
                     form.append('video_txt', video_txt);
 
-                    axios.post(`${dominio}/controllers/actions_board.php`, form, {
+                    axios.post('/controllers/actions_board.php', form, {
                         headers:{
                             'Authorization': `Bearer ${token_get}`
                         }

@@ -1,7 +1,7 @@
 
 
 
-var get_domain = dominio.value;
+var get_domain = '';
 var count= 0;
 var config = {
     headers: {

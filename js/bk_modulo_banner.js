@@ -44,7 +44,7 @@ function abrirModalEditar(id_banner) {
   FormDatas.append('action','cargar_ads_s');
   FormDatas.append('ads_id',id_banner);
 
- axios.post(`${dominio.value}/controllers/actions_board.php`,FormDatas,{headers:{
+ axios.post('/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
                 }  
@@ -114,7 +114,7 @@ function actualizar_ads() {
     formData.append('imagen_ruta', document.getElementById('imagen_original').value);
   }
 
-  axios.post(`${dominio.value}/controllers/actions_board.php`, formData, {
+  axios.post('/controllers/actions_board.php', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
       // 'Authorization': `Bearer ${token_get}`
@@ -195,7 +195,7 @@ function renderAdsTable(data) {
             FormDatas.append('estado',nuevoEstado);
             FormDatas.append('ads_id',id);
             
-                axios.post(`${dominio.value}/controllers/actions_board.php`,FormDatas,{headers:{
+                axios.post('/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
             }}).then(data=>{
@@ -243,7 +243,7 @@ function renderAdsTable(data) {
         FormDatas.append('action','cargar_banners');
     
 
-        axios.post(`${dominio.value}/controllers/actions_board.php`,FormDatas,{headers:{
+        axios.post('/controllers/actions_board.php',FormDatas,{headers:{
                 'Content-Type': 'multipart/form-data'
                 //'Authorization': `Bearer ${token_get}`
             }}).then(data=>{
@@ -331,7 +331,7 @@ function renderAdsTable(data) {
             }
 
             
-        axios.post(`${dominio.value}/controllers/actions_board.php`, FormDatas, {
+        axios.post('/controllers/actions_board.php', FormDatas, {
             headers: {
                 'Content-Type': 'multipart/form-data'
                 /*'Authorization': `Bearer ${token}`*/
@@ -390,7 +390,7 @@ function actualizar_banner() {
         FormDatas.append('imagen_ads', '');
     }
 
-    axios.post(`${dominio.value}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

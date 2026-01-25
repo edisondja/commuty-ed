@@ -28,7 +28,7 @@ function cargarComentarios(id_tablero) {
     FormDatas.append('action', 'load_comments');
     FormDatas.append('id_board', id_tablero);
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+    axios.post('/controllers/actions_board.php', FormDatas)
         .then(response => {
             let comentarios = [];
             let respuestasIndex = {}; // Índice de respuestas por comentario padre
@@ -402,7 +402,7 @@ function enviarRespuesta(id_coment, texto, id_user) {
     FormDatas.append('id_user', id_user);
     FormDatas.append('action', 'reply_coment');
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },
@@ -642,7 +642,7 @@ function guardarComentario(id_usuario, id_tablero, texto, tipo_post) {
     FormDatas.append('data_og', '[]');
     FormDatas.append('type_post', tipo_post);
 
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas, {
+    axios.post('/controllers/actions_board.php', FormDatas, {
         headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${token}`
@@ -679,7 +679,7 @@ function eliminarComentario(id_comentario) {
                 FormDatas.append('action', 'delete_comment');
                 FormDatas.append('id_comentario', id_comentario);
 
-                axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+                axios.post('/controllers/actions_board.php', FormDatas)
                     .then(() => {
                         document.querySelector(`#comment_${id_comentario}`).remove();
                         alertify.success('Comentario eliminado');
@@ -713,7 +713,7 @@ function eliminarRespuesta(id_reply) {
                 FormDatas.append('action', 'delete_reply_coment');
                 FormDatas.append('id_coment', id_reply);
 
-                axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+                axios.post('/controllers/actions_board.php', FormDatas)
                     .then(() => {
                         document.querySelector(`#reply_${id_reply}`).remove();
                         alertify.success('Respuesta eliminada');

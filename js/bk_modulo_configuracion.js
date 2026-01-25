@@ -12,7 +12,7 @@
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }};
 
-         var api_config =`${dominio.value}/controllers/actions_board.php`;
+         var api_config = '/controllers/actions_board.php';
     
 
         function guardar_configuracion(){

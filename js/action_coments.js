@@ -216,7 +216,7 @@ function reply_coment(id_coment,text_coment,id_user){
 
     console.log('Enviando respuesta al comentario:', {id_coment, text_coment: texto_limpio, id_user});
 
-    axios.post(`${dominio}/controllers/actions_board.php`,FormDatas).then(datos=>{
+    axios.post('/controllers/actions_board.php',FormDatas).then(datos=>{
 
             console.log('Respuesta del servidor completa:', datos);
             console.log('Datos recibidos:', datos.data);

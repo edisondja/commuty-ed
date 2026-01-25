@@ -87,7 +87,7 @@ function cargarEstilos() {
     const FormDatas = new FormData();
     FormDatas.append('action', 'load_styles');
     
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+    axios.post('/controllers/actions_board.php', FormDatas)
         .then(response => {
             if (response.data && response.data.success) {
                 const estilos = response.data.estilos || {};
@@ -167,7 +167,7 @@ function guardarEstilos() {
     FormDatas.append('color_borde', document.getElementById('color_borde').value);
     FormDatas.append('color_header', document.getElementById('color_header').value);
     
-    axios.post(`${dominio}/controllers/actions_board.php`, FormDatas)
+    axios.post('/controllers/actions_board.php', FormDatas)
         .then(response => {
             const mensajeDiv = document.getElementById('mensaje_estilos');
             if (response.data && response.data.success) {

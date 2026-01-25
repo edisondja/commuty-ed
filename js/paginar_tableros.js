@@ -17,7 +17,7 @@ window.onload=function(){
                 pagina++;
 
 
-               location=`${dominio}/controllers/index.php?boards=${pagina}`;
+               location=`/controllers/index.php?boards=${pagina}`;
             
         });
 
@@ -31,11 +31,11 @@ window.onload=function(){
                 if(pagina<=0){
 
                     pagina=1;
-                    location=`${dominio}/controllers/index.php?boards=${pagina}`;
+                    location=`/controllers/index.php?boards=${pagina}`;
 
                 }else{
 
-                    location=`${dominio}/controllers/index.php?boards=${pagina}`;
+                    location=`/controllers/index.php?boards=${pagina}`;
 
                 }
             

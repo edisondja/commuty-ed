@@ -388,7 +388,7 @@ async function initVastPlayerFromConfig(videoElementId) {
         formData.append('action', 'obtener_reproductor_default');
         
         const response = await axios.post(
-            (document.getElementById('dominio')?.value || '') + '/controllers/actions_board.php',
+            '/controllers/actions_board.php',
             formData
         );
         
