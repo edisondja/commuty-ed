@@ -52,6 +52,18 @@
                 $conn->query("ALTER TABLE tableros ADD COLUMN id_reproductor int(11) DEFAULT NULL");
             }
             
+            // Verificar columna estado en likes
+            $result = $conn->query("SHOW COLUMNS FROM likes LIKE 'estado'");
+            if ($result && $result->num_rows == 0) {
+                $conn->query("ALTER TABLE likes ADD COLUMN estado varchar(50) DEFAULT 'activo'");
+            }
+            
+            // Verificar columna cantidad en views
+            $result = $conn->query("SHOW COLUMNS FROM views LIKE 'cantidad'");
+            if ($result && $result->num_rows == 0) {
+                $conn->query("ALTER TABLE views ADD COLUMN cantidad int(11) DEFAULT 1");
+            }
+            
             // Crear tabla ratings si no existe
             $conn->query("CREATE TABLE IF NOT EXISTS ratings (
                 id_rating int(11) NOT NULL AUTO_INCREMENT,

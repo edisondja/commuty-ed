@@ -156,13 +156,14 @@ CREATE TABLE IF NOT EXISTS `action_coment` (
 -- ============================================
 CREATE TABLE IF NOT EXISTS `likes` (
   `id_like` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `id_tablero` int(11) DEFAULT NULL,
-  `fecha_creacion` datetime DEFAULT current_timestamp(),
+  `estado` varchar(50) DEFAULT 'activo',
+  `fecha_like` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id_like`),
-  KEY `id_usuario` (`id_usuario`),
+  KEY `id_user` (`id_user`),
   KEY `id_tablero` (`id_tablero`),
-  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
+  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
   CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`id_tablero`) REFERENCES `tableros` (`id_tablero`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -170,15 +171,15 @@ CREATE TABLE IF NOT EXISTS `likes` (
 -- Tabla de vistas
 -- ============================================
 CREATE TABLE IF NOT EXISTS `views` (
-  `id_view` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_tablero` int(11) DEFAULT NULL,
-  `fecha_creacion` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_view`),
-  KEY `id_usuario` (`id_usuario`),
+  `id_usuario` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT 1,
+  PRIMARY KEY (`id`),
   KEY `id_tablero` (`id_tablero`),
-  CONSTRAINT `views_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id_user`) ON DELETE CASCADE,
-  CONSTRAINT `views_ibfk_2` FOREIGN KEY (`id_tablero`) REFERENCES `tableros` (`id_tablero`) ON DELETE CASCADE
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `views_ibfk_1` FOREIGN KEY (`id_tablero`) REFERENCES `tableros` (`id_tablero`) ON DELETE CASCADE,
+  CONSTRAINT `views_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id_user`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ============================================
