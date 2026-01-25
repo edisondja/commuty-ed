@@ -143,7 +143,7 @@ function renderizarComentarios(comentarios, respuestasIndex = {}) {
         html += `
             <li id="comment_${id_comentario}" class="list-group-item comments box_comment" data-comment-id="${id_comentario}">
                 <div class="comment-header">
-                    <img src="${dominio}/${comentario.foto_url || 'assets/user_profile.png'}" class="rounded comment-avatar" alt="${comentario.usuario || 'Usuario'}">
+                    <img src="/${comentario.foto_url || 'assets/user_profile.png'}" class="rounded comment-avatar" alt="${comentario.usuario || 'Usuario'}">
                     <div class="comment-info">
                         <strong class="comment-username">${comentario.usuario || 'Usuario'}</strong>
                         <span class="comment-date">${formatearFecha(comentario.fecha_publicacion || '')}</span>
@@ -228,7 +228,7 @@ function renderizarRespuestas(respuestas, id_comentario) {
 
         html += `
             <li class="reply-item" id="reply_${id_reply}">
-                <img src="${dominio}/${respuesta.foto_url || 'assets/user_profile.png'}" class="rounded reply-avatar" alt="${respuesta.usuario || 'Usuario'}">
+                <img src="/${respuesta.foto_url || 'assets/user_profile.png'}" class="rounded reply-avatar" alt="${respuesta.usuario || 'Usuario'}">
                 <div class="reply-content">
                     <strong class="reply-username">${respuesta.usuario || 'Usuario'}</strong>
                     <span class="reply-date">${formatearFecha(respuesta.fecha_creacion || '')}</span>
@@ -598,7 +598,7 @@ function insertarRespuesta(respuestaData, id_coment) {
 
     const html = `
         <li class="reply-item" id="reply_${id_reply}">
-            <img src="${dominio}/${respuesta.foto_url || 'assets/user_profile.png'}" class="rounded reply-avatar" alt="${respuesta.usuario || 'Usuario'}">
+            <img src="/${respuesta.foto_url || 'assets/user_profile.png'}" class="rounded reply-avatar" alt="${respuesta.usuario || 'Usuario'}">
             <div class="reply-content">
                 <strong class="reply-username">${respuesta.usuario || 'Usuario'}</strong>
                 <span class="reply-date">${formatearFecha(respuesta.fecha_creacion || '')}</span>

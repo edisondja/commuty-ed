@@ -15,8 +15,14 @@
         $migrationRan = true;
         
         try {
-            $conn = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
-            if ($conn->connect_error) return;
+            // Usar 127.0.0.1 en lugar de localhost para evitar problemas de socket
+            $host = (HOST_BD === 'localhost') ? '127.0.0.1' : HOST_BD;
+            $conn = @new mysqli($host, USER_BD, PASSWORD_BD, NAME_DB);
+            if ($conn->connect_error) {
+                // Intentar con localhost como fallback
+                $conn = @new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                if ($conn->connect_error) return;
+            }
             
             // Verificar si la columna publicar_sin_revision existe
             $result = $conn->query("SHOW COLUMNS FROM configuracion LIKE 'publicar_sin_revision'");

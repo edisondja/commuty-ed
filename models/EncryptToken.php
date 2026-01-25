@@ -25,13 +25,22 @@
             } else {
                 // Crear una nueva conexión si la global no está disponible
                 try {
-                    $this->conection = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                    // Usar 127.0.0.1 en lugar de localhost para evitar problemas de socket
+                    $host = (HOST_BD === 'localhost') ? '127.0.0.1' : HOST_BD;
+                    $this->conection = @new mysqli($host, USER_BD, PASSWORD_BD, NAME_DB);
                     if ($this->conection->connect_error) {
-                        throw new Exception("Error de conexión: " . $this->conection->connect_error);
+                        // Intentar con localhost como fallback
+                        $this->conection = @new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+                        if ($this->conection->connect_error) {
+                            error_log("Error de conexión MySQL: " . $this->conection->connect_error);
+                            $this->conection = null;
+                            return;
+                        }
                     }
                     $this->conection->set_charset("utf8mb4");
                 } catch (Exception $e) {
-                    throw new Exception("No se pudo establecer la conexión: " . $e->getMessage());
+                    error_log("Error al conectar a MySQL: " . $e->getMessage());
+                    $this->conection = null;
                 }
             }
         }

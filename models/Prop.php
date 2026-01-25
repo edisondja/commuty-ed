@@ -3,7 +3,19 @@
 
 
 global $conexion;
-$conexion = new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+// Usar 127.0.0.1 en lugar de localhost para evitar problemas de socket
+$host = (HOST_BD === 'localhost') ? '127.0.0.1' : HOST_BD;
+$conexion = @new mysqli($host, USER_BD, PASSWORD_BD, NAME_DB);
+if ($conexion->connect_error) {
+    // Intentar con localhost como fallback
+    $conexion = @new mysqli(HOST_BD, USER_BD, PASSWORD_BD, NAME_DB);
+    if ($conexion->connect_error) {
+        error_log("Error de conexión MySQL en Prop.php: " . $conexion->connect_error);
+    }
+}
+if ($conexion && !$conexion->connect_error) {
+    $conexion->set_charset("utf8mb4");
+}
 
 class Prop 
 {

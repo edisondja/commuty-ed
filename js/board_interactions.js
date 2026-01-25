@@ -97,7 +97,7 @@ function loadBoardDataForEdit(idTablero) {
             let imagenPath = data.imagen_tablero.startsWith('/') ? data.imagen_tablero.substring(1) : data.imagen_tablero;
             imagenPath = imagenPath.replace(/^\/+/, '');
             
-            document.getElementById('edit_imagen_actual').src = `${dominio}/${imagenPath}`;
+            document.getElementById('edit_imagen_actual').src = `/${imagenPath}`;
             document.getElementById('edit_imagen_actual_path').value = imagenPath;
         } else {
             // Si no hay imagen, ocultar el contenedor
@@ -399,7 +399,7 @@ function initCommentBoard() {
             if (idTablero) {
                 // Redirigir a la vista individual con scroll a comentarios
                 const dominio = document.getElementById('dominio')?.value || '';
-                window.location.href = `${dominio}/single_board.php?id=${idTablero}#coments`;
+                window.location.href = `/single_board.php?id=${idTablero}#coments`;
             }
         }
     });
@@ -437,7 +437,7 @@ function initShareBoard() {
 function showShareModal(idTablero, boardCard) {
     const dominio = document.getElementById('dominio')?.value || '';
     const titulo = boardCard.querySelector('.description-text')?.textContent || 'Publicación';
-    const url = `${dominio}/single_board.php?id=${idTablero}`;
+    const url = `${window.location.origin}/single_board.php?id=${idTablero}`;
     const imagen = boardCard.querySelector('.board-image')?.src || '';
     
     // Crear modal de compartir si no existe

@@ -281,22 +281,28 @@
 
         public function cargar_solo_tablero($id_tablero,$config='asoc')
         {
+            // Verificar conexión
+            if (!$this->conection) {
+                error_log("cargar_solo_tablero: No hay conexión a la base de datos");
+                return $config == 'json' ? null : (object)['error' => 'No hay conexión'];
+            }
          
             $sql = "SELECT * FROM tableros INNER JOIN users
              ON tableros.id_usuario = users.id_user 
             WHERE id_tablero = ?";
             $cargado = $this->conection->prepare($sql);
+            
+            if ($cargado === false) {
+                error_log("cargar_solo_tablero: Error preparando consulta - " . $this->conection->error);
+                return $config == 'json' ? null : (object)['error' => 'Error en consulta'];
+            }
+            
             $cargado->bind_param('i', $id_tablero);
             $cargado->execute();
             $result = $cargado->get_result();
             $cargado->close();
         
-            // Compatible con PHP 7.2 y PHP 8+
-            if (PHP_VERSION_ID >= 80000) {
-                $data = $result->fetch_object();
-            } else {
-                $data = mysqli_fetch_object($result);
-            }
+            $data = $result->fetch_object();
          
             if ($config == 'json') {
                 echo json_encode($data);

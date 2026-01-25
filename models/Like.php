@@ -127,8 +127,28 @@ Class Like extends EncryptToken{
      public function contar_lk($config='json'){
 
         $estado = $this->enable();
-        $sql = "select COUNT(id_like) as likes,estado,id_user from likes where id_tablero=? and estado=?";
+        $sql = "select COUNT(id_like) as likes from likes where id_tablero=? and estado=?";
+        
+        // Verificar conexión
+        if (!$this->conection) {
+            $error = ['error' => 'No hay conexión a la base de datos', 'likes' => 0];
+            if($config=='json'){
+                return $error;
+            }
+            return (object)$error;
+        }
+        
         $data = $this->conection->prepare($sql);
+        
+        // Verificar si prepare falló
+        if ($data === false) {
+            $error = ['error' => 'Error en consulta: ' . $this->conection->error, 'likes' => 0];
+            $this->TrackingLog(date('Y-m-d H:i:s') . " Error preparando consulta contar_lk: " . $this->conection->error, 'errores');
+            if($config=='json'){
+                return $error;
+            }
+            return (object)$error;
+        }
         
         try{
             $data->bind_param('is',
@@ -137,26 +157,23 @@ Class Like extends EncryptToken{
             );
             $data->execute();
             $result = $data->get_result();
-            // Compatible con PHP 7.2 y PHP 8+
-            if (PHP_VERSION_ID >= 80000) {
-                $likes_count = $result->fetch_object();
-            } else {
-                $likes_count = mysqli_fetch_object($result);
+            
+            $likes_count = $result->fetch_object();
+            
+            if (!$likes_count) {
+                $likes_count = (object)['likes' => 0];
             }
 
             if($config=='json'){
-
-                echo json_encode($likes_count);
-
+                return $likes_count;
             }else{
-
                 return $likes_count;
             }
 
         }catch(Exception $e){
-
-            $this->TrackingLog(date('y-m-d h:i:s')."Error contado los likes de la publicación".$e,'errores');
-
+            $this->TrackingLog(date('Y-m-d H:i:s')."Error contando los likes de la publicación: ".$e->getMessage(),'errores');
+            $error = (object)['likes' => 0, 'error' => $e->getMessage()];
+            return $error;
         }
 
      }

@@ -24,7 +24,7 @@ function Component_comentario_hijo(data){
 
 
     return `<li class="list-group-item comments box_comment" id="child_coment${data.id_reply}">
-            <img src="${dominio}/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
+            <img src="/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
             <strong class='fontUserComent'>${data.usuario} 
             <span class='fechaText' style='float: right;'>${data.fecha_creacion}</span></strong><br/>
             &nbsp;<span class='fontComent'>${data.text_coment}</span>

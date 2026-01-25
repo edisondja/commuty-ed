@@ -712,19 +712,27 @@ if (isset($_POST['action'])) {
         
         case 'contar_likes_board':
             header('Content-Type: application/json');
-            $like = new Like();
-            $like->id_tablero = (int)$_GET['id_tablero'];
-            $result = $like->contar_lk('asoc');
-            echo json_encode($result);
+            try {
+                $like = new Like();
+                $like->id_tablero = (int)($_GET['id_tablero'] ?? 0);
+                $result = $like->contar_lk('asoc');
+                echo json_encode($result);
+            } catch (Exception $e) {
+                echo json_encode(['likes' => 0, 'error' => $e->getMessage()]);
+            }
         break;
 
         case 'verificar_mi_like':
             header('Content-Type: application/json');
-            $like = new Like();
-            $like->id_tablero = (int)$_GET['id_tablero'];
-            $like->id_usuario = (int)$_GET['id_usuario'];
-            $result = $like->verificar_mi_like();
-            echo json_encode(['status' => $result]);
+            try {
+                $like = new Like();
+                $like->id_tablero = (int)($_GET['id_tablero'] ?? 0);
+                $like->id_usuario = (int)($_GET['id_usuario'] ?? 0);
+                $result = $like->verificar_mi_like();
+                echo json_encode(['status' => $result]);
+            } catch (Exception $e) {
+                echo json_encode(['status' => 'error', 'error' => $e->getMessage()]);
+            }
         break;
 
         case 'save_rating':

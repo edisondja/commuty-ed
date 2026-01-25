@@ -351,7 +351,7 @@ function cargar_comentarios(id_tablero) {
                 if (data.usuario_id == id_usuario) {
                     comentarios_html += `
                                             <li id='comment_del${data.id_comentario}' class="list-group-item comments box_comment">
-                                                <img src="${dominio}/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
+                                                <img src="/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
                                                 <strong class='fontUserComent'>${data.usuario} <span class='fechaText' style='float: right;'>${data.fecha_publicacion}</span></strong><br/>
                                                 ${interface_ogs}
                                                 &nbsp;<span class='fontComent'>${data.texto}</span>
@@ -374,7 +374,7 @@ function cargar_comentarios(id_tablero) {
                 } else {
                     comentarios_html += `
                                             <li class="list-group-item box_comment" id_comment='0'>
-                                                <img src="${dominio}/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
+                                                <img src="/${data.foto_url}" class="rounded" style="width:38px;height:38px;">
                                                 <strong class='fontUserComent'>${data.usuario} <span class='fechaText' style='float: right;'>${data.fecha_publicacion}</span></strong><br/>
                                                 ${interface_ogs}
                                                 &nbsp;<span class='fontComent'>${data.texto}</span><br/>

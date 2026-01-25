@@ -643,17 +643,17 @@ window.onload=function(){
                         <div class='body' style='padding:5px'>
                         <div class='title'>
                             <strong>
-                            <a href='${dominio}/profile_user.php?user=${usuario}'>
+                            <a href='/profile_user.php?user=${usuario}'>
                                 <img class='imagenPerfil' src='${foto_perfil}'/>
                             </a>
                             ${nombre_usuario}
-                            <a href="${dominio}/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
+                            <a href="/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
                                 <i class="fa-solid fa-highlighter"></i>
                             </a>
                             </strong>
                         </div>
                         <p style='padding-left: 10px;'>${descripcion}</p>
-                        <a href="${dominio}/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
+                        <a href="/single_board.php?id=${id_tablero}${url_slug ? '/' + url_slug : ''}">
                     `;
                     
                     if (imagen_tablero && imagen_tablero !== '' && imagen_tablero !== 'undefined' && imagen_tablero !== null) {
@@ -676,7 +676,7 @@ window.onload=function(){
                              data-preview="${preview_path}" 
                              data-image="${imagen_path}"
                              data-has-preview="${hasPreview ? 'true' : 'false'}">
-                        <img src="${dominio}/${imagen_path}" 
+                        <img src="/${imagen_path}" 
                              class="card-img-top board-image board-main-image" 
                              alt="..."
                              data-preview-src="${hasPreview ? dominio + '/' + preview_path : ''}">
@@ -866,13 +866,13 @@ window.onload=function(){
                 if(boards>5){
                     if(leafValue==null){
 
-                            window.location=`${dominio}/?leaf=2`;     
+                            window.location=`/?leaf=2`;     
                             
                     }else{
         
                         let page = parseInt(leafValue) + 1;
         
-                        window.location=`${dominio}/?leaf=${page}`;     
+                        window.location=`/?leaf=${page}`;     
         
         
                     }
@@ -902,13 +902,13 @@ window.onload=function(){
 
                     if(leafValue==null){
 
-                            window.location=`${dominio}/profile_user.php?leaf=2&user=${UserNAME}`;     
+                            window.location=`/profile_user.php?leaf=2&user=${UserNAME}`;     
                             
                     }else{
         
                         let page = parseInt(leafValue) + 1;
         
-                        window.location=`${dominio}/profile_user.php?leaf=${page}&user=${UserNAME}`;     
+                        window.location=`/profile_user.php?leaf=${page}&user=${UserNAME}`;     
         
         
                     }
