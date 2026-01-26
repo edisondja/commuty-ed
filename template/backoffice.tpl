@@ -99,6 +99,9 @@
         
         {else if $option=='reproductores'}    
             {include file='back_office_components/modulo_reproductores.tpl'}
+        
+        {else if $option=='monitor'}    
+            {include file='back_office_components/modulo_monitor.tpl'}
         {/if}
 
 </div>

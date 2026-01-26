@@ -193,6 +193,11 @@
                 RabbitMQ <i class="fa-solid fa-server"></i>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {if $current_option == 'monitor'}active{/if}" href="{$dominio}/admin/monitor">
+                Monitor en Tiempo Real <i class="fa-solid fa-chart-line"></i>
+            </a>
+        </li>
         
         <div class="menu-separator"></div>
         

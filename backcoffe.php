@@ -71,6 +71,12 @@
 
                     break;
 
+                    case 'monitor':
+
+                        $smarty->assign('option','monitor');
+
+                    break;
+
                     default:
                     
                      $smarty->assign('option','usuarios');

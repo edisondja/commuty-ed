@@ -52,6 +52,7 @@ RewriteRule ^admin/reports/?$ backcoffe.php?option=reports [L,QSA]
 RewriteRule ^admin/mail/?$ backcoffe.php?option=mails [L,QSA]
 RewriteRule ^admin/banners/?$ backcoffe.php?option=banners [L,QSA]
 RewriteRule ^admin/rabbitmq/?$ backcoffe.php?option=rabbitmq [L,QSA]
+RewriteRule ^admin/monitor/?$ backcoffe.php?option=monitor [L,QSA]
 RewriteRule ^admin/styles/?$ backcoffe.php?option=estilos [L,QSA]
 RewriteRule ^admin/players/?$ backcoffe.php?option=reproductores [L,QSA]
 
