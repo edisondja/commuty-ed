@@ -340,3 +340,70 @@ Bloqueando tablero
 Enviando multimedia a procesar para Board: 27
 2026-01-25 22:53:55 - Notificación guardada correctamente
 2026-01-25 23:11:03 - Notificación guardada correctamente
+🚀 Iniciando procesamiento multimedia - Board: 28, Tipo: mp4, Token: req_6977f2898683f1.58912262
+📋 Datos: {"board_id":28,"tipo_archivo":"mp4","token_unico":"req_6977f2898683f1.58912262","timestamp":"2026-01-27 00:02:33"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando archivo - Ruta: /Applications/XAMPP/xamppfiles/temp/phpv79LQa, Tamaño: 2.91 MB
+✅ Respuesta recibida - HTTP Code: 200, Duración: 35.36ms
+📊 Info cURL: {"http_code":200,"total_time":0.035210999999999999243716075625343364663422107696533203125,"size_upload":3051509,"size_download":59}
+📦 Respuesta JSON: {"ok":true,"mensaje":"Archivo encolado para procesamiento"}
+🚀 Iniciando procesamiento multimedia - Board: 29, Tipo: transfer_video, Token: req_6977f49b2b6056.68967618
+📋 Datos: {"board_id":29,"tipo_archivo":"transfer_video","token_unico":"req_6977f49b2b6056.68967618","timestamp":"2026-01-27 00:11:23"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1768012641Blanquita_bailando_desnuda_en_la_ducha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 33.16ms
+📊 Info cURL: {"http_code":200,"total_time":0.032856000000000003258282532669909414835274219512939453125,"size_upload":569,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 30, Tipo: transfer_video, Token: req_6977f56e138484.14374319
+📋 Datos: {"board_id":30,"tipo_archivo":"transfer_video","token_unico":"req_6977f56e138484.14374319","timestamp":"2026-01-27 00:14:54"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 31.04ms
+📊 Info cURL: {"http_code":200,"total_time":0.03084699999999999942001949193581822328269481658935546875,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 31, Tipo: transfer_video, Token: req_6977f625ef2f55.13189428
+📋 Datos: {"board_id":31,"tipo_archivo":"transfer_video","token_unico":"req_6977f625ef2f55.13189428","timestamp":"2026-01-27 00:17:57"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 39.22ms
+📊 Info cURL: {"http_code":200,"total_time":0.03905499999999995086596982218907214701175689697265625,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 32, Tipo: transfer_video, Token: req_6977f73e771c98.45476407
+📋 Datos: {"board_id":32,"tipo_archivo":"transfer_video","token_unico":"req_6977f73e771c98.45476407","timestamp":"2026-01-27 00:22:38"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 32.9ms
+📊 Info cURL: {"http_code":200,"total_time":0.032699999999999999900079927783735911361873149871826171875,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 33, Tipo: transfer_video, Token: req_6977fe3c528541.97462279
+📋 Datos: {"board_id":33,"tipo_archivo":"transfer_video","token_unico":"req_6977fe3c528541.97462279","timestamp":"2026-01-27 00:52:28"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1766798629La_Bellakath_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 30.78ms
+📊 Info cURL: {"http_code":200,"total_time":0.0306669999999999998152588887023739516735076904296875,"size_upload":543,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 34, Tipo: mp4, Token: req_6977fe80686931.99610902
+📋 Datos: {"board_id":34,"tipo_archivo":"mp4","token_unico":"req_6977fe80686931.99610902","timestamp":"2026-01-27 00:53:36"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando archivo - Ruta: /Applications/XAMPP/xamppfiles/temp/php3FIR9C, Tamaño: 2.91 MB
+✅ Respuesta recibida - HTTP Code: 200, Duración: 30.35ms
+📊 Info cURL: {"http_code":200,"total_time":0.03023599999999999898836477996155736036598682403564453125,"size_upload":3051509,"size_download":59}
+📦 Respuesta JSON: {"ok":true,"mensaje":"Archivo encolado para procesamiento"}
+2026-01-27 00:53:59 - Notificación guardada correctamente
