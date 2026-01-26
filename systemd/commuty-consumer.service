@@ -1,6 +1,6 @@
 [Unit]
 Description=Commuty-ED Video Consumer Service
-Documentation=https://github.com/tu-usuario/commuty-ed
+Documentation=https://github.com/commuty-ed
 After=network.target rabbitmq-server.service mysql.service
 Wants=rabbitmq-server.service
 
@@ -11,19 +11,46 @@ Group=www-data
 WorkingDirectory=/var/www/commuty-ed
 ExecStart=/usr/bin/php /var/www/commuty-ed/consumer_service.php
 Restart=always
-RestartSec=5
+RestartSec=3
 StandardOutput=append:/var/log/commuty/consumer.log
 StandardError=append:/var/log/commuty/consumer-error.log
 
-# Límites de recursos
-MemoryLimit=256M
-CPUQuota=50%
+# ============================================
+# RECURSOS - Optimizado para servidor 8GB RAM
+# ============================================
 
-# Reiniciar si consume demasiada memoria
-MemoryMax=512M
+# Memoria: hasta 1GB para procesamiento de videos
+MemoryMax=1G
+MemoryHigh=768M
 
-# Variables de entorno (opcional)
+# CPU: hasta 80% de la CPU disponible
+CPUQuota=80%
+
+# Prioridad de I/O (mejor rendimiento)
+IOSchedulingClass=best-effort
+IOSchedulingPriority=4
+
+# Límite de archivos abiertos (para manejar múltiples videos)
+LimitNOFILE=65535
+
+# Límite de procesos
+LimitNPROC=4096
+
+# Timeout más largo para procesamiento de videos grandes
+TimeoutStopSec=120
+
+# Variables de entorno para PHP
 Environment=PHP_ENV=production
+Environment=PHP_MEMORY_LIMIT=512M
+
+# Reinicio inteligente
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+# Protección del sistema
+ProtectSystem=false
+PrivateTmp=true
+NoNewPrivileges=false
 
 [Install]
 WantedBy=multi-user.target

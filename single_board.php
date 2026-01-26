@@ -112,12 +112,44 @@
             $smarty->assign('titulo', $data_board['titulo'] ?? '');
             $smarty->assign('descripcion', $data_board['descripcion'] ?? '');
             $smarty->assign('id_tablero', $data_board['id_tablero'] ?? $_GET['id']);
-            $smarty->assign('og_imagen', $data_board['imagen_tablero'] ?? '');
+            
+            // Determinar la mejor imagen para Open Graph
+            $og_imagen = '';
+            
+            // 1. Buscar primera imagen en multimedias
+            if (!empty($multimedias_tableros)) {
+                foreach ($multimedias_tableros as $media) {
+                    if (isset($media['tipo_multimedia']) && $media['tipo_multimedia'] == 'imagen') {
+                        $og_imagen = str_replace('../', '', $media['ruta_multimedia']);
+                        break;
+                    }
+                }
+                // Si no hay imagen, usar el primer frame del video si existe preview
+                if (empty($og_imagen) && !empty($data_board['preview_tablero'])) {
+                    $og_imagen = str_replace('../', '', $data_board['preview_tablero']);
+                }
+            }
+            
+            // 2. Si no hay multimedia, usar imagen del tablero
+            if (empty($og_imagen) && !empty($data_board['imagen_tablero'])) {
+                $og_imagen = str_replace('../', '', $data_board['imagen_tablero']);
+            }
+            
+            // 3. Imagen por defecto
+            if (empty($og_imagen)) {
+                $og_imagen = 'assets/default_share.png';
+            }
+            
+            $smarty->assign('og_imagen', $og_imagen);
             $smarty->assign('usuario', $data_board['usuario'] ?? '');
             $smarty->assign('foto_usuario', $dominio."/".($data_board['foto_url'] ?? 'assets/user_profile.png'));
             $smarty->assign('multimedias_t', $multimedias_tableros);
         }
-        $smarty->assign('url_board', "$dominio/post/".$_GET['id']);
+        
+        // URL canónica para compartir
+        $slug = preg_replace('/[^a-z0-9]+/i', '-', substr($data_board['descripcion'] ?? '', 0, 50));
+        $slug = strtolower(trim($slug, '-'));
+        $smarty->assign('url_board', "$dominio/post/".$_GET['id'].($slug ? "/$slug" : ''));
         $smarty->display('../template/header.tpl');
 
     }

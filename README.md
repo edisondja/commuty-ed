@@ -1,8 +1,8 @@
-# Commuty-ED - Plataforma de Red Social y Comercio
+# Commuty-ED - Plataforma de Red Social
 
-![PHP Version](https://img.shields.io/badge/PHP-7.2%2B-blue)
+![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-blue)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
-![Status](https://img.shields.io/badge/Status-Active-green)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-green)
 
 **Commuty-ED** es una plataforma web moderna basada en arquitectura MVC que combina funcionalidades de red social con capacidades de comercio electrónico. Los usuarios pueden compartir contenido multimedia, interactuar mediante comentarios y calificaciones, gestionar publicaciones y administrar configuraciones del sitio desde un panel de administración completo.
 
@@ -10,17 +10,15 @@
 
 - [Características Principales](#-características-principales)
 - [Requisitos del Sistema](#-requisitos-del-sistema)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
+- [Instalación Rápida](#-instalación-rápida)
+- [Instalación Manual](#-instalación-manual)
+- [Configuración de Producción](#-configuración-de-producción)
+- [URLs Modernas](#-urls-modernas)
+- [Servicios del Sistema](#-servicios-del-sistema)
+- [SEO y Meta Tags](#-seo-y-meta-tags)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Base de Datos](#-base-de-datos)
 - [API y Endpoints](#-api-y-endpoints)
-- [Uso y Ejemplos](#-uso-y-ejemplos)
-- [Desarrollo](#-desarrollo)
 - [Solución de Problemas](#-solución-de-problemas)
-- [Contribución](#-contribución)
-- [Licencia](#-licencia)
 
 ## ✨ Características Principales
 
@@ -28,512 +26,360 @@
 - **Publicaciones Multimedia**: Compartir imágenes y videos con descripciones
 - **Sistema de Comentarios**: Comentarios con respuestas anidadas (hilos)
 - **Sistema de Calificación**: Calificación de 1 a 5 estrellas para publicaciones
-- **Me Gusta y Favoritos**: Interacción social básica
+- **Me Gusta y Favoritos**: Interacción social completa
 - **Vistas y Estadísticas**: Seguimiento de visualizaciones
 - **Perfiles de Usuario**: Perfiles personalizables con biografía
+- **Vista Previa de Videos**: Activación automática en hover y touch
+- **Compartir en Redes Sociales**: Facebook, Twitter, WhatsApp y Telegram
 
 ### Panel de Administración
 - **Gestión de Publicaciones**: Aprobar, rechazar y moderar contenido
-- **Configuración del Sitio**: Personalización completa de estilos, colores y configuraciones
-- **Monitoreo RabbitMQ**: Supervisión y control de servicios de procesamiento multimedia
+- **Configuración del Sitio**: Personalización completa de estilos y colores
+- **Monitoreo RabbitMQ**: Supervisión de procesamiento multimedia
 - **Gestión de Usuarios**: Administración de cuentas y permisos
 - **Sistema de Reportes**: Gestión de reportes de contenido
+- **Gestión de Banners**: Sistema de publicidad
+- **Reproductores VAST**: Soporte para anuncios de video
+
+### SEO y Optimización
+- **URLs Amigables**: Rutas modernas como `/post/123/titulo`
+- **Sitemap Automático**: Generación dinámica de `sitemap.xml`
+- **Meta Tags Open Graph**: Imágenes y descripciones al compartir enlaces
+- **Twitter Cards**: Previsualización optimizada para Twitter
 
 ### Tecnologías Avanzadas
-- **Procesamiento Asíncrono**: RabbitMQ para procesamiento de videos e imágenes
-- **Caché Redis**: Optimización de rendimiento con caché distribuido
-- **Sistema de Estilos Dinámicos**: Personalización de colores y estilos en tiempo real
-- **Vista Previa de Videos**: Activación automática en hover y touch
-- **Compartir en Redes Sociales**: Integración con Facebook, Twitter, WhatsApp y Telegram
+- **Procesamiento Asíncrono**: RabbitMQ para videos e imágenes
+- **Compresión de Videos**: Conversión automática a MP4 optimizado
+- **Caché Redis**: Optimización de rendimiento
+- **Sistema de Estilos Dinámicos**: Personalización en tiempo real
 
 ## 🔧 Requisitos del Sistema
 
 ### Servidor
-- **PHP**: 7.2 o superior (compatible con PHP 8+)
+- **PHP**: 7.4 o superior (compatible con PHP 8.2+)
 - **MySQL/MariaDB**: 5.7 o superior
-- **Apache/Nginx**: Con mod_rewrite habilitado
+- **Apache**: Con mod_rewrite habilitado
 - **Composer**: Para gestión de dependencias
 
-### Servicios Opcionales
-- **Redis**: Para sistema de caché (opcional pero recomendado)
-- **RabbitMQ**: Para procesamiento asíncrono de multimedia (opcional)
-- **FFmpeg**: Para procesamiento de videos (opcional)
+### Servicios Opcionales (Recomendados)
+- **Redis**: Sistema de caché
+- **RabbitMQ**: Procesamiento asíncrono de multimedia
+- **FFmpeg**: Procesamiento y compresión de videos
 
 ### Extensiones PHP Requeridas
-- `mysqli`
-- `json`
-- `mbstring`
-- `gd` o `imagick` (para procesamiento de imágenes)
-- `zip` (para descargas)
+```
+mysqli, json, mbstring, gd, zip, fileinfo
+```
 
-## 📦 Instalación
+## 🚀 Instalación Rápida
 
-### 1. Clonar o Descargar el Proyecto
+### Usando el Instalador Web
+
+1. Sube los archivos al servidor
+2. Visita `https://tudominio.com/install/`
+3. Sigue las instrucciones del instalador
+4. **Elimina la carpeta `install/` al finalizar**
+
+## 📦 Instalación Manual
+
+### 1. Clonar el Proyecto
 
 ```bash
-cd /ruta/de/tu/servidor/web
+cd /var/www
 git clone [url-del-repositorio] commuty-ed
-# O descargar y extraer el archivo ZIP
+cd commuty-ed
 ```
 
 ### 2. Instalar Dependencias
 
 ```bash
-cd commuty-ed
 composer install
 ```
 
-Esto instalará todas las dependencias necesarias:
-- Smarty (Motor de plantillas)
-- Firebase JWT (Autenticación)
-- PHPMailer (Envío de correos)
-- Predis (Cliente Redis)
-- php-amqplib (Cliente RabbitMQ)
-- FPDF/FPDI (Generación de PDFs)
-
-### 3. Configurar Permisos
+### 3. Importar Base de Datos
 
 ```bash
-# Dar permisos a directorios necesarios
-chmod -R 777 cache/
-chmod -R 777 compile/
-chmod -R 777 assets/
-chmod -R 777 imagenes_tablero/
-chmod -R 777 videos/
-chmod -R 777 uploads/
-chmod -R 777 traking/
-
-# O usar el script proporcionado
-chmod +x fix_all_permissions.sh
-./fix_all_permissions.sh
+mysql -u root -p -e "CREATE DATABASE edcommunity CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p edcommunity < db/schema.sql
 ```
 
-### 4. Configurar Base de Datos
+### 4. Configurar
 
-```bash
-# Importar esquema de base de datos
-mysql -u root -p < database/db.sql
-
-# Importar tablas adicionales (si existen)
-mysql -u root -p edcommunity < database/add_ratings_table.sql
-mysql -u root -p edcommunity < database/add_estilos_json.sql
-```
-
-### 5. Configurar el Proyecto
-
-Editar `config/config.php` con tus configuraciones (ver sección de Configuración).
-
-## ⚙️ Configuración
-
-### Archivo de Configuración Principal
-
-Edita `config/config.php` con tus valores:
+Edita `config/config.php`:
 
 ```php
 <?php
-// Dominio del sitio
-define("DOMAIN", "http://localhost/commuty-ed");
-
-// Configuración de Base de Datos
+define("DOMAIN", "https://tudominio.com");
 define("HOST_BD", "localhost");
-define("USER_BD", "root");
+define("USER_BD", "tu_usuario");
 define("PASSWORD_BD", "tu_password");
 define("NAME_DB", "edcommunity");
-
-// Configuración del Sitio
-define("NAME_SITE", "Ventas RD");
-define("DESCRIPTION_SLOGAN", "El mejor lugar para comprar tus articulos");
-define("DESCRIPTION_SITE", "Nunca vender fue tan facil como en ventasrd");
-define("LOGOSITE", DOMAIN."/assets/ventasRD.png");
-define("FAVICON", DOMAIN."/assets/favicon.ico");
-
-// Configuración RabbitMQ (Opcional)
-define('host_rabbit_mq', 'localhost');
-define('port_rabbit_mq', '5672');
-define('user_rabbit_mq', 'guest');
-define('password_rabbit_mq', 'guest');
-
-// Configuración Redis (Opcional)
-define("host_redis_cache", "localhost");
-define("port_redis_cache", "6379");
-define("scheme_redis_cache", "tcp");
-?>
 ```
 
-### Configuración PHP
-
-Asegúrate de que `php.ini` tenga estos valores:
-
-```ini
-upload_max_filesize = 250M
-post_max_size = 250M
-max_execution_time = 300
-memory_limit = 256M
-```
-
-### Configuración de Servicios
-
-#### Redis (Opcional)
-```bash
-# Instalar Redis
-sudo apt-get install redis-server  # Ubuntu/Debian
-brew install redis                 # macOS
-
-# Iniciar Redis
-redis-server
-```
-
-#### RabbitMQ (Opcional)
-```bash
-# Instalar RabbitMQ
-sudo apt-get install rabbitmq-server  # Ubuntu/Debian
-brew install rabbitmq                # macOS
-
-# Iniciar RabbitMQ
-sudo systemctl start rabbitmq-server
-```
-
-#### Iniciar Servicios de Procesamiento
+### 5. Permisos
 
 ```bash
-# Procesador de multimedia
-php consumer_service.php
-
-# O ejecutar en segundo plano
-nohup php consumer_service.php > /dev/null 2>&1 &
+sudo chown -R www-data:www-data /var/www/commuty-ed
+sudo chmod -R 755 /var/www/commuty-ed
+sudo chmod -R 775 uploads/ videos/ compile/ cache/ imagenes_tablero/ assets/
 ```
+
+## 🌐 Configuración de Producción
+
+### Apache VirtualHost
+
+```apache
+<VirtualHost *:80>
+    ServerName tudominio.com
+    ServerAlias www.tudominio.com
+    DocumentRoot /var/www/commuty-ed
+
+    <Directory /var/www/commuty-ed>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+### Habilitar Módulos
+
+```bash
+sudo a2enmod rewrite
+sudo a2ensite tudominio.com.conf
+sudo systemctl restart apache2
+```
+
+### Configurar .htaccess para Producción
+
+En el archivo `.htaccess`, cambiar:
+
+```apache
+# De (desarrollo):
+RewriteBase /commuty-ed/
+
+# A (producción):
+RewriteBase /
+```
+
+### Actualizar Dominio en Base de Datos
+
+```sql
+UPDATE configuracion SET dominio = 'https://tudominio.com' WHERE id_config = 1;
+```
+
+## 🔗 URLs Modernas
+
+El sistema usa URLs amigables:
+
+| Tipo | URL |
+|------|-----|
+| Publicación | `/post/123/titulo-del-post` |
+| Perfil | `/profile/usuario` |
+| Paginación | `/page/2` |
+| Búsqueda | `/search/termino` |
+| Admin | `/admin` |
+| Admin Usuarios | `/admin/users` |
+| Admin Posts | `/admin/boards` |
+| Admin Config | `/admin/settings` |
+
+## ⚙️ Servicios del Sistema
+
+### Instalar Servicios de Procesamiento
+
+Los consumers procesan videos y multimedia de forma asíncrona.
+
+```bash
+cd /var/www/commuty-ed/systemd
+sudo chmod +x *.sh
+sudo ./install-services.sh
+```
+
+### Comandos de Gestión
+
+```bash
+# Ver estado
+sudo systemctl status commuty-consumer
+sudo systemctl status commuty-resultado
+
+# Ver logs
+sudo journalctl -u commuty-consumer -f
+
+# Reiniciar
+sudo systemctl restart commuty-consumer
+
+# Detener
+sudo systemctl stop commuty-consumer
+```
+
+### Desinstalar Servicios
+
+```bash
+cd /var/www/commuty-ed/systemd
+sudo ./uninstall-services.sh
+```
+
+## 📊 SEO y Meta Tags
+
+### Sitemap Automático
+
+El sitemap se genera automáticamente en:
+```
+https://tudominio.com/sitemap.xml
+```
+
+Incluye:
+- Todas las publicaciones activas con imágenes
+- Perfiles de usuarios
+- Páginas principales
+
+### Meta Tags Open Graph
+
+Cuando compartes un enlace en redes sociales, se mostrará:
+- Imagen de la publicación (primera imagen o preview del video)
+- Título de la publicación
+- Descripción
+- URL canónica
+
+### Validar Meta Tags
+
+- **Facebook**: https://developers.facebook.com/tools/debug/
+- **Twitter**: https://cards-dev.twitter.com/validator
+- **LinkedIn**: https://www.linkedin.com/post-inspector/
+
+### Robots.txt
+
+El archivo `robots.txt` está configurado para:
+- Permitir indexación de contenido público
+- Bloquear directorios sensibles (admin, controllers, config)
+- Apuntar al sitemap
 
 ## 📁 Estructura del Proyecto
 
 ```
 commuty-ed/
-├── assets/                 # Archivos estáticos (imágenes, logos, favicon)
+├── assets/                 # Archivos estáticos (logos, imágenes)
 ├── cache/                  # Caché de Smarty
-├── compile/                # Archivos compilados de Smarty
-├── config/                 # Archivos de configuración
-│   └── config.php         # Configuración principal
-├── controllers/            # Controladores y lógica de negocio
-│   ├── actions_board.php  # API principal (endpoints)
-│   ├── rabbitmq_monitor.php
-│   └── libs/              # Librerías auxiliares
-├── database/              # Scripts SQL
-│   ├── db.sql            # Esquema principal
-│   ├── add_ratings_table.sql
-│   └── add_estilos_json.sql
-├── imagenes_tablero/      # Imágenes de publicaciones
-├── videos/               # Videos de publicaciones
-├── js/                    # JavaScript del frontend
-│   ├── BoardOperation.js
-│   ├── comments_system.js
-│   ├── rating_system.js
-│   └── ...
-├── models/                # Modelos de datos (MVC)
-│   ├── Board.php
-│   ├── User.php
-│   ├── Coment.php
-│   ├── Rating.php
-│   └── ...
-├── template/              # Plantillas Smarty
-│   ├── header.tpl        # Template principal
-│   ├── board.tpl
-│   ├── single_board.tpl
-│   └── back_office_components/
-├── traking/              # Logs del sistema
-├── uploads/              # Archivos subidos
-├── vendor/               # Dependencias de Composer
-├── bootstrap.php         # Inicialización de la aplicación
-├── index.php            # Punto de entrada principal
-├── single_board.php     # Vista de publicación individual
-├── backcoffe.php        # Panel de administración
-└── composer.json        # Dependencias PHP
-```
-
-## 🛠 Tecnologías Utilizadas
-
-### Backend
-- **PHP 7.2+**: Lenguaje principal del servidor
-- **MySQL/MariaDB**: Base de datos relacional
-- **Smarty 3.1**: Motor de plantillas
-- **Composer**: Gestor de dependencias PHP
-
-### Frontend
-- **JavaScript (ES6+)**: Lógica del cliente
-- **Axios**: Cliente HTTP para peticiones AJAX
-- **Bootstrap 5**: Framework CSS
-- **Font Awesome**: Iconos
-- **Alertify.js**: Notificaciones
-
-### Servicios y Herramientas
-- **Redis**: Sistema de caché
-- **RabbitMQ**: Cola de mensajes para procesamiento asíncrono
-- **FFmpeg**: Procesamiento de video (opcional)
-- **JWT (Firebase)**: Autenticación basada en tokens
-- **PHPMailer**: Envío de correos electrónicos
-
-## 🗄 Base de Datos
-
-### Tablas Principales
-
-- **users**: Usuarios del sistema
-- **tableros**: Publicaciones/Posts
-- **comentarios**: Comentarios principales
-- **reply_coment**: Respuestas a comentarios
-- **ratings**: Calificaciones de publicaciones
-- **likes**: Me gusta
-- **favoritos**: Favoritos de usuarios
-- **configuracion**: Configuración del sitio
-- **asignar_multimedia_t**: Multimedia asociada a publicaciones
-
-### Scripts de Base de Datos
-
-```bash
-# Crear base de datos completa
-mysql -u root -p < database/db.sql
-
-# Agregar tabla de calificaciones
-mysql -u root -p edcommunity < database/add_ratings_table.sql
-
-# Agregar columna de estilos JSON
-mysql -u root -p edcommunity < database/add_estilos_json.sql
+├── compile/                # Templates compilados
+├── config/                 # Configuración
+│   └── config.php
+├── controllers/            # Controladores API
+│   └── actions_board.php   # API principal
+├── css/                    # Estilos CSS
+├── db/                     # Scripts de base de datos
+│   └── schema.sql          # Esquema completo
+├── imagenes_tablero/       # Imágenes de publicaciones
+├── install/                # Instalador web
+├── js/                     # JavaScript frontend
+├── models/                 # Modelos de datos
+├── systemd/                # Servicios para Ubuntu
+│   ├── commuty-consumer.service
+│   ├── commuty-resultado.service
+│   ├── install-services.sh
+│   └── uninstall-services.sh
+├── template/               # Plantillas Smarty
+├── uploads/                # Archivos temporales
+├── videos/                 # Videos procesados
+├── vendor/                 # Dependencias Composer
+├── .htaccess               # Configuración Apache
+├── bootstrap.php           # Inicialización
+├── consumer_service.php    # Procesador de multimedia
+├── consumer_resultado.php  # Procesador de resultados
+├── index.php               # Página principal
+├── single_board.php        # Vista de publicación
+├── sitemap.php             # Generador de sitemap
+└── robots.txt              # Configuración para buscadores
 ```
 
 ## 🔌 API y Endpoints
 
-### Estructura de API
+### Estructura
 
-Todas las peticiones se realizan a `controllers/actions_board.php` con el parámetro `action`:
+Todas las peticiones van a `/controllers/actions_board.php`:
 
 ```javascript
-axios.post(`${dominio}/controllers/actions_board.php`, {
-    action: 'nombre_accion',
-    // otros parámetros
-})
+const formData = new FormData();
+formData.append('action', 'nombre_accion');
+formData.append('param1', 'valor1');
+
+axios.post(`${baseUrl}/controllers/actions_board.php`, formData);
 ```
 
 ### Endpoints Principales
 
-#### Publicaciones
-- `create_board`: Crear nueva publicación
-- `cargar_un_tablero`: Obtener publicación individual
-- `update_board`: Actualizar publicación
-- `delete_board`: Eliminar publicación
-
-#### Comentarios
-- `save_post`: Guardar comentario
-- `load_coments`: Cargar comentarios de una publicación
-- `reply_coment`: Responder a un comentario
-- `delete_coment`: Eliminar comentario
-
-#### Calificaciones
-- `save_rating`: Guardar calificación (1-5)
-- `get_rating_average`: Obtener promedio de calificaciones
-- `get_my_rating`: Obtener calificación del usuario actual
-
-#### Usuarios
-- `login_user`: Iniciar sesión
-- `register_user`: Registrar nuevo usuario
-- `load_user_info`: Cargar información de usuario
-
-#### Configuración
-- `config_site_text`: Guardar configuración del sitio
-- `config_load_site`: Cargar configuración
-- `save_styles`: Guardar estilos personalizados
-- `load_styles`: Cargar estilos
-
-### Ejemplo de Uso
-
-```javascript
-// Crear publicación
-const formData = new FormData();
-formData.append('action', 'create_board');
-formData.append('descripcion', 'Mi nueva publicación');
-formData.append('media', fileInput.files[0]);
-
-axios.post(`${dominio}/controllers/actions_board.php`, formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-})
-.then(response => {
-    console.log('Publicación creada:', response.data);
-})
-.catch(error => {
-    console.error('Error:', error);
-});
-```
-
-## 💻 Uso y Ejemplos
-
-### Crear una Nueva Página
-
-1. **Crear el Template** (`template/mi_pagina.tpl`):
-```smarty
-<div class="container">
-    <h1>{$titulo}</h1>
-    <p>{$descripcion}</p>
-</div>
-```
-
-2. **Crear el Controlador** (`mi_pagina.php`):
-```php
-<?php
-require('bootstrap.php');
-
-$smarty->assign('titulo', 'Mi Página');
-$smarty->assign('descripcion', 'Descripción de mi página');
-$smarty->assign('content_config', 'mi_pagina');
-$smarty->display('../template/header.tpl');
-?>
-```
-
-3. **Registrar en `header.tpl`**:
-```smarty
-{if $content_config == 'mi_pagina'}
-    {include file="mi_pagina.tpl"}
-{/if}
-```
-
-### Crear un Nuevo Endpoint API
-
-En `controllers/actions_board.php`:
-
-```php
-switch ($action) {
-    case 'mi_nueva_accion':
-        header('Content-Type: application/json');
-        
-        // Tu lógica aquí
-        $resultado = ['success' => true, 'data' => $datos];
-        
-        echo json_encode($resultado);
-        break;
-}
-```
-
-### Autenticación con JWT
-
-```javascript
-// Login
-axios.post(`${dominio}/controllers/actions_board.php`, {
-    action: 'login_user',
-    usuario: 'usuario',
-    clave: 'password_md5'
-})
-.then(response => {
-    localStorage.setItem('token', response.data.token);
-});
-
-// Usar token en peticiones
-axios.post(url, data, {
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-});
-```
-
-## 🔨 Desarrollo
-
-### Arquitectura MVC
-
-El proyecto sigue una arquitectura Modelo-Vista-Controlador:
-
-- **Modelos** (`models/`): Lógica de negocio y acceso a datos
-- **Vistas** (`template/`): Plantillas Smarty para presentación
-- **Controladores** (`controllers/`): Coordinación entre modelos y vistas
-
-### Convenciones de Código
-
-- **PHP**: PSR-1 y PSR-2 (parcialmente)
-- **JavaScript**: ES6+ con funciones modernas
-- **Nombres de archivos**: snake_case para PHP, camelCase para JS
-- **Base de datos**: Nombres de tablas en plural (`users`, `tableros`)
-
-### Debugging
-
-```php
-// Habilitar errores (config/config.php)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Logging personalizado
-$this->TrackingLog('Mensaje de debug', 'eventos');
-```
-
-### Testing
-
-```bash
-# Verificar sintaxis PHP
-php -l archivo.php
-
-# Verificar permisos
-ls -la cache/ compile/ assets/
-```
+| Acción | Descripción |
+|--------|-------------|
+| `create_board` | Crear publicación |
+| `update_board` | Actualizar publicación |
+| `delete_board` | Eliminar publicación |
+| `save_post` | Guardar comentario |
+| `reply_coment` | Responder comentario |
+| `save_rating` | Guardar calificación |
+| `get_rating_average` | Obtener promedio |
+| `like_board` | Dar like |
+| `search_boards` | Buscar publicaciones |
+| `search_users` | Buscar usuarios |
 
 ## 🐛 Solución de Problemas
 
-### Error: "Call to a member function bind_param() on boolean"
-- **Causa**: Error en la preparación de consulta SQL
-- **Solución**: Verificar conexión a base de datos y sintaxis SQL
+### Error 404 en rutas amigables
 
-### Error: "Permission denied" al subir archivos
-- **Causa**: Permisos incorrectos en directorios
-- **Solución**: 
+1. Verificar que `mod_rewrite` está habilitado:
 ```bash
-chmod -R 777 assets/ imagenes_tablero/ videos/ uploads/
+sudo a2enmod rewrite
+sudo systemctl restart apache2
 ```
 
-### Error: "Smarty: unable to write file"
-- **Causa**: Permisos en directorios de Smarty
-- **Solución**:
-```bash
-chmod -R 777 cache/ compile/
-```
+2. Verificar `AllowOverride All` en VirtualHost
 
-### Error: "Incorrect integer value" en autenticacion_ssl
-- **Causa**: Tipo de dato incorrecto en base de datos
-- **Solución**: El sistema convierte automáticamente "si"/"no" a 1/0
+3. Verificar `RewriteBase` en `.htaccess`
 
 ### Videos no se procesan
-- **Causa**: RabbitMQ o consumer_service no está corriendo
-- **Solución**: 
+
+1. Verificar RabbitMQ:
 ```bash
-php consumer_service.php
-# O iniciar desde panel de administración
+sudo systemctl status rabbitmq-server
 ```
 
-## 🤝 Contribución
+2. Verificar consumers:
+```bash
+sudo systemctl status commuty-consumer
+```
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+3. Ver logs:
+```bash
+tail -f /var/log/commuty/consumer-error.log
+```
 
-### Guías de Contribución
+### Error de permisos al subir archivos
 
-- Seguir las convenciones de código existentes
-- Documentar funciones nuevas
-- Probar cambios antes de hacer commit
-- Actualizar README si es necesario
+```bash
+sudo chown -R www-data:www-data /var/www/commuty-ed
+sudo chmod -R 775 uploads/ videos/ imagenes_tablero/
+```
+
+### Imágenes no aparecen al compartir
+
+1. Verificar que la imagen existe y es accesible públicamente
+2. Usar el debugger de Facebook para refrescar caché
+3. Crear imagen por defecto: `assets/default_share.png` (1200x630px)
+
+### Limpiar caché de Smarty
+
+```bash
+rm -rf /var/www/commuty-ed/compile/*
+rm -rf /var/www/commuty-ed/cache/*
+```
 
 ## 📝 Licencia
 
 Este proyecto es de propiedad privada. Todos los derechos reservados.
 
-Copyright © 2024 VentasRD. All Rights Reserved.
+Copyright © 2026 Meneito.com. All Rights Reserved.
 
 ## 📞 Soporte
 
-Para soporte, contacta a:
-- **Email**: jhon@ventasrd.com
-- **Sitio Web**: [Ventas RD](http://localhost/commuty-ed)
-
-## 🙏 Agradecimientos
-
-- Smarty Template Engine
-- Bootstrap Team
-- Todos los contribuidores de las librerías utilizadas
+- **Sitio Web**: https://meneito.com
+- **Email**: soporte@meneito.com
 
 ---
 

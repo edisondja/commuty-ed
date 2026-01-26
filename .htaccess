@@ -58,6 +58,10 @@ RewriteRule ^admin/players/?$ backcoffe.php?option=reproductores [L,QSA]
 # API alternativo: /api/action -> controllers/action
 RewriteRule ^api/(.*)$ controllers/$1 [L,QSA]
 
+# Sitemap y robots
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^robots\.txt$ robots.txt [L]
+
 # ============================================
 # SEGURIDAD
 # ============================================

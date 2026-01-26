@@ -1,0 +1,23 @@
+# Robots.txt para Commuty-ED
+User-agent: *
+Allow: /
+
+# Directorios bloqueados
+Disallow: /admin/
+Disallow: /backcoffe.php
+Disallow: /controllers/
+Disallow: /models/
+Disallow: /config/
+Disallow: /compile/
+Disallow: /vendor/
+Disallow: /systemd/
+
+# Archivos bloqueados
+Disallow: /*.php$
+Allow: /index.php
+Allow: /single_board.php
+Allow: /profile_user.php
+Allow: /sitemap.php
+
+# Sitemap
+Sitemap: https://meneito.com/sitemap.xml
