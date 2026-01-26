@@ -1,0 +1,29 @@
+[Unit]
+Description=Commuty-ED Video Consumer Service
+Documentation=https://github.com/tu-usuario/commuty-ed
+After=network.target rabbitmq-server.service mysql.service
+Wants=rabbitmq-server.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/commuty-ed
+ExecStart=/usr/bin/php /var/www/commuty-ed/consumer_service.php
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/commuty/consumer.log
+StandardError=append:/var/log/commuty/consumer-error.log
+
+# Límites de recursos
+MemoryLimit=256M
+CPUQuota=50%
+
+# Reiniciar si consume demasiada memoria
+MemoryMax=512M
+
+# Variables de entorno (opcional)
+Environment=PHP_ENV=production
+
+[Install]
+WantedBy=multi-user.target
