@@ -17,11 +17,30 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Verificar extensiones PHP
+echo "🔍 Verificando extensiones PHP..."
+if ! php -m | grep -qi mysqli; then
+    echo "⚠️ mysqli no está instalado. Ejecutando fix..."
+    if [ -f "../fix_php_extensions.sh" ]; then
+        bash fix_php_extensions.sh
+    else
+        echo "❌ Script fix_php_extensions.sh no encontrado"
+        echo "Por favor instala manualmente: sudo apt-get install php-mysqli php-pdo-mysql"
+    fi
+fi
+
 # Crear directorio de logs
 echo "📁 Creando directorio de logs..."
 mkdir -p /var/log/commuty
 chown www-data:www-data /var/log/commuty
 chmod 755 /var/log/commuty
+
+# Dar permisos a wrappers
+echo "🔐 Configurando permisos de wrappers..."
+chmod +x ../consumer_wrapper.sh
+chmod +x ../resultado_wrapper.sh
+chown www-data:www-data ../consumer_wrapper.sh
+chown www-data:www-data ../resultado_wrapper.sh
 
 # Configurar logrotate para los logs
 echo "📝 Configurando rotación de logs..."
