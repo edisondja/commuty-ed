@@ -762,25 +762,40 @@
                 $ruta_temporal = rtrim(trim($ruta_temporal), '.');
             }
 
-            // Log en lugar de echo para no interferir con JSON
-            $this->TrackingLog("Enviando multimedia a procesar para Board: $board_id", 'eventos');
+            $token_unico = uniqid('req_', true);
+            
+            // Log detallado del inicio del proceso
+            $log_data = [
+                'board_id' => $board_id,
+                'tipo_archivo' => $tipo_archivo,
+                'token_unico' => $token_unico,
+                'timestamp' => date('Y-m-d H:i:s')
+            ];
+            $this->TrackingLog("🚀 Iniciando procesamiento multimedia - Board: $board_id, Tipo: $tipo_archivo, Token: $token_unico", 'eventos');
+            $this->TrackingLog("📋 Datos: " . json_encode($log_data), 'eventos');
 
-            $url =  DOMAIN."/producer_service.php";
+            $url = DOMAIN . "/producer_service.php";
+            $this->TrackingLog("🌐 URL Producer: $url", 'eventos');
+            $this->TrackingLog("🌐 DOMAIN config: " . DOMAIN, 'eventos');
 
             if ($tipo_archivo === 'transfer_video') {
                 if (!filter_var($ruta_temporal, FILTER_VALIDATE_URL)) {
+                    $this->TrackingLog("❌ Error: URL inválida - $ruta_temporal", 'eventos');
                     return ['ok' => false, 'error' => 'URL inválida'];
                 }
                 $data = [
                     'url_archivo'  => $ruta_temporal,
                     'tipo_archivo' => $tipo_archivo,
                     'board_id'     => $board_id,
-                    'token_unico'  => uniqid('req_', true) // Token para identificar esta petición única
+                    'token_unico'  => $token_unico
                 ];
+                $this->TrackingLog("📤 Enviando video transfer - URL: $ruta_temporal", 'eventos');
             } else {
                 if (!file_exists($ruta_temporal)) {
+                    $this->TrackingLog("❌ Error: Archivo no existe - $ruta_temporal", 'eventos');
                     return ['ok' => false, 'error' => 'Archivo no existe'];
                 }
+                $file_size = filesize($ruta_temporal);
                 $data = [
                     'archivo' => new CURLFile(
                         realpath($ruta_temporal),
@@ -789,8 +804,9 @@
                     ),
                     'tipo_archivo' => $tipo_archivo,
                     'board_id'     => $board_id,
-                    'token_unico'  => uniqid('req_', true)
+                    'token_unico'  => $token_unico
                 ];
+                $this->TrackingLog("📤 Enviando archivo - Ruta: $ruta_temporal, Tamaño: " . number_format($file_size / 1024 / 1024, 2) . " MB", 'eventos');
             }
 
             $ch = curl_init($url);
@@ -798,23 +814,48 @@
                 CURLOPT_POST           => true,
                 CURLOPT_POSTFIELDS     => $data,
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CONNECTTIMEOUT => 10, // Tiempo máximo para conectar
-                CURLOPT_TIMEOUT        => 60,  // Tiempo máximo de ejecución
+                CURLOPT_CONNECTTIMEOUT => 10,
+                CURLOPT_TIMEOUT        => 60,
                 CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_HTTPHEADER     => ['Expect:']
+                CURLOPT_HTTPHEADER     => ['Expect:'],
+                CURLOPT_VERBOSE        => false // Cambiar a true para debug detallado
             ]);
 
+            $start_time = microtime(true);
             $response = curl_exec($ch);
+            $end_time = microtime(true);
+            $duration = round(($end_time - $start_time) * 1000, 2);
             
-            // Si cURL falla, no reintentes automáticamente sin lógica de control
             if ($response === false) {
                 $error = curl_error($ch);
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 curl_close($ch);
-                return ['ok' => false, 'error' => "cURL Error: $error"];
+                
+                $this->TrackingLog("❌ cURL Error - HTTP Code: $http_code, Error: $error, Duración: {$duration}ms", 'eventos');
+                return ['ok' => false, 'error' => "cURL Error: $error", 'http_code' => $http_code];
             }
 
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curl_info = [
+                'http_code' => $http_code,
+                'total_time' => curl_getinfo($ch, CURLINFO_TOTAL_TIME),
+                'size_upload' => curl_getinfo($ch, CURLINFO_SIZE_UPLOAD),
+                'size_download' => curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD)
+            ];
+            
             curl_close($ch);
-            return ['ok' => true, 'response' => json_decode($response, true)];
+            
+            $this->TrackingLog("✅ Respuesta recibida - HTTP Code: $http_code, Duración: {$duration}ms", 'eventos');
+            $this->TrackingLog("📊 Info cURL: " . json_encode($curl_info), 'eventos');
+            
+            $decoded_response = json_decode($response, true);
+            if ($decoded_response) {
+                $this->TrackingLog("📦 Respuesta JSON: " . json_encode($decoded_response), 'eventos');
+            } else {
+                $this->TrackingLog("⚠️ Respuesta no es JSON válido: " . substr($response, 0, 200), 'eventos');
+            }
+            
+            return ['ok' => true, 'response' => $decoded_response, 'http_code' => $http_code, 'token_unico' => $token_unico];
         }
 
 
