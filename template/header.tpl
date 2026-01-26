@@ -252,14 +252,95 @@
               </ul>
           </div>
 
-          <form method='get' action='index.php'>
-              <table style='margin-left:30px;'>
-                  <tr>
-                      <td><input type='search'   name='search' class='form-control' placeholder='write the name of table'/></td>
-                      <td><button class='btn btn-dark'>Search</button></td>
-                  </tr>
-              </table>
+          <!-- Barra de búsqueda responsive -->
+          <form method='get' action='index.php' class="search-form-nav">
+              <div class="search-container">
+                  <input type='search' name='search' class='form-control search-input' placeholder='Buscar...'/>
+                  <button class='btn btn-search' type="submit">
+                      <i class="fa-solid fa-search"></i>
+                  </button>
+              </div>
           </form>
+          
+          <style>
+              .search-form-nav {
+                  flex: 1;
+                  max-width: 400px;
+                  margin: 0 15px;
+              }
+              .search-container {
+                  display: flex;
+                  align-items: center;
+                  background: rgba(255,255,255,0.1);
+                  border-radius: 25px;
+                  overflow: hidden;
+                  border: 1px solid rgba(255,255,255,0.2);
+                  transition: all 0.3s ease;
+              }
+              .search-container:focus-within {
+                  background: rgba(255,255,255,0.15);
+                  border-color: #09b9e1;
+                  box-shadow: 0 0 0 2px rgba(9, 185, 225, 0.2);
+              }
+              .search-input {
+                  flex: 1;
+                  border: none !important;
+                  background: transparent !important;
+                  color: #fff !important;
+                  padding: 8px 15px !important;
+                  font-size: 14px;
+                  box-shadow: none !important;
+              }
+              .search-input::placeholder {
+                  color: rgba(255,255,255,0.6);
+              }
+              .search-input:focus {
+                  outline: none !important;
+              }
+              .btn-search {
+                  background: transparent;
+                  border: none;
+                  color: #09b9e1;
+                  padding: 8px 15px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+              }
+              .btn-search:hover {
+                  color: #fff;
+                  background: rgba(9, 185, 225, 0.3);
+              }
+              
+              /* Mobile styles */
+              @media (max-width: 991px) {
+                  .search-form-nav {
+                      order: 3;
+                      width: 100%;
+                      max-width: 100%;
+                      margin: 10px 0;
+                      padding: 0 10px;
+                  }
+                  .search-container {
+                      width: 100%;
+                  }
+                  .search-input {
+                      padding: 12px 15px !important;
+                      font-size: 16px; /* Evita zoom en iOS */
+                  }
+                  .btn-search {
+                      padding: 12px 18px;
+                  }
+              }
+              
+              @media (max-width: 576px) {
+                  .navbar-brand img {
+                      width: 150px !important;
+                      height: auto !important;
+                  }
+                  .search-form-nav {
+                      padding: 0 5px;
+                  }
+              }
+          </style>
       </div>
   </nav>
 
