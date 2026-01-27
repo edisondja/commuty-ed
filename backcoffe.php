@@ -77,6 +77,12 @@
 
                     break;
 
+                    case 'failures':
+
+                        $smarty->assign('option','service_failures');
+
+                    break;
+
                     default:
                     
                      $smarty->assign('option','usuarios');

@@ -102,6 +102,9 @@
         
         {else if $option=='monitor'}    
             {include file='back_office_components/modulo_monitor.tpl'}
+        
+        {else if $option=='service_failures'}    
+            {include file='back_office_components/modulo_service_failures.tpl'}
         {/if}
 
 </div>

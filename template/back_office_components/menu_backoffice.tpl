@@ -198,6 +198,11 @@
                 Monitor en Tiempo Real <i class="fa-solid fa-chart-line"></i>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {if $current_option == 'failures'}active{/if}" href="{$dominio}/admin/failures">
+                Fallos de Servicios <i class="fa-solid fa-triangle-exclamation"></i>
+            </a>
+        </li>
         
         <div class="menu-separator"></div>
         
