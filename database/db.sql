@@ -27,7 +27,8 @@ CREATE TABLE configuracion (
   verificar_cuenta VARCHAR(2),
   rabbit_mq VARCHAR(2),
   ffmpeg VARCHAR(2),
-  redis_cache VARCHAR(2)
+  redis_cache VARCHAR(2),
+  google_analytics_id VARCHAR(50) DEFAULT NULL
 );
 
 -- Tabla de usuarios

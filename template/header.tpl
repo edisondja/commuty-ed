@@ -162,6 +162,39 @@
         </style>
         {/if}
 
+        <!-- Google Analytics -->
+        {if isset($google_analytics_id) && $google_analytics_id != ''}
+        {* Detectar si es GA4 (G-XXXXXXXXXX) o Universal Analytics (UA-XXXXXXXXX-X) *}
+        {if $google_analytics_id|strpos:'G-' === 0}
+        {* Google Analytics 4 (GA4) *}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={$google_analytics_id}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ldelim}dataLayer.push(arguments);{rdelim}
+            gtag('js', new Date());
+            gtag('config', '{$google_analytics_id}');
+        </script>
+        {elseif $google_analytics_id|strpos:'UA-' === 0}
+        {* Universal Analytics (Legacy) *}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={$google_analytics_id}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ldelim}dataLayer.push(arguments);{rdelim}
+            gtag('js', new Date());
+            gtag('config', '{$google_analytics_id}');
+        </script>
+        {else}
+        {* Formato no reconocido, intentar como GA4 *}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={$google_analytics_id}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ldelim}dataLayer.push(arguments);{rdelim}
+            gtag('js', new Date());
+            gtag('config', '{$google_analytics_id}');
+        </script>
+        {/if}
+        {/if}
+
   </head>
   <body style='background:#151c1b;'>
     

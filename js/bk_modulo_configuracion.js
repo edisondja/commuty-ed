@@ -62,6 +62,7 @@
             let pagina_descripcion = document.getElementById('pagina_descripcion').value;
             let titulo_descripcion = document.getElementById('titulo_descripcion').value;
             let busqueda_hastag = document.getElementById('busqueda_hastag').value;
+            let google_analytics_id = document.getElementById('google_analytics_id').value;
             let email_remitente = document.getElementById('email_remitente').value;
             let nombre_remitente = document.getElementById('nombre_remitente').value;
             let servidor_smtp = document.getElementById('servidor_smtp').value;
@@ -132,6 +133,7 @@
             FormDatas.append('busqueda_descripcion',busqueda_descripcion);
             FormDatas.append('titulo_descripcion',titulo_descripcion);
             FormDatas.append('busqueda_hastag',busqueda_hastag);
+            FormDatas.append('google_analytics_id',google_analytics_id);
             FormDatas.append('email_remitente',email_remitente);
             FormDatas.append('nombre_remitente',nombre_remitente);
             FormDatas.append('email_remitente',email_remitente);
@@ -217,6 +219,7 @@
                         document.getElementById('pagina_descripcion').innerHTML = data.data.pagina_descripcion;
                         document.getElementById('titulo_descripcion').innerHTML= data.data.titulo_descripcion;
                         document.getElementById('busqueda_hastag').value = data.data.busqueda_hastag;
+                        document.getElementById('google_analytics_id').value = data.data.google_analytics_id || '';
                         document.getElementById('favicon_img').src =`/${data.data.favicon_url}`;
                         document.getElementById('logo_img').src =`/${data.data.sitio_logo_url}`;
                         //datos de cofiguracion de correo

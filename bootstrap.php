@@ -210,6 +210,7 @@
         $smarty->assign('favicon', $favicon_url);
         
         $smarty->assign('email_sitio', $config_data->email_sitio ?? MAIL_SITE);
+        $smarty->assign('google_analytics_id', $config_data->google_analytics_id ?? '');
         
         // Asignar dominio a Smarty (ya actualizado desde BD)
         $smarty->assign('dominio', $dominio);

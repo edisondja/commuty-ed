@@ -266,6 +266,7 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   `rabbit_mq` tinyint(1) DEFAULT 0,
   `ffmpeg` tinyint(1) DEFAULT 0,
   `redis_cache` tinyint(1) DEFAULT 0,
+  `google_analytics_id` varchar(50) DEFAULT NULL,
   `estilos_json` text DEFAULT NULL,
   PRIMARY KEY (`configuracion_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -186,6 +186,9 @@ if (isset($_POST['action'])) {
                 $config->redis_cache = (int)$redis_cache_value;
             }
             
+            // Google Analytics ID
+            $config->google_analytics_id = $_POST['google_analytics_id'] ?? '';
+            
             // Preservar estilos_json existente si no se envía
             if ($imagen_actual && isset($imagen_actual->estilos_json)) {
                 $config->estilos_json = $imagen_actual->estilos_json;

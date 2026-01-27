@@ -91,6 +91,15 @@
                             <label class="bo-label">Hashtags de Búsqueda</label>
                             <input type="text" class="form-control" id="busqueda_hastag" placeholder="#hashtag1, #hashtag2">
                         </div>
+                        <div class="mb-3">
+                            <label class="bo-label">
+                                <i class="fa-brands fa-google"></i> Google Analytics ID
+                            </label>
+                            <input type="text" class="form-control" id="google_analytics_id" placeholder="G-XXXXXXXXXX o UA-XXXXXXXXX-X">
+                            <small style="color: rgba(255,255,255,0.5); display: block; margin-top: 5px;">
+                                Ingresa tu ID de medición de Google Analytics (GA4 o Universal Analytics)
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>

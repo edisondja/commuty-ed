@@ -29,6 +29,7 @@ class Config extends EncryptToken
     public  $rabbit_mq;
     public  $ffmpeg;
     public  $redis_cache;
+    public  $google_analytics_id;
 
 
 
@@ -139,6 +140,7 @@ class Config extends EncryptToken
                 $this->rabbit_mq = $data->rabbit_mq;
                 $this->ffmpeg = $data->ffmpeg;
                 $this->redis_cache = $data->redis_cache;
+                $this->google_analytics_id = $data->google_analytics_id ?? '';
                 return $data;
             }
         }
@@ -253,6 +255,7 @@ class Config extends EncryptToken
         } else {
             $this->redis_cache = (int)$this->redis_cache;
         }
+        $this->google_analytics_id = $this->google_analytics_id ?? '';
         $this->estilos_json = $this->estilos_json ?? null;
         
         $sql = 'insert into configuracion(
@@ -280,8 +283,9 @@ class Config extends EncryptToken
                 rabbit_mq,
                 ffmpeg,
                 redis_cache,
+                google_analytics_id,
                 estilos_json
-            )values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+            )values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
         $guardar = $this->conection->prepare($sql);
         
@@ -292,8 +296,8 @@ class Config extends EncryptToken
         }
 
         try {
-            // 18 strings + 6 integers + 1 string = 25 parámetros
-            $guardar->bind_param('ssssssssssssssssssiiiiiis',
+            // 18 strings + 6 integers + 2 strings = 26 parámetros
+            $guardar->bind_param('ssssssssssssssssssiiiiiiss',
                 $this->dominio,           // 1 s
                 $this->nombre_sitio,      // 2 s
                 $this->descripcion_slogan,// 3 s
@@ -318,7 +322,8 @@ class Config extends EncryptToken
                 $this->rabbit_mq,         // 22 i
                 $this->ffmpeg,            // 23 i
                 $this->redis_cache,       // 24 i
-                $this->estilos_json       // 25 s
+                $this->google_analytics_id, // 25 s
+                $this->estilos_json       // 26 s
             );
             
             if (!$guardar->execute()) {
@@ -407,6 +412,7 @@ class Config extends EncryptToken
             $this->redis_cache = (int)$this->redis_cache;
         }
         // estilos_json se mantiene si no se envía (no se actualiza)
+        $this->google_analytics_id = $this->google_analytics_id ?? '';
         
         $sql = "update configuracion set 
                     dominio = ?,
@@ -432,7 +438,8 @@ class Config extends EncryptToken
                     verificar_cuenta = ?,
                     rabbit_mq = ?,
                     ffmpeg = ?,
-                    redis_cache = ?
+                    redis_cache = ?,
+                    google_analytics_id = ?
                     limit 1";
 
         $actualizar = $this->conection->prepare($sql);
@@ -444,9 +451,9 @@ class Config extends EncryptToken
         }
 
         try {
-            // 18 strings + 6 integers = 24 parámetros (sin estilos_json en UPDATE)
+            // 18 strings + 6 integers + 1 string = 25 parámetros (sin estilos_json en UPDATE)
             $actualizar->bind_param(
-                'ssssssssssssssssssiiiiii',
+                'ssssssssssssssssssiiiiiis',
                 $this->dominio,           // 1 s
                 $this->nombre_sitio,      // 2 s
                 $this->descripcion_slogan,// 3 s
@@ -470,7 +477,8 @@ class Config extends EncryptToken
                 $this->verificar_cuenta,  // 21 i
                 $this->rabbit_mq,         // 22 i
                 $this->ffmpeg,            // 23 i
-                $this->redis_cache        // 24 i
+                $this->redis_cache,       // 24 i
+                $this->google_analytics_id // 25 s
             );
 
             if (!$actualizar->execute()) {
