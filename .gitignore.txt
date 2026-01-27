@@ -4,6 +4,7 @@
 # Ignorar la carpeta videos
 /videos/
 
+.htaccess
 
 # Ignorar la carpeta videos
 /imagenes_tablero/
