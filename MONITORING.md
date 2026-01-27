@@ -2,7 +2,66 @@
 
 ## Herramientas de Monitoreo
 
-### 1. Endpoint de Debug (`/controllers/debug_rabbitmq.php`)
+### 1. Script de Diagnóstico CLI (`test_rabbitmq_connection.php`)
+
+Script de línea de comandos para diagnosticar problemas de conexión RabbitMQ directamente desde el servidor.
+
+#### Uso
+
+```bash
+# Desde el directorio del proyecto
+cd /var/www/commuty-ed
+php test_rabbitmq_connection.php
+```
+
+#### Qué Verifica
+
+- ✅ Conectividad de red (puerto alcanzable)
+- ✅ Conexión AMQP
+- ✅ Creación de canales
+- ✅ Estado de colas (mensajes y consumidores)
+- ✅ Diagnóstico automático de problemas comunes
+
+#### Ventajas
+
+- No requiere acceso web
+- Ejecuta directamente en el servidor
+- Muestra diagnósticos detallados de errores
+- Sugiere soluciones específicas para cada problema
+
+#### Ejemplo de Salida
+
+```
+🔍 Diagnóstico de Conexión RabbitMQ
+==================================================
+
+📋 Configuración:
+   Host: localhost
+   Puerto: 5672
+   Usuario: guest
+   VHost: /
+
+1️⃣ Verificando conectividad de red...
+   ✅ Puerto 5672 alcanzable en localhost
+
+2️⃣ Intentando conexión AMQP...
+   ✅ Conexión AMQP exitosa
+
+3️⃣ Verificando canales...
+   ✅ Canal creado correctamente
+
+4️⃣ Verificando colas...
+   ✅ Cola 'procesar_multimedia':
+      - Mensajes en cola: 0
+      - Consumidores activos: 1
+   ✅ Cola 'multimedia_resultado':
+      - Mensajes en cola: 0
+      - Consumidores activos: 1
+
+✅ Todas las verificaciones pasaron correctamente
+```
+
+### 2. Endpoint de Debug (`/controllers/debug_rabbitmq.php`)
 
 Endpoint web que verifica el estado completo del sistema.
 
@@ -208,6 +267,110 @@ tail -f /var/log/commuty/consumer.log
    # Probar acceso directo
    curl https://meneito.com/producer_service.php
    ```
+
+#### RabbitMQ no se puede conectar en producción
+
+**Síntoma**: El servicio RabbitMQ está activo pero no se puede conectar cuando se monitorea.
+
+**Diagnóstico paso a paso**:
+
+1. **Ejecutar script de diagnóstico CLI**:
+   ```bash
+   cd /var/www/commuty-ed
+   php test_rabbitmq_connection.php
+   ```
+
+2. **Verificar configuración en `config/config.php`**:
+   ```bash
+   # Verificar que las constantes estén definidas correctamente
+   grep -E "host_rabbit_mq|port_rabbit_mq|user_rabbit_mq" config/config.php
+   ```
+   
+   Debe mostrar algo como:
+   ```
+   define('host_rabbit_mq','localhost');
+   define('port_rabbit_mq','5672');
+   define('user_rabbit_mq','guest');
+   ```
+
+3. **Verificar que RabbitMQ esté corriendo**:
+   ```bash
+   sudo systemctl status rabbitmq-server
+   ```
+
+4. **Verificar que el puerto esté abierto**:
+   ```bash
+   sudo netstat -tlnp | grep 5672
+   # O
+   sudo ss -tlnp | grep 5672
+   ```
+
+5. **Verificar conectividad de red**:
+   ```bash
+   # Desde el servidor web
+   telnet localhost 5672
+   # O si RabbitMQ está en otro servidor
+   telnet <ip_rabbitmq> 5672
+   ```
+
+6. **Verificar firewall**:
+   ```bash
+   sudo ufw status
+   # Si está activo, permitir puerto 5672
+   sudo ufw allow 5672/tcp
+   ```
+
+7. **Verificar logs de RabbitMQ**:
+   ```bash
+   sudo journalctl -u rabbitmq-server -n 50
+   # O
+   sudo tail -50 /var/log/rabbitmq/rabbit@*.log
+   ```
+
+8. **Verificar usuarios y permisos**:
+   ```bash
+   sudo rabbitmqctl list_users
+   sudo rabbitmqctl list_permissions -p /
+   ```
+
+**Soluciones comunes**:
+
+- **Si el host es `localhost` pero RabbitMQ está en otro servidor**:
+  - Cambiar `host_rabbit_mq` en `config/config.php` a la IP o hostname del servidor RabbitMQ
+
+- **Si hay problemas de autenticación**:
+  ```bash
+  # Crear usuario específico
+  sudo rabbitmqctl add_user commuty_user tu_password
+  sudo rabbitmqctl set_permissions -p / commuty_user ".*" ".*" ".*"
+  sudo rabbitmqctl set_user_tags commuty_user administrator
+  ```
+  Luego actualizar `config/config.php` con el nuevo usuario y contraseña.
+
+- **Si el puerto no está abierto**:
+  ```bash
+  # Verificar configuración de RabbitMQ
+  sudo rabbitmqctl environment | grep listeners
+  # Debe mostrar algo como: {listeners,[{amqp,5672}]}
+  ```
+
+- **Si hay problemas de red/firewall**:
+  ```bash
+  # Permitir puerto en firewall
+  sudo ufw allow 5672/tcp
+  sudo ufw reload
+  ```
+
+**Verificar desde el endpoint web**:
+```bash
+curl https://meneito.com/controllers/debug_rabbitmq.php | jq
+```
+
+El endpoint ahora incluye:
+- Diagnóstico automático de problemas
+- Sugerencias específicas según el error
+- Verificación de conectividad de red
+- Información detallada de configuración
 
 3. **Ver logs detallados**
    ```bash

@@ -18,20 +18,45 @@ $response = [
     'checks' => []
 ];
 
+// Definir variables de configuración de RabbitMQ (disponibles en todo el script)
+$rabbit_host = defined('host_rabbit_mq') ? host_rabbit_mq : 'localhost';
+$rabbit_port = defined('port_rabbit_mq') ? port_rabbit_mq : 5672;
+$rabbit_user = defined('user_rabbit_mq') ? user_rabbit_mq : 'guest';
+$rabbit_pass = defined('password_rabbit_mq') ? password_rabbit_mq : 'guest';
+$rabbit_vhost = defined('vhost_rabbit_mq') ? vhost_rabbit_mq : '/';
+
 // 1. Verificar conexión a RabbitMQ
 try {
+    
+    $response['checks']['rabbitmq_config'] = [
+        'host' => $rabbit_host,
+        'port' => $rabbit_port,
+        'user' => $rabbit_user,
+        'vhost' => $rabbit_vhost,
+        'config_loaded' => defined('host_rabbit_mq')
+    ];
+    
+    // Intentar conexión con timeout más corto para diagnóstico
     $connection = new AMQPStreamConnection(
-        RABBIT_HOST ?? 'localhost',
-        RABBIT_PORT ?? 5672,
-        RABBIT_USER ?? 'guest',
-        RABBIT_PASS ?? 'guest'
+        $rabbit_host,
+        $rabbit_port,
+        $rabbit_user,
+        $rabbit_pass,
+        $rabbit_vhost,
+        false, // $insist
+        'AMQPLAIN', // login_method
+        null, // login_response
+        'en_US', // locale
+        3.0, // connection_timeout (3 segundos)
+        3.0  // read_write_timeout (3 segundos)
     );
     
     $response['checks']['rabbitmq_connection'] = [
         'status' => 'success',
         'message' => 'Conexión a RabbitMQ exitosa',
-        'host' => RABBIT_HOST ?? 'localhost',
-        'port' => RABBIT_PORT ?? 5672
+        'host' => $rabbit_host,
+        'port' => $rabbit_port,
+        'vhost' => $rabbit_vhost
     ];
     
     // 2. Verificar colas
@@ -76,10 +101,54 @@ try {
     $connection->close();
     
 } catch (Exception $e) {
+    $error_message = $e->getMessage();
+    $error_code = $e->getCode();
+    
+    // Diagnóstico adicional
+    $diagnosis = [];
+    
+    // Verificar si el host es alcanzable
+    if (function_exists('fsockopen')) {
+        $socket = @fsockopen($rabbit_host, $rabbit_port, $errno, $errstr, 2);
+        if ($socket) {
+            $diagnosis['network'] = 'Host y puerto alcanzables';
+            fclose($socket);
+        } else {
+            $diagnosis['network'] = "No se puede conectar: $errstr ($errno)";
+        }
+    }
+    
+    // Verificar si es un problema de autenticación
+    if (strpos($error_message, 'ACCESS_REFUSED') !== false || 
+        strpos($error_message, 'authentication') !== false ||
+        strpos($error_message, 'Login') !== false) {
+        $diagnosis['auth'] = 'Posible problema de autenticación';
+    }
+    
+    // Verificar si es un problema de red
+    if (strpos($error_message, 'Connection refused') !== false ||
+        strpos($error_message, 'No route to host') !== false ||
+        strpos($error_message, 'timeout') !== false) {
+        $diagnosis['network'] = 'Problema de conectividad de red';
+    }
+    
     $response['checks']['rabbitmq_connection'] = [
         'status' => 'error',
         'message' => 'Error conectando a RabbitMQ',
-        'error' => $e->getMessage()
+        'error' => $error_message,
+        'error_code' => $error_code,
+        'host' => $rabbit_host,
+        'port' => $rabbit_port,
+        'user' => $rabbit_user,
+        'vhost' => $rabbit_vhost,
+        'diagnosis' => $diagnosis,
+        'suggestions' => [
+            'Verificar que RabbitMQ esté corriendo: sudo systemctl status rabbitmq-server',
+            'Verificar que el puerto esté abierto: netstat -tlnp | grep 5672',
+            'Verificar credenciales en config/config.php',
+            'Verificar firewall: sudo ufw status',
+            'Probar conexión manual: telnet ' . $rabbit_host . ' ' . $rabbit_port
+        ]
     ];
     $response['status'] = 'error';
 }
@@ -99,11 +168,27 @@ foreach ($services as $service) {
 
 // 4. Verificar dominio y configuración
 $response['checks']['configuration'] = [
-    'domain' => DOMAIN,
+    'domain' => defined('DOMAIN') ? DOMAIN : 'not_defined',
     'base_url' => isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown',
     'request_uri' => $_SERVER['REQUEST_URI'] ?? 'unknown',
-    'script_name' => $_SERVER['SCRIPT_NAME'] ?? 'unknown'
+    'script_name' => $_SERVER['SCRIPT_NAME'] ?? 'unknown',
+    'server_ip' => $_SERVER['SERVER_ADDR'] ?? 'unknown',
+    'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown'
 ];
+
+// 4.1. Verificar conectividad de red a RabbitMQ
+if (isset($rabbit_host) && isset($rabbit_port)) {
+    $socket_test = @fsockopen($rabbit_host, $rabbit_port, $errno, $errstr, 2);
+    $response['checks']['network_test'] = [
+        'host' => $rabbit_host,
+        'port' => $rabbit_port,
+        'reachable' => $socket_test !== false,
+        'error' => $socket_test === false ? "$errstr ($errno)" : null
+    ];
+    if ($socket_test) {
+        fclose($socket_test);
+    }
+}
 
 // 5. Verificar procesos PHP corriendo
 $php_processes = shell_exec("ps aux | grep 'consumer_service.php\|consumer_resultado.php' | grep -v grep | wc -l");
@@ -127,11 +212,19 @@ foreach ($dirs as $dir) {
 // 7. Test de envío de mensaje (opcional)
 if (isset($_GET['test_send']) && $_GET['test_send'] === '1') {
     try {
+        // Usar las constantes correctas de config.php
+        $rabbit_host = defined('host_rabbit_mq') ? host_rabbit_mq : 'localhost';
+        $rabbit_port = defined('port_rabbit_mq') ? port_rabbit_mq : 5672;
+        $rabbit_user = defined('user_rabbit_mq') ? user_rabbit_mq : 'guest';
+        $rabbit_pass = defined('password_rabbit_mq') ? password_rabbit_mq : 'guest';
+        $rabbit_vhost = defined('vhost_rabbit_mq') ? vhost_rabbit_mq : '/';
+        
         $connection = new AMQPStreamConnection(
-            RABBIT_HOST ?? 'localhost',
-            RABBIT_PORT ?? 5672,
-            RABBIT_USER ?? 'guest',
-            RABBIT_PASS ?? 'guest'
+            $rabbit_host,
+            $rabbit_port,
+            $rabbit_user,
+            $rabbit_pass,
+            $rabbit_vhost
         );
         $channel = $connection->channel();
         
