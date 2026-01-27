@@ -4,6 +4,37 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
+// Obtener directorio base del proyecto de forma absoluta
+$BASE_DIR = dirname(__FILE__);
+if (!is_dir($BASE_DIR)) {
+    die("❌ ERROR: Directorio base no existe: $BASE_DIR\n");
+}
+
+// Cambiar al directorio base para asegurar rutas correctas
+chdir($BASE_DIR);
+
+// Función helper para asegurar que un directorio existe
+function ensureDirectory($dir) {
+    if (!is_dir($dir)) {
+        if (!mkdir($dir, 0777, true)) {
+            throw new Exception("No se pudo crear directorio: $dir");
+        }
+        echo "✅ Directorio creado: $dir\n";
+    }
+    return realpath($dir);
+}
+
+// Asegurar que los directorios necesarios existen
+try {
+    ensureDirectory($BASE_DIR . '/uploads');
+    ensureDirectory($BASE_DIR . '/videos');
+    ensureDirectory($BASE_DIR . '/previa');
+    ensureDirectory($BASE_DIR . '/imagenes_tablero');
+    ensureDirectory($BASE_DIR . '/logs');
+} catch (Exception $e) {
+    die("❌ ERROR: " . $e->getMessage() . "\n");
+}
+
 require_once 'vendor/autoload.php';
 require_once 'config/config.php';
 
@@ -78,13 +109,11 @@ $callback = function ($msg) use ($channel) {
                 }
             }
             
-            $archivo_local = "uploads/temp_{$board_id}_{$fecha}_{$nombre_archivo}";
+            $archivo_local = $BASE_DIR . "/uploads/temp_{$board_id}_{$fecha}_{$nombre_archivo}";
             echo "📥 Descargando archivo a: $archivo_local\n";
             
             // Asegurar que el directorio uploads existe
-            if (!is_dir('uploads')) {
-                mkdir('uploads', 0777, true);
-            }
+            ensureDirectory($BASE_DIR . '/uploads');
             
             $ch = curl_init($rutaOriginal);
             $fp = fopen($archivo_local, 'wb');
@@ -139,13 +168,38 @@ $callback = function ($msg) use ($channel) {
         
         echo "Ruta original: $rutaOriginal\n";
         echo "Tipo archivo: " . ($data['tipo_archivo'] ?? 'video') . "\n";
-        // 2. Definir rutas de salida
-        $rutaImagen      = "imagenes_tablero/{$fecha}_{$board_id}.jpg";
-        $reciduo_video   = "previa/{$fecha}_{$board_id}.mp4";
-        $video_completo  = "videos/{$fecha}_{$board_id}.mp4";
+        // 2. Definir rutas de salida (absolutas)
+        $rutaImagen      = $BASE_DIR . "/imagenes_tablero/{$fecha}_{$board_id}.jpg";
+        $reciduo_video   = $BASE_DIR . "/previa/{$fecha}_{$board_id}.mp4";
+        $video_completo  = $BASE_DIR . "/videos/{$fecha}_{$board_id}.mp4";
+        
+        // Asegurar que los directorios existen
+        ensureDirectory($BASE_DIR . '/imagenes_tablero');
+        ensureDirectory($BASE_DIR . '/previa');
+        ensureDirectory($BASE_DIR . '/videos');
 
         // 3. SIEMPRE comprimir y convertir a MP4 (sin importar el formato original)
         echo "🔄 Comprimiendo y convirtiendo video a MP4...\n";
+        
+        // Verificar que el archivo de entrada existe y es accesible
+        if (!file_exists($archivo_local)) {
+            throw new Exception("Archivo de entrada no existe: $archivo_local");
+        }
+        
+        if (!is_readable($archivo_local)) {
+            throw new Exception("Archivo de entrada no es legible: $archivo_local");
+        }
+        
+        $file_size = filesize($archivo_local);
+        echo "📊 Tamaño archivo entrada: " . round($file_size / 1024 / 1024, 2) . " MB\n";
+        
+        // Verificar que el directorio de salida existe y es escribible
+        $video_dir = dirname($video_completo);
+        ensureDirectory($video_dir);
+        
+        if (!is_writable($video_dir)) {
+            throw new Exception("Directorio de salida no es escribible: $video_dir");
+        }
         
         // Comando FFmpeg para comprimir: 
         // -c:v libx264 = codec de video H.264
@@ -159,14 +213,37 @@ $callback = function ($msg) use ($channel) {
         $output_compress = [];
         exec($cmd_compress, $output_compress, $return_code);
         
+        // Mostrar salida de FFmpeg si hay errores
+        if ($return_code !== 0) {
+            echo "⚠ FFmpeg retornó código de error: $return_code\n";
+            echo "Salida de FFmpeg:\n" . implode("\n", $output_compress) . "\n";
+        }
+        
         if ($return_code !== 0 || !file_exists($video_completo)) {
             // Si falla la compresión, intentar copia directa
             echo "⚠ Compresión falló, intentando copia directa...\n";
-            exec("ffmpeg -y -i " . escapeshellarg($archivo_local) . " -c copy " . escapeshellarg($video_completo) . " 2>&1");
+            $cmd_copy = "ffmpeg -y -i " . escapeshellarg($archivo_local) . " -c copy " . escapeshellarg($video_completo) . " 2>&1";
+            echo "Ejecutando: $cmd_copy\n";
+            $output_copy = [];
+            exec($cmd_copy, $output_copy, $return_code_copy);
+            
+            if ($return_code_copy !== 0) {
+                echo "❌ Copia directa también falló (código: $return_code_copy)\n";
+                echo "Salida de FFmpeg:\n" . implode("\n", $output_copy) . "\n";
+            }
         }
         
         if (!file_exists($video_completo)) {
-            throw new Exception("No se pudo crear el video comprimido: $video_completo");
+            $error_details = [
+                "Archivo entrada: $archivo_local",
+                "Archivo entrada existe: " . (file_exists($archivo_local) ? 'Sí' : 'No'),
+                "Archivo entrada legible: " . (is_readable($archivo_local) ? 'Sí' : 'No'),
+                "Directorio salida: $video_dir",
+                "Directorio salida existe: " . (is_dir($video_dir) ? 'Sí' : 'No'),
+                "Directorio salida escribible: " . (is_writable($video_dir) ? 'Sí' : 'No'),
+                "Archivo salida esperado: $video_completo"
+            ];
+            throw new Exception("No se pudo crear el video comprimido: $video_completo\n" . implode("\n", $error_details));
         }
         
         $filesize_original = filesize($archivo_local);
@@ -184,7 +261,9 @@ $callback = function ($msg) use ($channel) {
         
         // Usar el video comprimido para generar preview y thumbnail
         $rutaTemVideo = escapeshellarg($video_completo);
-        $prefix       = "tmp_{$board_id}_"; // Prefijo para archivos temporales .ts
+        $tmp_dir = $BASE_DIR . '/tmp';
+        ensureDirectory($tmp_dir);
+        $prefix       = $tmp_dir . "/tmp_{$board_id}_"; // Prefijo para archivos temporales .ts (ruta absoluta)
 
         // 3. Lógica de Cortes de Video (Tu lógica integrada)
         $cortes = [];

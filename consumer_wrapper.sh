@@ -5,8 +5,33 @@
 # Verifica extensiones PHP antes de ejecutar
 # ============================================
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+# Obtener directorio del script de forma robusta
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+if [ -L "$SCRIPT_PATH" ]; then
+    # Si es un symlink, seguir el enlace
+    SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$SCRIPT_PATH")")" && pwd)"
+else
+    SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+fi
+
+# Verificar que el directorio existe antes de cambiar
+if [ ! -d "$SCRIPT_DIR" ]; then
+    echo "❌ ERROR: Directorio del script no existe: $SCRIPT_DIR" >&2
+    exit 1
+fi
+
+# Cambiar al directorio del script
+if ! cd "$SCRIPT_DIR" 2>/dev/null; then
+    echo "❌ ERROR: No se pudo cambiar al directorio: $SCRIPT_DIR" >&2
+    exit 1
+fi
+
+# Verificar que estamos en el directorio correcto
+if [ ! -f "consumer_service.php" ] && [ ! -f "config/config.php" ]; then
+    echo "❌ ERROR: No se encontró consumer_service.php o config/config.php en: $(pwd)" >&2
+    echo "Directorio actual: $(pwd)" >&2
+    exit 1
+fi
 
 # Verificar extensiones PHP requeridas
 REQUIRED_EXTENSIONS=("mysqli" "pdo_mysql" "mbstring" "curl" "json")

@@ -1,5 +1,14 @@
 <?php
 
+// Obtener directorio base del proyecto de forma absoluta
+$BASE_DIR = dirname(__FILE__);
+if (!is_dir($BASE_DIR)) {
+    die("❌ ERROR: Directorio base no existe: $BASE_DIR\n");
+}
+
+// Cambiar al directorio base para asegurar rutas correctas
+chdir($BASE_DIR);
+
 require_once 'vendor/autoload.php';
 require_once 'config/config.php';
 
