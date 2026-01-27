@@ -15,14 +15,14 @@
 
 
       try{
-          if($redisAvailable && $cached = $redis->get($cached_key)){
+          if($redisAvailable && isset($redis) && $redis !== null && ($cached = $redis->get($cached_key))){
 
             //Carga la cache del tablero
               $data_board = json_decode($cached,true);
           }else{
 
             $data_board =(array) $Board->cargar_solo_tablero($_GET['id']);
-            if($redisAvailable) {
+            if($redisAvailable && isset($redis) && $redis !== null) {
                 $redis->setex($cached_key,300,json_encode($data_board));
             }
 
@@ -73,7 +73,7 @@
         //Edejesusa 16/09/2025
         try{
 
-          if($redisAvailable && $cached = $redis->get($cached_key)){
+          if($redisAvailable && isset($redis) && $redis !== null && ($cached = $redis->get($cached_key))){
 
             $smarty->assign('total_views',json_decode($cached));
 
@@ -81,7 +81,7 @@
 
               $smarty->assign('total_views',$View->contar_views());
 
-              if($redisAvailable) {
+              if($redisAvailable && isset($redis) && $redis !== null) {
                   $redis->setex($cached_key,300,json_encode($View->contar_views()));
               }
 

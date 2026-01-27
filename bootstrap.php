@@ -144,18 +144,10 @@
     $libs = include 'libs/connect_cdn.php';
     $id_user=0;
 
-     // Inicializar Redis
-    try {
-        $redis = new Predis\Client([
-            "scheme" => scheme_redis_cache,
-            "host"   => host_redis_cache,
-            "port"   => port_redis_cache,
-        ]);
-        $redisAvailable = true;
-        
-    } catch (Exception $e) {
-        $redisAvailable = false; // Redis no disponible, seguimos con BD
-    }
+    // Inicializar Redis como no disponible por defecto
+    // Se activará solo si está habilitado en la configuración
+    $redis = null;
+    $redisAvailable = false;
    
     /*
         load cdns
@@ -239,6 +231,45 @@
         }
         
         $smarty->assign('estilos', $estilos);
+        
+        // ============================================
+        // Inicializar Redis solo si está activo en la configuración
+        // ============================================
+        $redis_cache_enabled = false;
+        
+        // Verificar si redis_cache está activo (puede ser 1, '1', 'SI', true)
+        if (isset($config_data->redis_cache)) {
+            $redis_cache_value = $config_data->redis_cache;
+            if ($redis_cache_value === 1 || $redis_cache_value === '1' || 
+                strtolower($redis_cache_value) === 'si' || 
+                $redis_cache_value === true) {
+                $redis_cache_enabled = true;
+            }
+        }
+        
+        // Solo intentar conectar a Redis si está habilitado
+        if ($redis_cache_enabled) {
+            try {
+                $redis = new Predis\Client([
+                    "scheme" => scheme_redis_cache,
+                    "host"   => host_redis_cache,
+                    "port"   => port_redis_cache,
+                    "timeout" => 2, // Timeout corto para no bloquear
+                ]);
+                // Probar la conexión
+                $redis->ping();
+                $redisAvailable = true;
+            } catch (Exception $e) {
+                // Redis configurado pero no disponible, continuar sin cache
+                $redis = null;
+                $redisAvailable = false;
+                error_log("Redis configurado pero no disponible: " . $e->getMessage());
+            }
+        } else {
+            // Redis no está habilitado en la configuración
+            $redis = null;
+            $redisAvailable = false;
+        }
 
     }else{ 
 
@@ -268,6 +299,9 @@
             'color_header' => '#1a1a1a'
         ];
         $smarty->assign('estilos', $estilos);
+        
+        // Si no hay configuración en BD, Redis no está disponible
+        $redisAvailable = false;
 
     }
 

@@ -13,7 +13,7 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
     $cache_key .= "general";
 
     try {
-        if ($redisAvailable && $cached = $redis->get($cache_key)) {
+        if ($redisAvailable && isset($redis) && $redis !== null && ($cached = $redis->get($cache_key))) {
             $tableros = json_decode($cached, true);
         } else {
             $tableros = $Board->cargar_tablerosx('general', 'asoc');
@@ -25,7 +25,7 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
                 error_log("Tableros por estado: " . print_r($estados, true));
             }
             
-            if ($redisAvailable) {
+            if ($redisAvailable && isset($redis) && $redis !== null) {
                 $redis->setex($cache_key, 300, json_encode($tableros)); // 5 minutos
             }
         }
@@ -39,11 +39,11 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
     $cache_key .= "search:" . md5($searchTerm); // clave única para la búsqueda
 
     try {
-        if ($redisAvailable && $cached = $redis->get($cache_key)) {
+        if ($redisAvailable && isset($redis) && $redis !== null && ($cached = $redis->get($cache_key))) {
             $tableros = json_decode($cached, true);
         } else {
             $tableros = $Board->search_tablero($searchTerm, 'asoc');
-            if ($redisAvailable) {
+            if ($redisAvailable && isset($redis) && $redis !== null) {
                 $redis->setex($cache_key, 300, json_encode($tableros)); // 5 minutos
             }
         }
@@ -56,11 +56,11 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
     $cache_key .= "leaf:" . $leafPage;
 
     try {
-        if ($redisAvailable && $cached = $redis->get($cache_key)) {
+        if ($redisAvailable && isset($redis) && $redis !== null && ($cached = $redis->get($cache_key))) {
             $tableros = json_decode($cached, true);
         } else {
             $tableros = $Board->paginar_tableros($leafPage);
-            if ($redisAvailable) {
+            if ($redisAvailable && isset($redis) && $redis !== null) {
                 $redis->setex($cache_key, 300, json_encode($tableros)); // 5 minutos
             }
         }
