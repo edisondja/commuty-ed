@@ -407,3 +407,61 @@ Enviando multimedia a procesar para Board: 27
 📊 Info cURL: {"http_code":200,"total_time":0.03023599999999999898836477996155736036598682403564453125,"size_upload":3051509,"size_download":59}
 📦 Respuesta JSON: {"ok":true,"mensaje":"Archivo encolado para procesamiento"}
 2026-01-27 00:53:59 - Notificación guardada correctamente
+2602150658Portada asignada: imagenes_tablero/1771186018abram_y_lot.jpg
+2602150658Imagen guardada en multimedia: imagenes_tablero/1771186018abram_y_lot.jpg
+🚀 Iniciando procesamiento multimedia - Board: 70, Tipo: transfer_video, Token: req_699227a2a7dd33.89469889
+📋 Datos: {"board_id":70,"tipo_archivo":"transfer_video","token_unico":"req_699227a2a7dd33.89469889","timestamp":"2026-02-15 21:08:02"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 122.2ms
+📊 Info cURL: {"http_code":200,"total_time":0.12199100000000000221245244347301195375621318817138671875,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 71, Tipo: transfer_video, Token: req_699227fa113391.94910925
+📋 Datos: {"board_id":71,"tipo_archivo":"transfer_video","token_unico":"req_699227fa113391.94910925","timestamp":"2026-02-15 21:09:30"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 25.41ms
+📊 Info cURL: {"http_code":200,"total_time":0.02529599999999999904165548514356487430632114410400390625,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+2602151120Portada asignada: imagenes_tablero/1771186280Feliz_dia_de_sa.jpg
+2602151120Imagen guardada en multimedia: imagenes_tablero/1771186280Feliz_dia_de_sa.jpg
+2602151457Portada asignada: imagenes_tablero/1771186497el_mejor_dia_de.jpg
+2602151457Imagen guardada en multimedia: imagenes_tablero/1771186497el_mejor_dia_de.jpg
+2602151746Portada asignada: imagenes_tablero/1771186666el_mejor_padre_.jpg
+2602151746Imagen guardada en multimedia: imagenes_tablero/1771186666el_mejor_padre_.jpg
+🚀 Iniciando procesamiento multimedia - Board: 75, Tipo: transfer_video, Token: req_69922a6762cc68.69462878
+📋 Datos: {"board_id":75,"tipo_archivo":"transfer_video","token_unico":"req_69922a6762cc68.69462878","timestamp":"2026-02-15 21:19:51"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 37.18ms
+📊 Info cURL: {"http_code":200,"total_time":0.03701000000000000123012711128467344678938388824462890625,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 76, Tipo: transfer_video, Token: req_69922d4b4bba02.04368643
+📋 Datos: {"board_id":76,"tipo_archivo":"transfer_video","token_unico":"req_69922d4b4bba02.04368643","timestamp":"2026-02-15 21:32:11"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1756405051Mujeres_en_Patrulla..mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 93.21ms
+📊 Info cURL: {"http_code":200,"total_time":0.09301199999999999745714518439854145981371402740478515625,"size_upload":550,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 77, Tipo: transfer_video, Token: req_69922da07902a3.98975643
+📋 Datos: {"board_id":77,"tipo_archivo":"transfer_video","token_unico":"req_69922da07902a3.98975643","timestamp":"2026-02-15 21:33:36"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1756405051Mujeres_en_Patrulla..mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 22.45ms
+📊 Info cURL: {"http_code":200,"total_time":0.022415999999999998426591929501228150911629199981689453125,"size_upload":550,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para

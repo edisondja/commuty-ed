@@ -56,7 +56,7 @@ $channel->basic_qos(null, 1, null);
 
 echo " [*] Worker FFmpeg con lógica de cortes activo...\n";
 
-$callback = function ($msg) use ($channel) {
+$callback = function ($msg) use ($channel, $BASE_DIR) {
     $data = json_decode($msg->body, true);
     
     try {
@@ -332,12 +332,17 @@ $callback = function ($msg) use ($channel) {
             @unlink($rutaOriginal);
         }
 
+        // Guardar en BD solo rutas relativas (desde la raíz del proyecto), no absolutas
+        $preview_relativo       = "previa/{$fecha}_{$board_id}.mp4";
+        $video_completo_relativo = "videos/{$fecha}_{$board_id}.mp4";
+        $thumbnail_relativo     = "imagenes_tablero/{$fecha}_{$board_id}.jpg";
+
         $channel->basic_publish(
             new AMQPMessage(json_encode([
                 'board_id' => $board_id,
-                'preview' => $reciduo_video,
-                'video_completo' => $video_completo,
-                'thumbnail' => $rutaImagen,
+                'preview' => $preview_relativo,
+                'video_completo' => $video_completo_relativo,
+                'thumbnail' => $thumbnail_relativo,
                 'status' => 'ok'
             ])), '', 'multimedia_resultado'
         );
