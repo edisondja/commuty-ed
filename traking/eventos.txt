@@ -465,3 +465,24 @@ Enviando multimedia a procesar para Board: 27
 ⚠️ Respuesta no es JSON válido: <br />
 <b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
 {"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 78, Tipo: transfer_video, Token: req_699250bf14b105.14302100
+📋 Datos: {"board_id":78,"tipo_archivo":"transfer_video","token_unico":"req_699250bf14b105.14302100","timestamp":"2026-02-16 00:03:27"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1765462282Onlyfans_Michelle_Rabbit..mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 159.18ms
+📊 Info cURL: {"http_code":200,"total_time":0.15897600000000000619593265582807362079620361328125,"size_upload":555,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+🚀 Iniciando procesamiento multimedia - Board: 79, Tipo: transfer_video, Token: req_6992511e2ef9c7.63468751
+📋 Datos: {"board_id":79,"tipo_archivo":"transfer_video","token_unico":"req_6992511e2ef9c7.63468751","timestamp":"2026-02-16 00:05:02"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1770312817Andreina_Salazar_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 25.37ms
+📊 Info cURL: {"http_code":200,"total_time":0.025222000000000001362909785029842169024050235748291015625,"size_upload":547,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
+2026-02-16 00:06:04 - Notificación guardada correctamente
