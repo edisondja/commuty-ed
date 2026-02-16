@@ -967,35 +967,41 @@ window.onload=function(){
                     return;
                 }
 
-                let api_transfer_video = document.querySelector('#api_transfer_video').value;
+                // Usar proxy en nuestro backend para evitar CORS en producción (la API externa no permite origen cruzado)
+                var formProxy = new FormData();
+                formProxy.append('action', 'get_transfer_video_url');
+                formProxy.append('ruta', url_video);
 
-
-                axios.get(`${api_transfer_video}`,{
-                    params: {
-                        ruta: url_video
+                axios.post(baseUrl + '/controllers/actions_board.php', formProxy, {
+                    headers: { 'Authorization': 'Bearer ' + token_get }
+                }).then(function(info) {
+                    if (info.data.status === 'error') {
+                        alertify.error(info.data.message || 'Error al obtener la URL del video');
+                        return;
                     }
-                }).then(info=>{
-
                     let ruta_limpia = info.data.url_video;
+                    if (!ruta_limpia) {
+                        alertify.error('La API no devolvió una URL de video válida');
+                        return;
+                    }
                     const form = new FormData();
                     form.append('action', 'save_transferred_video');
                     form.append('id_user', document.querySelector('#id_usuario').value);
                     form.append('media', ruta_limpia);
                     form.append('video_txt', video_txt);
 
-                    axios.post(baseUrl + '/controllers/actions_board.php', form, {
-                        headers:{
-                            'Authorization': `Bearer ${token_get}`
-                        }
-                    }).then(response => {
-                        console.log(response);
-                        alertify.message('Video transferido y guardado correctamente');
-                    }).catch(error => {
-                        console.error('Error al guardar el video transferido:', error);
-                        alertify.error('Error al guardar el video transferido');
+                    return axios.post(baseUrl + '/controllers/actions_board.php', form, {
+                        headers: { 'Authorization': 'Bearer ' + token_get }
                     });
-
-             });
+                }).then(function(response) {
+                    if (response && response.data) {
+                        alertify.message('Video transferido y guardado correctamente');
+                    }
+                }).catch(function(error) {
+                    console.error('Error en transferencia de video:', error);
+                    var msg = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : 'Error al transferir el video';
+                    alertify.error(msg);
+                });
           });    
     }
 }

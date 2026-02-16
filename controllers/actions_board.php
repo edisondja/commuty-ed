@@ -50,6 +50,52 @@ if (isset($_POST['action'])) {
         break;
 
 
+        case 'get_transfer_video_url':
+            // Proxy para evitar CORS: el servidor llama a la API de transferencia y devuelve url_video
+            header('Content-Type: application/json');
+            $ruta = isset($_REQUEST['ruta']) ? trim($_REQUEST['ruta']) : '';
+            if (empty($ruta)) {
+                echo json_encode(['status' => 'error', 'message' => 'Falta el parámetro ruta (URL del video)']);
+                exit;
+            }
+            if (!defined('API_TRANSFER_VIDEO') || API_TRANSFER_VIDEO === '') {
+                echo json_encode(['status' => 'error', 'message' => 'API de transferencia no configurada (API_TRANSFER_VIDEO)']);
+                exit;
+            }
+            $api_url = (strpos(API_TRANSFER_VIDEO, '?') !== false)
+                ? API_TRANSFER_VIDEO . '&ruta=' . rawurlencode($ruta)
+                : API_TRANSFER_VIDEO . '?ruta=' . rawurlencode($ruta);
+            $ch = curl_init($api_url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_USERAGENT => 'Commuty-ED/1.0 (Server)',
+            ]);
+            $response = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curl_err = curl_error($ch);
+            curl_close($ch);
+            if ($response === false || $http_code !== 200) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => $curl_err ?: "API devolvió HTTP $http_code"
+                ]);
+                exit;
+            }
+            $data = json_decode($response, true);
+            if (!is_array($data) || empty($data['url_video'])) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'La API no devolvió url_video válido',
+                    'raw' => $response
+                ]);
+                exit;
+            }
+            echo json_encode($data);
+            exit;
+
         case 'save_transferred_video':
 
                 $board = new Board();

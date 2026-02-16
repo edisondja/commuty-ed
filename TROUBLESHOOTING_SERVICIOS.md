@@ -164,3 +164,19 @@ Debe existir **config/config.php** en el servidor (no solo `config.production.ex
 6. Revisar `journalctl` y `consumer-error.log` para el mensaje concreto del fallo.
 
 Si después de esto el servicio sigue sin funcionar, el mensaje exacto que salga en **journalctl** o en **consumer-error.log** indica el siguiente paso (BD, RabbitMQ, PHP, permisos, etc.).
+
+---
+
+## 4. Transferencia de video por enlace (no funciona en producción)
+
+### Qué se hizo para evitarlo
+
+- **CORS:** En producción el navegador no puede llamar directamente a la API externa (ej. videosegg.com) porque esa API no envía cabeceras CORS para tu dominio. Por eso se añadió un **proxy** en tu servidor:
+  - El frontend llama a `actions_board.php?action=get_transfer_video_url` (POST con `ruta` = URL del video).
+  - El backend llama a **API_TRANSFER_VIDEO** con esa `ruta` y devuelve la respuesta (incluido `url_video`) al navegador. Así no hay petición cross-origin desde el navegador a la API externa.
+
+### Qué debes tener en producción
+
+1. **API_TRANSFER_VIDEO** en `config/config.php` debe estar definida y ser la URL correcta de tu API de descarga (ej. `https://videosegg.com/download_video.php`). Si está vacía, el proxy responderá "API de transferencia no configurada".
+2. Desde el **servidor** (PHP/cURL) debe poder alcanzar esa URL: firewall, DNS y que la API acepte peticiones desde tu IP/servidor.
+3. El **consumer** (al procesar el mensaje de la cola) descarga el video desde la URL que devolvió la API. Esa URL debe ser accesible desde el servidor donde corre el consumer (misma red/firewall). Si la URL es temporal o con cookies de sesión, puede fallar; en ese caso la API debe devolver un enlace directo y durable al archivo.
