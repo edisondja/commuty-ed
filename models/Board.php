@@ -605,7 +605,7 @@
                     throw new Exception($error_msg);
                 }
                 $estatus_inactivo = $this->disable();
-                $cargado->bind_param('sss', $estatus, $estatus_inactivo, $estatus_baneado);
+                $cargado->bind_param('sss', $estatus, $estatus_baneado, $estatus_inactivo);
             } else {
                 $sql = 'SELECT * FROM tableros INNER JOIN users ON tableros.id_usuario=users.id_user WHERE id_usuario=? AND tableros.estado=? ORDER BY id_tablero DESC LIMIT 8';
                 $cargado = $this->conection->prepare($sql);
