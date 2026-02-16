@@ -57,7 +57,10 @@ try {
     
     // También guardar en base de datos si está disponible
     try {
-        $conn = new mysqli(HOST, USER, PASS, DB);
+        if (!defined('HOST_BD') || !defined('USER_BD') || !defined('NAME_DB')) {
+            throw new Exception('Config BD no cargada');
+        }
+        $conn = new mysqli(HOST_BD, USER_BD, defined('PASSWORD_BD') ? PASSWORD_BD : '', NAME_DB);
         if (!$conn->connect_error) {
             // Verificar si existe la tabla
             $table_check = $conn->query("SHOW TABLES LIKE 'service_failures'");
