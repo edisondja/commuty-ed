@@ -167,7 +167,56 @@ Si después de esto el servicio sigue sin funcionar, el mensaje exacto que salga
 
 ---
 
-## 4. Transferencia de video por enlace (no funciona en producción)
+## 4. Exit code 137 al transferir / procesar video (OOM Killer)
+
+### Qué significa
+
+Si en los logs aparece:
+
+```text
+Consumer resultado terminó con código de error: 137
+Consumer resultado detenido inesperadamente
+```
+
+(o lo mismo para el consumer FFmpeg), **137 = 128 + 9**: el proceso fue terminado con **SIGKILL (9)**. En servidores con poca RAM suele ser el **OOM Killer** del kernel: al quedarse sin memoria, Linux mata uno o más procesos (a veces el de FFmpeg, a veces el consumer resultado como efecto colateral).
+
+### Qué hacer
+
+1. **Comprobar que fue OOM** (en el servidor):
+   ```bash
+   sudo dmesg -T | grep -i "out of memory"
+   sudo dmesg -T | grep -i "killed process"
+   ```
+   Ahí verás si el kernel mató algún proceso por memoria.
+
+2. **Aumentar memoria disponible**
+   - **Añadir swap** (si no hay o es poca):
+     ```bash
+     sudo fallocate -l 2G /swapfile
+     sudo chmod 600 /swapfile
+     sudo mkswap /swapfile
+     sudo swapon /swapfile
+     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+     ```
+   - Subir la RAM del VPS/servidor si es posible.
+
+3. **Límite de memoria para PHP**  
+   Los wrappers ya usan `-d memory_limit=...` (256M para resultado, 512M para consumer). Puedes subirlo por entorno antes de arrancar el servicio:
+   ```bash
+   # En el .service o en el entorno del usuario que ejecuta
+   export PHP_MEMORY_LIMIT=512M
+   ```
+   (No evita que FFmpeg use mucha RAM; solo limita el proceso PHP.)
+
+4. **Procesar un video a la vez**  
+   Si tienes varios workers del consumer FFmpeg, en servidores justos de RAM deja solo **1** consumiendo la cola `procesar_multimedia`, para no tener dos videos pesados en memoria a la vez.
+
+5. **Videos más pequeños**  
+   Si los vídeos son muy grandes, el servidor puede no tener RAM suficiente para descargarlos + FFmpeg. Limitar tamaño en el front o en la API de transferencia reduce el riesgo de 137.
+
+---
+
+## 5. Transferencia de video por enlace (no funciona en producción)
 
 ### Qué se hizo para evitarlo
 

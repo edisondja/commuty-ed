@@ -91,8 +91,11 @@ mkdir -p "${SCRIPT_DIR}/logs/services"
 trap 'log_error "Consumer resultado detenido inesperadamente" "unexpected_exit"' EXIT
 trap 'log_error "Error fatal en consumer_resultado.php" "fatal_error"' ERR
 
+# Límite de memoria para PHP (evita que un pico de uso dispare OOM en servidores justos de RAM)
+export PHP_MEMORY_LIMIT="${PHP_MEMORY_LIMIT:-256M}"
+
 # Ejecutar el consumer y capturar salida de errores
-/usr/bin/php consumer_resultado.php "$@" 2>&1 | while IFS= read -r line; do
+/usr/bin/php -d memory_limit="${PHP_MEMORY_LIMIT}" consumer_resultado.php "$@" 2>&1 | while IFS= read -r line; do
     # Detectar errores en la salida
     if echo "$line" | grep -qiE "(error|fatal|exception|failed|❌)"; then
         log_error "$line" "output_error"
@@ -105,6 +108,10 @@ exit_code=${PIPESTATUS[0]}
 # Si el consumer salió con error, registrarlo
 if [ $exit_code -ne 0 ]; then
     log_error "Consumer resultado terminó con código de error: $exit_code" "exit_error"
+    # Código 137 = proceso matado por el kernel (SIGKILL), casi siempre por falta de memoria (OOM Killer)
+    if [ "$exit_code" = "137" ]; then
+        log_error "Exit 137 = proceso terminado por el sistema (falta de memoria / OOM Killer). Revisar: dmesg | grep -i 'out of memory'; añadir swap o más RAM." "oom_kill"
+    fi
 fi
 
 exit $exit_code
