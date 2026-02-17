@@ -486,3 +486,13 @@ Enviando multimedia a procesar para Board: 27
 <b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
 {"ok":true,"mensaje":"Archivo encolado para
 2026-02-16 00:06:04 - Notificación guardada correctamente
+🚀 Iniciando procesamiento multimedia - Board: 81, Tipo: transfer_video, Token: req_6994ed3aec8463.88704471
+📋 Datos: {"board_id":81,"tipo_archivo":"transfer_video","token_unico":"req_6994ed3aec8463.88704471","timestamp":"2026-02-17 23:35:38"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://videosegg.com/videos/1764875993Rica_gordita_arrecha_.mp4
+✅ Respuesta recibida - HTTP Code: 200, Duración: 154.05ms
+📊 Info cURL: {"http_code":200,"total_time":0.15398699999999998500044284810428507626056671142578125,"size_upload":551,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para
