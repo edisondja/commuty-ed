@@ -16,30 +16,28 @@ StandardOutput=append:/var/log/commuty/consumer.log
 StandardError=append:/var/log/commuty/consumer-error.log
 
 # ============================================
-# RECURSOS - Optimizado para servidor 8GB RAM
+# RECURSOS - Optimizado para VPS 8GB RAM
+# FFmpeg (libx264) puede usar ~1.5-2.5GB por video; 1 worker = 1 video a la vez
 # ============================================
 
-# Memoria: hasta 1GB para procesamiento de videos
-MemoryMax=1G
-MemoryHigh=768M
+# Memoria: hasta 2.5GB para un solo job de video (comprimir + cortes + thumbnail)
+MemoryMax=2560M
+MemoryHigh=2G
 
-# CPU: hasta 80% de la CPU disponible
-CPUQuota=80%
+# CPU: hasta 85% (FFmpeg es intensivo; el resto para MySQL, RabbitMQ, web)
+CPUQuota=85%
 
-# Prioridad de I/O (mejor rendimiento)
+# Prioridad de I/O
 IOSchedulingClass=best-effort
 IOSchedulingPriority=4
 
-# Límite de archivos abiertos (para manejar múltiples videos)
 LimitNOFILE=65535
-
-# Límite de procesos
 LimitNPROC=4096
 
-# Timeout más largo para procesamiento de videos grandes
-TimeoutStopSec=120
+# Videos grandes pueden tardar varios minutos
+TimeoutStopSec=300
 
-# Variables de entorno para PHP
+# PHP: 512M; FFmpeg se controla con FFMPEG_THREADS en config.php (default 2)
 Environment=PHP_ENV=production
 Environment=PHP_MEMORY_LIMIT=512M
 

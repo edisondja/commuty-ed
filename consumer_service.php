@@ -39,6 +39,11 @@ require_once 'vendor/autoload.php';
 require_once 'config/config.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+
+// Límites para VPS 8GB: menos hilos = menos RAM; nice evita acaparar CPU
+$FFMPEG_THREADS = defined('FFMPEG_THREADS') ? (int) FFMPEG_THREADS : 2;
+$FFMPEG_NICE    = defined('FFMPEG_NICE')    ? (int) FFMPEG_NICE    : 5;
+$NICE_CMD       = ($FFMPEG_NICE >= 0 && $FFMPEG_NICE <= 19) ? "nice -n {$FFMPEG_NICE} " : '';
 use PhpAmqpLib\Message\AMQPMessage;
 
 
@@ -201,35 +206,30 @@ $callback = function ($msg) use ($channel, $BASE_DIR) {
             throw new Exception("Directorio de salida no es escribible: $video_dir");
         }
         
-        // Comando FFmpeg para comprimir: 
-        // -c:v libx264 = codec de video H.264
-        // -preset fast = balance entre velocidad y compresión
-        // -crf 23 = calidad (menor = mejor, 18-28 es rango típico)
-        // -c:a aac = codec de audio AAC
-        // -b:a 128k = bitrate de audio
-        // -movflags +faststart = optimiza para streaming web
-        $cmd_compress = "ffmpeg -y -i " . escapeshellarg($archivo_local) . " -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k -movflags +faststart " . escapeshellarg($video_completo) . " 2>&1";
-        echo "Ejecutando: $cmd_compress\n";
+        // FFmpeg comprimir: -threads limita RAM en VPS; nice evita OOM por competir con otros procesos
+        // -preset fast = balance velocidad/compresión; -crf 23 = calidad estándar
+        $cmd_compress = $NICE_CMD . "ffmpeg -y -threads {$FFMPEG_THREADS} -i " . escapeshellarg($archivo_local)
+            . " -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k -movflags +faststart "
+            . escapeshellarg($video_completo) . " 2>&1";
+        echo "Ejecutando compresión (threads={$FFMPEG_THREADS}, nice={$FFMPEG_NICE})...\n";
         $output_compress = [];
         exec($cmd_compress, $output_compress, $return_code);
         
-        // Mostrar salida de FFmpeg si hay errores
         if ($return_code !== 0) {
             echo "⚠ FFmpeg retornó código de error: $return_code\n";
-            echo "Salida de FFmpeg:\n" . implode("\n", $output_compress) . "\n";
+            echo "Salida de FFmpeg:\n" . implode("\n", array_slice($output_compress, -30)) . "\n";
         }
         
         if ($return_code !== 0 || !file_exists($video_completo)) {
-            // Si falla la compresión, intentar copia directa
-            echo "⚠ Compresión falló, intentando copia directa...\n";
-            $cmd_copy = "ffmpeg -y -i " . escapeshellarg($archivo_local) . " -c copy " . escapeshellarg($video_completo) . " 2>&1";
-            echo "Ejecutando: $cmd_copy\n";
+            echo "⚠ Compresión falló, intentando copia directa (sin re-encode, menos RAM)...\n";
+            $cmd_copy = $NICE_CMD . "ffmpeg -y -threads {$FFMPEG_THREADS} -i " . escapeshellarg($archivo_local)
+                . " -c copy " . escapeshellarg($video_completo) . " 2>&1";
             $output_copy = [];
             exec($cmd_copy, $output_copy, $return_code_copy);
             
             if ($return_code_copy !== 0) {
                 echo "❌ Copia directa también falló (código: $return_code_copy)\n";
-                echo "Salida de FFmpeg:\n" . implode("\n", $output_copy) . "\n";
+                echo "Salida de FFmpeg:\n" . implode("\n", array_slice($output_copy, -30)) . "\n";
             }
         }
         
@@ -250,6 +250,12 @@ $callback = function ($msg) use ($channel, $BASE_DIR) {
         $filesize_compressed = filesize($video_completo);
         $ratio = round(($filesize_compressed / $filesize_original) * 100, 1);
         echo "✅ Video comprimido: " . round($filesize_original/1024/1024, 2) . "MB → " . round($filesize_compressed/1024/1024, 2) . "MB ({$ratio}%)\n";
+        
+        // Liberar espacio y presión en disco/RAM: borrar original ya no necesario (trabajamos con video_completo)
+        if (file_exists($archivo_local)) {
+            @unlink($archivo_local);
+            echo "🗑️ Archivo original eliminado para liberar recursos.\n";
+        }
         
         // Obtener duración del video comprimido
         $duracionRaw = shell_exec("ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 -sexagesimal " . escapeshellarg($video_completo));
@@ -304,31 +310,25 @@ $callback = function ($msg) use ($channel, $BASE_DIR) {
             $ss_imagen = "00:03:30";
         }
 
-        // 4. Ejecución de Procesamiento FFmpeg
+        // 4. Cortes para preview: -c copy = bajo uso de RAM; 1 thread por proceso
         $ts_files = [];
         foreach ($cortes as $i => $corte) {
             $tmp_name = "{$prefix}{$i}.ts";
             $ts_files[] = $tmp_name;
-            exec("ffmpeg -y -ss {$corte[0]} -t {$corte[1]} -i {$rutaTemVideo} -c copy -bsf:v h264_mp4toannexb -f mpegts {$tmp_name} 2>&1");
+            exec($NICE_CMD . "ffmpeg -y -threads 1 -ss {$corte[0]} -t {$corte[1]} -i {$rutaTemVideo} -c copy -bsf:v h264_mp4toannexb -f mpegts " . escapeshellarg($tmp_name) . " 2>&1");
         }
 
         if (!empty($ts_files)) {
             $concat_string = implode('|', $ts_files);
-            exec("ffmpeg -y -i \"concat:{$concat_string}\" -c copy -bsf:a aac_adtstoasc " . escapeshellarg($reciduo_video) . " 2>&1");
-            
-            // Limpiar temporales .ts
+            exec($NICE_CMD . "ffmpeg -y -threads 1 -i \"concat:{$concat_string}\" -c copy -bsf:a aac_adtstoasc " . escapeshellarg($reciduo_video) . " 2>&1");
             foreach ($ts_files as $f) { @unlink($f); }
         }
 
-        // 5. Generar Miniatura
-        exec("ffmpeg -y -i {$rutaTemVideo} -ss {$ss_imagen} -vframes 1 " . escapeshellarg($rutaImagen));
+        // 5. Miniatura (1 frame, poco uso de RAM)
+        exec($NICE_CMD . "ffmpeg -y -threads 1 -i {$rutaTemVideo} -ss {$ss_imagen} -vframes 1 " . escapeshellarg($rutaImagen) . " 2>&1");
 
-        // 6. Respuesta y Limpieza Final
-        // Eliminar archivo original (local o descargado)
-        if ($es_url_externa && file_exists($archivo_local)) {
-            echo "🗑️ Eliminando archivo temporal descargado: $archivo_local\n";
-            @unlink($archivo_local);
-        } elseif (!$es_url_externa && file_exists($rutaOriginal)) {
+        // 6. Respuesta y limpieza (archivo original ya borrado tras compresión; solo borrar upload local si no era URL)
+        if (!$es_url_externa && file_exists($rutaOriginal) && $rutaOriginal !== $video_completo) {
             @unlink($rutaOriginal);
         }
 

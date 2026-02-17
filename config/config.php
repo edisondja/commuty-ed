@@ -37,6 +37,15 @@
     #Description for search using hastag
     define("SEARCH_HASTAG","Ventazs rd");
 
+    # Consumer FFmpeg: límite de hilos para reducir uso de RAM (2–4 recomendado para VPS 8GB)
+    if (!defined('FFMPEG_THREADS')) {
+        define('FFMPEG_THREADS', 2);
+    }
+    # Prioridad nice para FFmpeg (5–10 = no acaparar CPU; menor = más prioridad)
+    if (!defined('FFMPEG_NICE')) {
+        define('FFMPEG_NICE', 5);
+    }
+
     #api_tranfer_video 
     define("API_TRANSFER_VIDEO","https://videosegg.com/download_video.php");
     /*El retorno debe de ser asi 

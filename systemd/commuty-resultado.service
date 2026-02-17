@@ -16,14 +16,12 @@ StandardOutput=append:/var/log/commuty/resultado.log
 StandardError=append:/var/log/commuty/resultado-error.log
 
 # ============================================
-# RECURSOS - Optimizado para servidor 8GB RAM
+# RECURSOS - VPS 8GB: este servicio solo escribe en BD (muy ligero)
 # ============================================
 
-# Memoria: hasta 512MB (solo actualiza BD, no procesa videos)
 MemoryMax=512M
 MemoryHigh=384M
 
-# CPU: hasta 40% (operaciones ligeras)
 CPUQuota=40%
 
 # Prioridad de I/O
