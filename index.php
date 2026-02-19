@@ -69,16 +69,18 @@ if (!isset($_GET['leaf']) && !isset($_GET['search'])) {
     }
 }
 
-// Asignar variables a Smarty
+// Asignar variables a Smarty (URLs absolutas para vistas previas al compartir en redes)
+$base_url = rtrim($dominio, '/');
 $smarty->assign([
     'tableros' => $tableros,
     'pagina' => $pagina,
     'titulo' => "The best boards " . NAME_SITE,
     'descripcion' => NAME_SITE . " platform free for all to share your contents",
     'og_imagen' => LOGOSITE,
+    'og_image_url' => (strpos(LOGOSITE, 'http') === 0) ? LOGOSITE : $base_url . '/' . ltrim(LOGOSITE, '/'),
     'content_config' => 'boards',
     'paginador_scroll' => 'general',
-    'url_board' => "$dominio/"
+    'url_board' => $base_url . '/'
 ]);
 
 $smarty->display('template/header.tpl');

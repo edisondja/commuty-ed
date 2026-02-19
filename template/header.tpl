@@ -73,44 +73,45 @@
             {/if}
         {/if}
 
-        <!-- ETIQUETAS TWITTER -->
+        <!-- Vistas previas al compartir (WhatsApp, Facebook, Telegram, Twitter, etc.) - URLs absolutas -->
+        {if isset($url_board) && $url_board != ''}
+            {assign var="share_url" value=$url_board}
+        {else}
+            {assign var="share_url" value=($dominio|rtrim:'/')|cat:'/'}
+        {/if}
+        {if isset($og_image_url) && $og_image_url != ''}
+            {assign var="share_image" value=$og_image_url}
+        {elseif isset($og_imagen) && $og_imagen != ''}
+            {if strpos($og_imagen, 'http') === 0}
+                {assign var="share_image" value=$og_imagen}
+            {else}
+                {assign var="share_image" value=($dominio|rtrim:'/')|cat:'/'|cat:($og_imagen|ltrim:'/')}
+            {/if}
+        {else}
+            {assign var="share_image" value=($dominio|rtrim:'/')|cat:'/assets/default_share.png'}
+        {/if}
+        <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@{$name}">
         <meta name="twitter:title" content="{$titulo|escape:'html'}">
         <meta name="twitter:description" content="{$descripcion|escape:'html'|truncate:200}">
-        {if isset($og_imagen) && $og_imagen != ''}
-            {if strpos($og_imagen, 'http') === 0}
-                <meta name="twitter:image" content="{$og_imagen}">
-            {else}
-                <meta name="twitter:image" content="{$dominio}/{$og_imagen}">
-            {/if}
-        {else}
-            <meta name="twitter:image" content="{$dominio}/assets/default_share.png">
-        {/if}
-        <meta name="twitter:url" content="{$url_board}">
-
-        <!-- ETIQUETAS FACEBOOK / OPEN GRAPH --> 
+        <meta name="twitter:image" content="{$share_image}">
+        <meta name="twitter:url" content="{$share_url}">
+        <!-- Open Graph (Facebook, WhatsApp, Telegram, etc.) -->
         <meta property="og:type" content="article">
         <meta property="og:title" content="{$titulo|escape:'html'}">
         <meta property="og:description" content="{$descripcion|escape:'html'|truncate:300}">
-        <meta property="og:url" content="{$url_board}">
+        <meta property="og:url" content="{$share_url}">
+        <meta property="og:image" content="{$share_image}">
+        <meta property="og:image:secure_url" content="{$share_image}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:type" content="image/jpeg">
         <meta property="og:site_name" content="{$name}">
         <meta property="og:locale" content="es_ES">
-        {if isset($og_imagen) && $og_imagen != ''}
-            {if strpos($og_imagen, 'http') === 0}
-                <meta property="og:image" content="{$og_imagen}">
-            {else}
-                <meta property="og:image" content="{$dominio}/{$og_imagen}">
-            {/if}
-            <meta property="og:image:width" content="1200">
-            <meta property="og:image:height" content="630">
-            <meta property="og:image:type" content="image/jpeg">
-        {else}
-            <meta property="og:image" content="{$dominio}/assets/default_share.png">
-        {/if}
         {if isset($og_video) && $og_video != ''}
-            <meta property="og:video" content="{$dominio}/{$og_video}">
-            <meta property="og:video:type" content="video/mp4">
+        <meta property="og:video" content="{$dominio|rtrim:'/'}/{$og_video|ltrim:'/'}">
+        <meta property="og:video:type" content="video/mp4">
         {/if}
         <meta name="google" value="notranslate">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

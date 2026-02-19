@@ -57,7 +57,39 @@ public static function GetGrapth($url)
 
     }
 
-
+    /**
+     * Obtiene los meta OG de una URL y los devuelve como array (sin echo).
+     * Para usar al guardar comentarios con enlaces y mostrar vista previa.
+     * @param string $url URL a inspeccionar
+     * @return array|null Array con keys image, title, description, url, website o null si falla
+     */
+    public static function GetGrapthData($url)
+    {
+        try {
+            $client = new Psr18Client(new NativeHttpClient([ "headers" => [ "User-Agent" => "facebookexternalhit/1.1" ] ]));
+            $crawler = new Fusonic\OpenGraph\Consumer($client, $client);
+            $object = $crawler->loadUrl($url);
+            if (isset($object->images[0])) {
+                $image = $object->images[0];
+                return [
+                    'image' => $image->url,
+                    'title' => $object->title ?? '',
+                    'description' => $object->description ?? '',
+                    'url' => $object->url ?? $url,
+                    'website' => $object->siteName ?? ''
+                ];
+            }
+            return [
+                'image' => '',
+                'title' => $object->title ?? '',
+                'description' => $object->description ?? '',
+                'url' => $object->url ?? $url,
+                'website' => $object->siteName ?? ''
+            ];
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 
 }
 

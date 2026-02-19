@@ -44,7 +44,19 @@ if (isset($_POST['action'])) {
               $guardar->id_user = $_POST['id_user'];
               $guardar->comentario = $_POST['text'];
               $guardar->tipo_post = $_POST['type_post'];
-              $guardar->data_og = $_POST['data_og'];
+              $data_og = isset($_POST['data_og']) ? trim($_POST['data_og']) : '[]';
+              // Si el comentario contiene un enlace y no se envió data_og, obtener meta OG para la vista previa
+              if ($data_og === '' || $data_og === '[]') {
+                  $texto = isset($_POST['text']) ? $_POST['text'] : '';
+                  if (preg_match('#https?://[^\s<>"\']+#i', $texto, $m)) {
+                      $url_enlace = trim($m[0], '.,;:)!?');
+                      $og_data = Core::GetGrapthData($url_enlace);
+                      if ($og_data !== null) {
+                          $data_og = json_encode($og_data);
+                      }
+                  }
+              }
+              $guardar->data_og = $data_og;
               $guardar->guardar_comentario();
 
         break;

@@ -508,3 +508,5 @@ Enviando multimedia a procesar para Board: 27
 ⚠️ Respuesta no es JSON válido: <br />
 <b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
 {"ok":true,"mensaje":"Archivo encolado para
+2026-02-19 22:26:24 - Notificación guardada correctamente
+2026-02-19 22:26:46 - Notificación guardada correctamente

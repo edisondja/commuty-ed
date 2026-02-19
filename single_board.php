@@ -95,17 +95,20 @@
        }
 
         // Verificar que se cargaron los datos correctamente
+        $dominio_trim = rtrim($dominio, '/');
         if (!$data_board || empty($data_board)) {
             $smarty->assign('estado', 'error');
             $smarty->assign('titulo', 'Publicación no encontrada');
             $smarty->assign('descripcion', 'La publicación que buscas no existe o ha sido eliminada.');
             $smarty->assign('id_tablero', $_GET['id']);
             $smarty->assign('og_imagen', '');
+            $smarty->assign('og_image_url', $dominio_trim . '/assets/default_share.png');
             $smarty->assign('usuario', '');
             $smarty->assign('foto_usuario', $dominio."/assets/user_profile.png");
             $smarty->assign('multimedias_t', []);
             $smarty->assign('likes', (object)['likes' => 0]);
             $smarty->assign('board', []);
+            $smarty->assign('url_board', $dominio_trim . '/post/' . (isset($_GET['id']) ? $_GET['id'] : ''));
         } else {
             $smarty->assign('board', $data_board);
             $smarty->assign('estado', $data_board['estado'] ?? 'activo');
@@ -139,17 +142,18 @@
             if (empty($og_imagen)) {
                 $og_imagen = 'assets/default_share.png';
             }
-            
+            $og_image_url = (strpos($og_imagen, 'http') === 0) ? $og_imagen : $dominio_trim . '/' . ltrim($og_imagen, '/');
             $smarty->assign('og_imagen', $og_imagen);
+            $smarty->assign('og_image_url', $og_image_url);
             $smarty->assign('usuario', $data_board['usuario'] ?? '');
             $smarty->assign('foto_usuario', $dominio."/".($data_board['foto_url'] ?? 'assets/user_profile.png'));
             $smarty->assign('multimedias_t', $multimedias_tableros);
+            // URL canónica absoluta para compartir (WhatsApp, Facebook, Telegram, etc.)
+            $slug = preg_replace('/[^a-z0-9]+/i', '-', substr($data_board['descripcion'] ?? '', 0, 50));
+            $slug = strtolower(trim($slug, '-'));
+            $smarty->assign('url_board', $dominio_trim . '/post/' . $_GET['id'] . ($slug ? '/' . $slug : ''));
         }
         
-        // URL canónica para compartir
-        $slug = preg_replace('/[^a-z0-9]+/i', '-', substr($data_board['descripcion'] ?? '', 0, 50));
-        $slug = strtolower(trim($slug, '-'));
-        $smarty->assign('url_board', "$dominio/post/".$_GET['id'].($slug ? "/$slug" : ''));
         $smarty->display('../template/header.tpl');
 
     }
