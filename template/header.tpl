@@ -14,6 +14,19 @@
         <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+    <!-- Plyr: reproductor de video moderno (open source) - tema visible -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+    <style>
+    .plyr-wrap, .js-plyr-video { --plyr-color-main: #20c997; --plyr-video-background: #0f172a; }
+    .plyr-wrap .plyr--video, .multimedia-item .plyr--video {
+        border-radius: 12px; overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        border: 1px solid rgba(32, 201, 151, 0.4);
+    }
+    .plyr__control--overlaid { background: #20c997 !important; color: #0f172a !important; }
+    .plyr__control--overlaid:hover { background: #17a589 !important; }
+    </style>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
     <title>{$titulo}</title>
@@ -292,19 +305,18 @@
                       </ul>
                   </li>
                   {if $id_user!=''}
-                 
-                    
-                    <!-- Si existe sesion de un usuario entonces carga sus notifiaciones si tiene disponibles  -->
-                    <i class="fa-solid fa-envelope" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#notificacionModal" style="cursor:pointer; padding-top: 8%;font-size: 24px;color: #e9e7e7ff; display: inline-flex;">
-                            <p style="font-size: 10px;">
-                                {if $cantidad_notificacion!=''} 
-                                    &nbsp;+{$cantidad_notificacion}
-                                {/if}
-                            </p>
-                    </i>
+                    <li class="nav-item">
+                        <button type="button" class="nav-notif-btn" data-bs-toggle="modal" data-bs-target="#notificacionModal" aria-label="Notificaciones">
+                            <i class="fa-solid fa-bell"></i>
+                            {if $cantidad_notificacion && $cantidad_notificacion > 0}
+                                <span class="nav-notif-badge">{$cantidad_notificacion}</span>
+                            {/if}
+                        </button>
+                    </li>
                   {else}
-                    <i class="fa-solid fa-envelope" id="notify" style="cursor:pointer; padding-top: 8%;font-size: 24px;color: #ffffff; display: inline-flex;">
-                    </i>
+                    <li class="nav-item">
+                        <span class="nav-notif-btn nav-notif-btn-disabled" id="notify" aria-label="Inicia sesión para ver notificaciones"><i class="fa-solid fa-bell"></i></span>
+                    </li>
                   {/if}
               </ul>
           </div>
@@ -320,6 +332,45 @@
           </form>
           
           <style>
+              .nav-notif-btn {
+                  position: relative;
+                  width: 42px;
+                  height: 42px;
+                  border: none;
+                  background: rgba(255, 255, 255, 0.1);
+                  color: #fff;
+                  border-radius: 12px;
+                  cursor: pointer;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 1.125rem;
+                  transition: background 0.2s ease, color 0.2s ease;
+              }
+              .nav-notif-btn:hover {
+                  background: rgba(255, 255, 255, 0.2);
+                  color: #fff;
+              }
+              .nav-notif-btn-disabled {
+                  opacity: 0.6;
+                  cursor: default;
+              }
+              .nav-notif-badge {
+                  position: absolute;
+                  top: 4px;
+                  right: 4px;
+                  min-width: 18px;
+                  height: 18px;
+                  padding: 0 5px;
+                  background: #ef4444;
+                  color: #fff;
+                  font-size: 0.6875rem;
+                  font-weight: 700;
+                  border-radius: 9px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+              }
               .search-form-nav {
                   flex: 1;
                   max-width: 400px;
@@ -446,6 +497,7 @@
                       {assign var="counter" value=true}
 
                       {include file="single_board.tpl"}
+                      <script type="text/javascript" src="{$dominio}/js/board_interactions.js"></script>
             
 
                     {elseif $content_config=='profile'}

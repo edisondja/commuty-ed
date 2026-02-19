@@ -51,13 +51,65 @@ if (isset($_POST['action'])) {
 
 
         case 'get_transfer_video_url':
-            // Proxy para evitar CORS: el servidor llama a la API de transferencia y devuelve url_video
+            // Proxy: devuelve url_video. Soporta Reddit (API .json) o API externa (videosegg, etc.)
             header('Content-Type: application/json');
             $ruta = isset($_REQUEST['ruta']) ? trim($_REQUEST['ruta']) : '';
+            $plataforma = isset($_REQUEST['plataforma']) ? strtolower(trim($_REQUEST['plataforma'])) : '';
             if (empty($ruta)) {
-                echo json_encode(['status' => 'error', 'message' => 'Falta el parámetro ruta (URL del video)']);
+                echo json_encode(['status' => 'error', 'message' => 'Falta el parámetro ruta (URL del video o del post)']);
                 exit;
             }
+
+            $url_video = null;
+
+            // Reddit: la $ruta es la URL del post que pegó el usuario. Se pide el JSON añadiendo /.json al final.
+            $es_reddit = ($plataforma === 'reddit' || (strpos($ruta, 'reddit.com') !== false && strpos($ruta, '/comments/') !== false));
+            if ($es_reddit) {
+                $json_url = $ruta;
+                if (strpos($json_url, '.json') === false) {
+                    $json_url = rtrim($json_url, '/') . '/.json';
+                }
+                $ch = curl_init($json_url);
+                curl_setopt_array($ch, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_TIMEOUT => 15,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; rv:109.0) Gecko/20100101 Firefox/115.0',
+                    CURLOPT_HTTPHEADER => ['Accept: application/json'],
+                ]);
+                $response = curl_exec($ch);
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                if ($response !== false && $http_code === 200) {
+                    $json = json_decode($response, true);
+                    if (is_array($json) && isset($json[0]['data']['children'][0]['data'])) {
+                        $post = $json[0]['data']['children'][0]['data'];
+                        $is_video = !empty($post['is_video']);
+                        if ($is_video && !empty($post['secure_media']['reddit_video'])) {
+                            $reddit_video = $post['secure_media']['reddit_video'];
+                            $url_video = isset($reddit_video['fallback_url']) ? $reddit_video['fallback_url'] : null;
+                            if (empty($url_video) && !empty($reddit_video['hls_url'])) {
+                                $url_video = $reddit_video['hls_url'];
+                            }
+                            if ($url_video && strpos($url_video, '//') === 0) {
+                                $url_video = 'https:' . $url_video;
+                            }
+                        }
+                    }
+                }
+                if (empty($url_video)) {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'No se pudo obtener el video del post de Reddit. Comprueba que el enlace sea de un post con video.',
+                    ]);
+                    exit;
+                }
+                echo json_encode(['status' => 'ok', 'url_video' => $url_video]);
+                exit;
+            }
+
+            // API externa (videosegg, etc.)
             if (!defined('API_TRANSFER_VIDEO') || API_TRANSFER_VIDEO === '') {
                 echo json_encode(['status' => 'error', 'message' => 'API de transferencia no configurada (API_TRANSFER_VIDEO)']);
                 exit;

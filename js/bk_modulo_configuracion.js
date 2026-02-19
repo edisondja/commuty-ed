@@ -220,8 +220,34 @@
                         document.getElementById('titulo_descripcion').innerHTML= data.data.titulo_descripcion;
                         document.getElementById('busqueda_hastag').value = data.data.busqueda_hastag;
                         document.getElementById('google_analytics_id').value = data.data.google_analytics_id || '';
-                        document.getElementById('favicon_img').src =`/${data.data.favicon_url}`;
-                        document.getElementById('logo_img').src =`/${data.data.sitio_logo_url}`;
+                        // Mostrar logo y favicon actuales con URL completa para que se vean
+                        var base = (data.data.dominio && data.data.dominio.indexOf('http') === 0)
+                            ? data.data.dominio.replace(/\/$/, '')
+                            : (window.location.origin + (baseUrl || ''));
+                        var faviconUrl = (data.data.favicon_url || '').replace(/^\//, '');
+                        var logoUrl = (data.data.sitio_logo_url || '').replace(/^\//, '');
+                        var faviconEl = document.getElementById('favicon_img');
+                        var logoEl = document.getElementById('logo_img');
+                        var faviconPlace = document.getElementById('favicon_placeholder');
+                        var logoPlace = document.getElementById('logo_placeholder');
+                        if (faviconUrl) {
+                            faviconEl.src = base + '/' + faviconUrl;
+                            faviconEl.style.display = '';
+                            if (faviconPlace) faviconPlace.style.display = 'none';
+                        } else {
+                            faviconEl.src = '';
+                            faviconEl.style.display = 'none';
+                            if (faviconPlace) faviconPlace.style.display = 'flex';
+                        }
+                        if (logoUrl) {
+                            logoEl.src = base + '/' + logoUrl;
+                            logoEl.style.display = '';
+                            if (logoPlace) logoPlace.style.display = 'none';
+                        } else {
+                            logoEl.src = '';
+                            logoEl.style.display = 'none';
+                            if (logoPlace) logoPlace.style.display = 'flex';
+                        }
                         //datos de cofiguracion de correo
                         document.getElementById('email_remitente').value = data.data.email_remitente;
                         document.getElementById('nombre_remitente').value = data.data.nombre_remitente;

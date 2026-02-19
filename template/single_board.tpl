@@ -114,8 +114,9 @@
                                     <img src="{$dominio}/{$ruta_limpia}" 
                                         class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
                                 {else}
-                                    <video src="{$dominio}/{$ruta_limpia}" 
-                                        class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                                    <div class="plyr-wrap fixed-size-video-wrap">
+                                        <video class="js-plyr-video fixed-size-video" src="{$dominio}/{$ruta_limpia}" playsinline controls data-plyr-config='{"hideControls": false}'></video>
+                                    </div>
                                 {/if}
                             </div>
                         {/foreach}
@@ -140,8 +141,9 @@
                         <img src="{$dominio}/{$ruta_limpia}" 
                             class="d-block w-100 img-fluid card-img-top fixed-size-image" alt="...">
                     {else}
-                        <video src="{$dominio}/{$ruta_limpia}" 
-                            class="d-block w-100 img-fluid card-img-top fixed-size-video" controls></video>
+                        <div class="plyr-wrap fixed-size-video-wrap">
+                            <video class="js-plyr-video fixed-size-video" src="{$dominio}/{$ruta_limpia}" playsinline controls data-plyr-config='{"hideControls": false}'></video>
+                        </div>
                     {/if}
                 </div>
 
@@ -195,7 +197,7 @@
                         
                     {/if}
                 {if $like_login_user=='tiene_like'} 
-                    <i class="fa-solid fa-heart heart-liked" style="cursor:pointer" id="like"></i>
+                    <i class="fa-solid fa-heart heart-liked like-icon" style="cursor:pointer" id="like" data-tablero="{$id_tablero}" title="Me gusta"></i>
                     <span id="likes_c">
                         {if $likes->likes>1}
                             {$likes->likes} personas y tu le gusta esto
@@ -204,7 +206,7 @@
                         {/if}
                     </span>
                 {else}
-                    <i class="fa-regular fa-heart heart-default" style="cursor:pointer" id="like"></i>
+                    <i class="fa-regular fa-heart heart-default like-icon" style="cursor:pointer" id="like" data-tablero="{$id_tablero}" title="Me gusta"></i>
                     <span id="likes_c">{$likes->likes}</span>
                 {/if}
                 
@@ -295,11 +297,17 @@
 <script type="text/javascript" src='{$dominio}/js/rating_system.js'></script>
 <script type="text/javascript" src='{$dominio}/js/vast_player.js'></script>
 <script type="text/javascript">
-    // Inicializar reproductor VAST para videos del tablero
     document.addEventListener('DOMContentLoaded', function() {ldelim}
         const idTablero = '{$id_tablero}';
         const baseUrl = window.BASE_URL || '';
         const videos = document.querySelectorAll('.fixed-size-video');
+        
+        // Plyr: reproductor moderno open source
+        if (typeof Plyr !== 'undefined') {ldelim}
+            videos.forEach(function(video) {ldelim}
+                try {ldelim} new Plyr(video, {ldelim} hideControls: false, ratio: '16:9' {rdelim}); {rdelim} catch (e) {ldelim} console.warn('Plyr init:', e); {rdelim}
+            {rdelim});
+        {rdelim}
         
         videos.forEach(function(video, index) {ldelim}
             // Asignar ID único si no tiene
@@ -380,6 +388,44 @@
 .description-text {
     color: #cfd8dc;
 }
+
+/* Plyr: tema oscuro para que se note en la card */
+.plyr-wrap.fixed-size-video-wrap {
+    width: 100%;
+    min-height: 300px;
+    --plyr-color-main: #20c997;
+    --plyr-video-background: #0f172a;
+    --plyr-menu-background: rgba(30, 41, 59, 0.95);
+    --plyr-menu-color: #f1f5f9;
+    --plyr-control-icon-size: 18px;
+    --plyr-control-spacing: 12px;
+    --plyr-font-size-small: 13px;
+    --plyr-font-size-base: 14px;
+    --plyr-font-size-large: 16px;
+    --plyr-tooltip-background: rgba(30, 41, 59, 0.95);
+    --plyr-tooltip-color: #f1f5f9;
+}
+.plyr-wrap .fixed-size-video { width: 100%; height: 300px; }
+.plyr-wrap .plyr--video {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid rgba(32, 201, 151, 0.3);
+}
+.plyr-wrap .plyr__control--overlaid,
+.plyr-wrap .plyr__controls button.plyr__control:hover,
+.plyr-wrap .plyr__controls button.plyr__control[aria-expanded="true"] {
+    background: #20c997;
+    color: #0f172a;
+}
+.plyr-wrap .plyr__progress__buffer {
+    background: rgba(255,255,255,0.15);
+}
+.plyr-wrap .plyr__control.plyr__tab-focus,
+.plyr-wrap .plyr__control:hover {
+    background: rgba(32, 201, 151, 0.25);
+}
+.plyr__video-wrapper { height: 300px; }
 
 .card-comments {
     background-color: #243537;

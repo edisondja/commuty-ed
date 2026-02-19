@@ -236,8 +236,10 @@ function initLikeBoard() {
             e.stopPropagation();
             
             const likeIcon = e.target.closest('.like-icon');
-            const boardCard = likeIcon.closest('.card-board');
-            const idTablero = boardCard ? boardCard.id.replace('board', '') : null;
+            const idTablero = likeIcon.getAttribute('data-tablero') || (() => {
+                const boardCard = likeIcon.closest('.card-board');
+                return boardCard ? boardCard.id.replace('board', '') : null;
+            })();
             
             if (idTablero) {
                 toggleLike(idTablero, likeIcon);
@@ -270,40 +272,42 @@ function toggleLike(idTablero, likeIcon) {
     axios.post(baseUrl + '/controllers/actions_board.php', FormData)
         .then(response => {
             const data = response.data;
+            var delta = 0;
             
-            // Actualizar icono
             if (data && typeof data === 'string') {
                 const responseText = data.trim();
                 if (responseText === '_success' || responseText === 'activo_success') {
-                    // Like activado
+                    delta = 1;
                     likeIcon.classList.remove('fa-regular');
                     likeIcon.classList.add('fa-solid');
                     likeIcon.style.color = '#20c997';
-                    
-                    if (typeof alertify !== 'undefined') {
-                        alertify.success('Me gusta agregado');
-                    }
+                    if (typeof alertify !== 'undefined') alertify.success('Me gusta agregado');
                 } else if (responseText === 'inactivo_success') {
-                    // Like desactivado
+                    delta = -1;
                     likeIcon.classList.remove('fa-solid');
                     likeIcon.classList.add('fa-regular');
                     likeIcon.style.color = '#20c997';
-                    
-                    if (typeof alertify !== 'undefined') {
-                        alertify.message('Me gusta removido');
-                    }
+                    if (typeof alertify !== 'undefined') alertify.message('Me gusta removido');
                 }
             } else if (data && typeof data === 'object') {
-                // Si la respuesta es un objeto JSON
                 if (data.success || data.status === 'activo') {
+                    delta = 1;
                     likeIcon.classList.remove('fa-regular');
                     likeIcon.classList.add('fa-solid');
                     likeIcon.style.color = '#20c997';
                 } else {
+                    delta = -1;
                     likeIcon.classList.remove('fa-solid');
                     likeIcon.classList.add('fa-regular');
                     likeIcon.style.color = '#20c997';
                 }
+            }
+            var likesC = document.getElementById('likes_c');
+            if (likesC && delta !== 0) {
+                var txt = likesC.textContent || '';
+                var num = parseInt(txt.replace(/\D/g, ''), 10) || 0;
+                num = Math.max(0, num + delta);
+                likesC.textContent = num;
             }
         })
         .catch(error => {
@@ -435,84 +439,231 @@ function initShareBoard() {
 }
 
 /**
- * Muestra el modal de compartir
+ * Muestra el modal de compartir (diseño moderno)
  */
 function showShareModal(idTablero, boardCard) {
+    const baseUrl = window.BASE_URL || '';
     const dominio = document.getElementById('dominio')?.value || '';
-    const titulo = boardCard.querySelector('.description-text')?.textContent || 'Publicación';
-    const url = `${window.location.origin}/post/${idTablero}`;
-    const imagen = boardCard.querySelector('.board-image')?.src || '';
+    const origin = (dominio && dominio.indexOf('http') === 0) ? dominio.replace(/\/$/, '') : (window.location.origin + (baseUrl ? baseUrl : ''));
+    const titulo = (boardCard && boardCard.querySelector && boardCard.querySelector('.description-text')) ? (boardCard.querySelector('.description-text').textContent || '').trim() : 'Publicación';
+    const url = origin + '/post/' + idTablero;
     
-    // Crear modal de compartir si no existe
     let shareModal = document.getElementById('shareModal');
     if (!shareModal) {
         shareModal = document.createElement('div');
         shareModal.id = 'shareModal';
         shareModal.className = 'modal fade';
+        shareModal.setAttribute('tabindex', '-1');
         shareModal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background: linear-gradient(135deg, #20c997 0%, #17a085 100%); color: white;">
-                        <h5 class="modal-title"><i class="fas fa-share-alt me-2"></i>Compartir Publicación</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <div class="modal-dialog modal-dialog-centered share-modal-dialog">
+                <div class="modal-content share-modal-content">
+                    <div class="share-modal-header">
+                        <span class="share-modal-icon"><i class="fa-solid fa-share-nodes"></i></span>
+                        <h5 class="share-modal-title">Compartir publicación</h5>
+                        <p class="share-modal-subtitle">Elige cómo quieres compartir el enlace</p>
+                        <button type="button" class="btn-close btn-close-white share-modal-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">URL de la publicación</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="share_url" readonly>
-                                <button class="btn btn-outline-secondary" type="button" id="copy_url_btn">
-                                    <i class="fas fa-copy"></i> Copiar
-                                </button>
-                            </div>
+                    <div class="modal-body share-modal-body">
+                        <div class="share-link-wrap">
+                            <input type="text" class="share-link-input" id="share_url" readonly>
+                            <button type="button" class="share-copy-btn" id="copy_url_btn" title="Copiar enlace">
+                                <i class="fa-regular fa-copy share-copy-icon"></i>
+                                <i class="fa-solid fa-check share-copy-done" style="display:none;"></i>
+                                <span class="share-copy-text">Copiar</span>
+                            </button>
                         </div>
-                        <div class="share-buttons">
-                            <button class="btn btn-primary share-btn" data-platform="facebook" style="background: #1877f2; border: none; margin: 5px;">
-                                <i class="fab fa-facebook-f me-2"></i> Facebook
+                        <div class="share-native-wrap" id="share_native_wrap" style="display: none;">
+                            <button type="button" class="share-native-btn" id="share_native_btn">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                                <span>Compartir (app del dispositivo)</span>
                             </button>
-                            <button class="btn btn-info share-btn" data-platform="twitter" style="background: #1da1f2; border: none; margin: 5px; color: white;">
-                                <i class="fab fa-twitter me-2"></i> Twitter
+                        </div>
+                        <p class="share-divider"><span>O comparte en</span></p>
+                        <div class="share-grid">
+                            <button type="button" class="share-option share-btn" data-platform="facebook" title="Facebook">
+                                <span class="share-option-icon"><i class="fa-brands fa-facebook-f"></i></span>
+                                <span class="share-option-label">Facebook</span>
                             </button>
-                            <button class="btn btn-danger share-btn" data-platform="whatsapp" style="background: #25d366; border: none; margin: 5px;">
-                                <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                            <button type="button" class="share-option share-btn" data-platform="twitter" title="X / Twitter">
+                                <span class="share-option-icon"><i class="fa-brands fa-x-twitter"></i></span>
+                                <span class="share-option-label">X</span>
                             </button>
-                            <button class="btn btn-secondary share-btn" data-platform="telegram" style="background: #0088cc; border: none; margin: 5px; color: white;">
-                                <i class="fab fa-telegram me-2"></i> Telegram
+                            <button type="button" class="share-option share-btn" data-platform="whatsapp" title="WhatsApp">
+                                <span class="share-option-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                                <span class="share-option-label">WhatsApp</span>
+                            </button>
+                            <button type="button" class="share-option share-btn" data-platform="telegram" title="Telegram">
+                                <span class="share-option-icon"><i class="fa-brands fa-telegram"></i></span>
+                                <span class="share-option-label">Telegram</span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         `;
+        if (!document.getElementById('share-modal-styles')) {
+            var style = document.createElement('style');
+            style.id = 'share-modal-styles';
+            style.textContent = `
+                .share-modal-dialog { max-width: 420px; }
+                .share-modal-content { border: none; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+                .share-modal-header {
+                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                    color: #fff;
+                    padding: 1.5rem 1.25rem;
+                    position: relative;
+                    text-align: center;
+                }
+                .share-modal-icon {
+                    width: 48px; height: 48px;
+                    background: rgba(255,255,255,0.12);
+                    border-radius: 14px;
+                    display: inline-flex; align-items: center; justify-content: center;
+                    font-size: 1.25rem;
+                    margin-bottom: 0.75rem;
+                }
+                .share-modal-title { font-size: 1.125rem; font-weight: 700; margin: 0; }
+                .share-modal-subtitle { font-size: 0.8125rem; opacity: 0.85; margin: 0.25rem 0 0; }
+                .share-modal-close { position: absolute; top: 1rem; right: 1rem; opacity: 0.8; filter: brightness(0) invert(1); }
+                .share-modal-body { padding: 1.25rem 1.25rem 1.5rem; }
+                .share-link-wrap {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                }
+                .share-link-input {
+                    flex: 1;
+                    padding: 0.625rem 0.875rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 12px;
+                    font-size: 0.875rem;
+                    background: #f8fafc;
+                }
+                .share-copy-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.35rem;
+                    padding: 0.625rem 0.875rem;
+                    background: #0f172a;
+                    color: #fff;
+                    border: none;
+                    border-radius: 12px;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: background 0.2s, transform 0.15s;
+                }
+                .share-copy-btn:hover { background: #1e293b; }
+                .share-copy-btn:active { transform: scale(0.98); }
+                .share-native-wrap { margin-bottom: 1rem; }
+                .share-native-btn {
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    background: #f1f5f9;
+                    border: 1px dashed #cbd5e1;
+                    border-radius: 12px;
+                    font-size: 0.9375rem;
+                    color: #475569;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                }
+                .share-native-btn:hover { background: #e2e8f0; }
+                .share-divider { text-align: center; margin: 1rem 0 0.75rem; font-size: 0.8125rem; color: #94a3b8; }
+                .share-divider span { background: #fff; padding: 0 0.5rem; }
+                .share-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 0.75rem;
+                }
+                .share-option {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.35rem;
+                    padding: 0.75rem 0.5rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 14px;
+                    background: #fff;
+                    font-size: 0.75rem;
+                    color: #475569;
+                    cursor: pointer;
+                    transition: transform 0.15s, box-shadow 0.15s;
+                }
+                .share-option:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+                .share-option-icon {
+                    width: 40px; height: 40px;
+                    border-radius: 12px;
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 1.125rem;
+                }
+                .share-option[data-platform="facebook"] .share-option-icon { background: #1877f2; color: #fff; }
+                .share-option[data-platform="twitter"] .share-option-icon { background: #0f172a; color: #fff; }
+                .share-option[data-platform="whatsapp"] .share-option-icon { background: #25d366; color: #fff; }
+                .share-option[data-platform="telegram"] .share-option-icon { background: #0088cc; color: #fff; }
+            `;
+            document.head.appendChild(style);
+        }
         document.body.appendChild(shareModal);
         
-        // Event listeners
-        document.getElementById('copy_url_btn').addEventListener('click', function() {
-            const urlInput = document.getElementById('share_url');
-            urlInput.select();
-            document.execCommand('copy');
-            if (typeof alertify !== 'undefined') {
-                alertify.success('URL copiada al portapapeles');
+        var copyBtn = document.getElementById('copy_url_btn');
+        var copyText = copyBtn.querySelector('.share-copy-text');
+        var copyIcon = copyBtn.querySelector('.share-copy-icon');
+        var copyDone = copyBtn.querySelector('.share-copy-done');
+        copyBtn.addEventListener('click', function() {
+            var urlInput = document.getElementById('share_url');
+            var u = urlInput.value;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(u).then(function() {
+                    copyIcon.style.display = 'none';
+                    copyDone.style.display = '';
+                    copyText.textContent = '¡Copiado!';
+                    if (typeof alertify !== 'undefined') alertify.success('Enlace copiado');
+                    setTimeout(function() {
+                        copyIcon.style.display = '';
+                        copyDone.style.display = 'none';
+                        copyText.textContent = 'Copiar';
+                    }, 2000);
+                });
             } else {
-                alert('URL copiada');
+                urlInput.select();
+                document.execCommand('copy');
+                copyText.textContent = '¡Copiado!';
+                if (typeof alertify !== 'undefined') alertify.success('Enlace copiado');
+                setTimeout(function() { copyText.textContent = 'Copiar'; }, 2000);
             }
         });
         
-        // Botones de compartir
-        document.querySelectorAll('.share-btn').forEach(btn => {
+        document.querySelectorAll('#shareModal .share-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                const platform = this.getAttribute('data-platform');
-                const url = document.getElementById('share_url').value;
-                shareToPlatform(platform, url, titulo);
+                var platform = this.getAttribute('data-platform');
+                var currentUrl = document.getElementById('share_url').value;
+                var currentTitle = shareModal.getAttribute('data-share-title') || 'Publicación';
+                shareToPlatform(platform, currentUrl, currentTitle);
             });
         });
+        
+        var nativeWrap = document.getElementById('share_native_wrap');
+        var nativeBtn = document.getElementById('share_native_btn');
+        if (navigator.share) {
+            nativeWrap.style.display = 'block';
+            nativeBtn.addEventListener('click', function() {
+                var currentUrl = document.getElementById('share_url').value;
+                var currentTitle = shareModal.getAttribute('data-share-title') || 'Publicación';
+                navigator.share({ title: currentTitle, url: currentUrl }).then(function() {
+                    var m = bootstrap.Modal.getInstance(shareModal);
+                    if (m) m.hide();
+                }).catch(function() {});
+            });
+        }
     }
     
-    // Llenar URL
     document.getElementById('share_url').value = url;
+    shareModal.setAttribute('data-share-title', titulo);
     
-    // Mostrar modal
-    const modal = new bootstrap.Modal(shareModal);
+    var modal = new bootstrap.Modal(shareModal);
     modal.show();
 }
 

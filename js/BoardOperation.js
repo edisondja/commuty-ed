@@ -401,8 +401,12 @@ window.onload=function(){
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
-                            <video src='${media}' controls class='multimedia-preview'></video>
+                            <video src='${media}' controls class='multimedia-preview js-plyr-video' playsinline></video>
                         </div>`;
+                        if (typeof Plyr !== 'undefined') {
+                            var lastVideo = document.querySelector('#multimedia_view .multimedia-item:last-child video.js-plyr-video');
+                            if (lastVideo && !lastVideo.plyr) try { new Plyr(lastVideo); } catch (e) {}
+                        }
                 }
 
              
@@ -951,6 +955,51 @@ window.onload=function(){
 
     if(transfer_video){
 
+        function setTransferStep(stepNum, state, extraMessage) {
+            var el = document.querySelector('#transferStep' + stepNum);
+            if (!el) return;
+            var icon = el.querySelector('.step-icon');
+            var label = el.querySelector('.step-label');
+            var extra = el.querySelector('.step-extra');
+            if (!icon || !label) return;
+            extra = extra || el.querySelector('.step-extra');
+            if (extra) { extra.classList.add('d-none'); extra.textContent = ''; }
+            if (state === 'pending') {
+                icon.innerHTML = '<i class="fa-solid fa-circle fa-fw small text-muted"></i>';
+                el.classList.remove('list-group-item-success', 'list-group-item-danger', 'list-group-item-warning');
+            } else if (state === 'loading') {
+                icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin fa-fw text-primary"></i>';
+                el.classList.add('list-group-item-warning');
+                el.classList.remove('list-group-item-success', 'list-group-item-danger');
+            } else if (state === 'ok') {
+                icon.innerHTML = '<i class="fa-solid fa-circle-check fa-fw text-success"></i>';
+                el.classList.add('list-group-item-success');
+                el.classList.remove('list-group-item-danger', 'list-group-item-warning');
+            } else if (state === 'error') {
+                icon.innerHTML = '<i class="fa-solid fa-circle-xmark fa-fw text-danger"></i>';
+                el.classList.add('list-group-item-danger');
+                el.classList.remove('list-group-item-success', 'list-group-item-warning');
+                if (extra && extraMessage) { extra.textContent = extraMessage; extra.classList.remove('d-none'); }
+            }
+        }
+
+        function showTransferTracking(show) {
+            var track = document.querySelector('#transferTracking');
+            if (track) track.classList.toggle('d-none', !show);
+        }
+
+        function resetTransferSteps() {
+            [1, 2, 3].forEach(function(n) {
+                setTransferStep(n, 'pending');
+                var el = document.querySelector('#transferStep' + n);
+                if (el) {
+                    var labels = ['Obteniendo URL del video (API videosegg.com)...', 'Guardando en tu tablero y encolando...', 'Listo. El video se procesará en segundo plano.'];
+                    var l = el.querySelector('.step-label');
+                    if (l && labels[n - 1]) l.textContent = labels[n - 1];
+                }
+            });
+        }
+
         transfer_video.addEventListener('click',function(){
 
                 let plataforma = document.querySelector('#platformSelect').value;
@@ -967,24 +1016,40 @@ window.onload=function(){
                     return;
                 }
 
-                // Usar proxy en nuestro backend para evitar CORS en producción (la API externa no permite origen cruzado)
+                showTransferTracking(true);
+                resetTransferSteps();
+                var step1Label = document.querySelector('#transferStep1 .step-label');
+                if (step1Label) {
+                    step1Label.textContent = (plataforma === 'reddit')
+                        ? 'Obteniendo video desde Reddit...'
+                        : 'Obteniendo URL del video (API)...';
+                }
+                setTransferStep(1, 'loading');
+
+                // Paso 1: Proxy obtiene url_video (Reddit = API .json; otras = API_TRANSFER_VIDEO)
                 var formProxy = new FormData();
                 formProxy.append('action', 'get_transfer_video_url');
                 formProxy.append('ruta', url_video);
+                formProxy.append('plataforma', plataforma);
 
                 axios.post(baseUrl + '/controllers/actions_board.php', formProxy, {
                     headers: { 'Authorization': 'Bearer ' + token_get }
                 }).then(function(info) {
                     if (info.data.status === 'error') {
-                        alertify.error(info.data.message || 'Error al obtener la URL del video');
-                        return;
+                        setTransferStep(1, 'error', info.data.message || 'La API de videosegg.com no respondió correctamente.');
+                        alertify.error(info.data.message || 'Error al obtener la URL del video (revisa el endpoint videosegg.com)');
+                        return Promise.reject({ step: 1, handled: true });
                     }
-                    let ruta_limpia = info.data.url_video;
+                    var ruta_limpia = info.data.url_video;
                     if (!ruta_limpia) {
+                        setTransferStep(1, 'error', 'La API no devolvió url_video.');
                         alertify.error('La API no devolvió una URL de video válida');
-                        return;
+                        return Promise.reject({ step: 1, handled: true });
                     }
-                    const form = new FormData();
+                    setTransferStep(1, 'ok');
+                    setTransferStep(2, 'loading');
+
+                    var form = new FormData();
                     form.append('action', 'save_transferred_video');
                     form.append('id_user', document.querySelector('#id_usuario').value);
                     form.append('media', ruta_limpia);
@@ -994,15 +1059,25 @@ window.onload=function(){
                         headers: { 'Authorization': 'Bearer ' + token_get }
                     });
                 }).then(function(response) {
-                    if (response && response.data) {
-                        alertify.message('Video transferido y guardado correctamente');
-                    }
+                    setTransferStep(2, 'ok');
+                    setTransferStep(3, 'ok');
+                    alertify.success('Video transferido y guardado correctamente. Se procesará en segundo plano.');
                 }).catch(function(error) {
+                    if (error && error.step === 1 && error.handled) return;
                     console.error('Error en transferencia de video:', error);
-                    var msg = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : 'Error al transferir el video';
-                    alertify.error(msg);
+                    var msg = (error.response && error.response.data && error.response.data.message) ? error.response.data.message : (error.message || 'Error al transferir el video');
+                    var step1Ok = document.querySelector('#transferStep1 .fa-circle-check');
+                    if (!step1Ok) {
+                        setTransferStep(1, 'error', msg);
+                        if (msg.indexOf('Network') !== -1 || !error.response) {
+                            alertify.error('No se pudo conectar con el servidor (revisa videosegg.com o tu conexión).');
+                        } else { alertify.error(msg); }
+                    } else {
+                        setTransferStep(2, 'error', msg);
+                        alertify.error(msg);
+                    }
                 });
-          });    
+          });
     }
 }
 

@@ -496,3 +496,15 @@ Enviando multimedia a procesar para Board: 27
 ⚠️ Respuesta no es JSON válido: <br />
 <b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
 {"ok":true,"mensaje":"Archivo encolado para
+26-02-18 09:46:04 Cerrando sesion 
+26-02-18 09:48:12Inicio de sesion usaurio ed_admin
+🚀 Iniciando procesamiento multimedia - Board: 82, Tipo: transfer_video, Token: req_6996695c801f69.66747904
+📋 Datos: {"board_id":82,"tipo_archivo":"transfer_video","token_unico":"req_6996695c801f69.66747904","timestamp":"2026-02-19 02:37:32"}
+🌐 URL Producer: http://localhost/commuty-ed/producer_service.php
+🌐 DOMAIN config: http://localhost/commuty-ed
+📤 Enviando video transfer - URL: https://v.redd.it/enxxsuo5xko31/DASH_720?source=fallback
+✅ Respuesta recibida - HTTP Code: 200, Duración: 20.5ms
+📊 Info cURL: {"http_code":200,"total_time":0.02045500000000000095923269327613525092601776123046875,"size_upload":543,"size_download":216}
+⚠️ Respuesta no es JSON válido: <br />
+<b>Warning</b>:  Illegal string offset 'name' in <b>/Applications/XAMPP/xamppfiles/htdocs/commuty-ed/producer_service.php</b> on line <b>28</b><br />
+{"ok":true,"mensaje":"Archivo encolado para

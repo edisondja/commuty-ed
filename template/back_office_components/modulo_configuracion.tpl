@@ -61,16 +61,22 @@
                     <div class="bo-card-body">
                         <div class="mb-4">
                             <label class="bo-label">Logo del Sitio</label>
-                            <div class="text-center mb-2">
-                                <img id="logo_img" src="" alt="Logo" style="max-width: 200px; height: 50px; object-fit: contain; background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px;">
+                            <p class="bo-label-small text-muted mb-1">Logo actual (el que ve el usuario)</p>
+                            <div class="config-preview-wrap config-preview-logo mb-2">
+                                <img id="logo_img" src="" alt="Logo actual" class="config-logo-img" onerror="this.style.display='none'; this.nextElementSibling && (this.nextElementSibling.style.display='flex');">
+                                <span class="config-no-image" id="logo_placeholder" style="display: none;">Sin logo cargado</span>
                             </div>
                             <input type="file" class="form-control" id="sitio_logo" accept="image/*">
                             <small style="color: rgba(255,255,255,0.5);">Recomendado: 230x50 px</small>
                         </div>
                         <div class="mb-3">
                             <label class="bo-label">Favicon</label>
+                            <p class="bo-label-small text-muted mb-1">Favicon actual (icono de la pestaña)</p>
                             <div class="d-flex align-items-center gap-3 mb-2">
-                                <img id="favicon_img" src="" alt="Favicon" style="width: 32px; height: 32px; border-radius: 4px;">
+                                <div class="config-preview-wrap config-preview-favicon">
+                                    <img id="favicon_img" src="" alt="Favicon actual" class="config-favicon-img" onerror="this.style.display='none'; this.nextElementSibling && (this.nextElementSibling.style.display='flex');">
+                                    <span class="config-no-image config-no-image-sm" id="favicon_placeholder" style="display: none;">Sin favicon</span>
+                                </div>
                                 <span style="color: rgba(255,255,255,0.5);">Vista previa</span>
                             </div>
                             <input type="file" class="form-control" id="favicon" accept="image/*">
@@ -249,6 +255,45 @@
     </div>
 </div>
 
+<style>
+.bo-label-small { font-size: 0.8125rem; margin-bottom: 0.25rem; }
+.config-preview-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 10px;
+    min-height: 60px;
+}
+.config-preview-logo { min-height: 70px; padding: 12px; }
+.config-logo-img {
+    max-width: 100%;
+    max-height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+.config-preview-favicon {
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 6px;
+}
+.config-favicon-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+.config-no-image {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+.config-no-image-sm { font-size: 0.75rem; }
+</style>
 <script>
 function mostrarTab(tab) {
     // Ocultar todos los paneles

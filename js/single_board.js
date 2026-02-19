@@ -45,77 +45,8 @@ function like(id_board, id_user) {
 
 }
 
-let likes = document.querySelector('#like');
-
-
-likes.addEventListener('click', function (key) {
-
-    let FormDatas = new FormData();
-    FormDatas.append('action', 'save_like');
-    FormDatas.append('id_usuario', id_usuario);
-    FormDatas.append('id_tablero', id_tablero);
-
-    //  alert(action_comment);
-    axios.post(baseUrl + '/controllers/actions_board.php', FormDatas, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-        }
-
-    }).then(data => {
-
-        //capturando los likes
-        let like_c = document.querySelector('#likes_c');
-        let cantidad_likes = parseInt(like_c.innerHTML);
-
-
-        switch (data.data.trim()) {
-
-            case '_success':
-                /*La primera vez que se guarda el like*/
-                likes.classList.replace("fa-regular", "fa-solid");
-                cantidad_likes += 1;
-                console.log('entro al succes primer comentario');
-                break;
-
-
-            case 'inactivo_success':
-
-                /*Si ya existe un like con este usuario  y pulsa de nuevo se desactiva 
-                 el servidor debe de devolver este estado.
-                */
-                likes.classList.replace("fa-solid", "fa-regular");
-                cantidad_likes -= 1;
-
-                console.log('entro a inactivar el comentario');
-
-                break;
-
-            case 'activo_success':
-
-                cantidad_likes += 1;
-                likes.classList.replace("fa-regular", "fa-solid");
-                console.log('entro a activar el comentario');
-
-                /*
-                 Se vuelva a activar el like del usuario luego de aquitarlo       
-                */
-
-                break;
-
-
-        }
-
-        like_c.innerHTML = cantidad_likes;
-
-    }).catch(error => {
-
-        console.log(error);
-
-    });
-
-
-});
+// Like: manejado por board_interactions.js (listener en .like-icon con data-tablero)
+// para que funcione tanto en listado como en la vista de publicación individual.
 
 
 function guardar_comentario(id_usuario, id_tablero, texto, tipo_post) {
