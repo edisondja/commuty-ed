@@ -277,6 +277,7 @@
               <input type='hidden' value='{$foto_perfil}' id='foto_perfil'/>
               <input type='hidden' value='0' class='user_update'/>
               <input type='hidden' value='{$user_session}' id='nombre_usuario'/>
+              <input type='hidden' value='0' id='id_usuario'/>
           {/if} 
 
           <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
@@ -503,7 +504,7 @@
                     {elseif $content_config=='profile'}
                         {include file="profile.tpl"}
                         {assign var="counter" value=false}
-
+                        <script type="text/javascript" src="{$dominio}/js/board_interactions.js"></script>
                         <!--  include template for user-->
                     {elseif $content_config=='registrer'}
 

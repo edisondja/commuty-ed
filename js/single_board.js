@@ -29,24 +29,56 @@ var comentarios = [
 ];
 
 
-function like(id_board, id_user) {
-
-    axiso.post({
-
-
-    }).then(data => {
-
-
-    }).catch(error => {
-
-
-    });
-
-
+/**
+ * Like en vista de post individual: envía save_like al backend y actualiza icono y contador.
+ */
+function likeSingleBoard() {
+    var likeEl = document.getElementById('like');
+    var idTableroEl = document.getElementById('id_tablero');
+    var idUsuarioEl = document.getElementById('id_usuario');
+    var likesC = document.getElementById('likes_c');
+    if (!likeEl || !idTableroEl || !idUsuarioEl) return;
+    var idUsuario = idUsuarioEl.value;
+    if (!idUsuario || idUsuario === '0') {
+        if (typeof alertify !== 'undefined') alertify.warning('Debes iniciar sesión para dar me gusta');
+        else alert('Debes iniciar sesión para dar me gusta');
+        return;
+    }
+    var idTablero = idTableroEl.value;
+    var formData = new FormData();
+    formData.append('action', 'save_like');
+    formData.append('id_tablero', idTablero);
+    formData.append('id_usuario', idUsuario);
+    axios.post(baseUrl + '/controllers/actions_board.php', formData)
+        .then(function(response) {
+            var data = response.data;
+            var delta = 0;
+            if (data && typeof data === 'string') {
+                var text = data.trim();
+                if (text === '_success' || text === 'activo_success') {
+                    delta = 1;
+                    likeEl.classList.remove('fa-regular');
+                    likeEl.classList.add('fa-solid');
+                    likeEl.style.color = '#20c997';
+                } else if (text === 'inactivo_success') {
+                    delta = -1;
+                    likeEl.classList.remove('fa-solid');
+                    likeEl.classList.add('fa-regular');
+                    likeEl.style.color = '';
+                }
+            }
+            if (likesC && delta !== 0) {
+                var txt = likesC.textContent || '';
+                var num = parseInt(txt.replace(/\D/g, ''), 10) || 0;
+                num = Math.max(0, num + delta);
+                likesC.textContent = num;
+            }
+        })
+        .catch(function(error) {
+            console.error('Error dando like:', error);
+            if (typeof alertify !== 'undefined') alertify.error('Error al dar me gusta');
+        });
 }
-
-// Like: manejado por board_interactions.js (listener en .like-icon con data-tablero)
-// para que funcione tanto en listado como en la vista de publicación individual.
 
 
 function guardar_comentario(id_usuario, id_tablero, texto, tipo_post) {
@@ -346,8 +378,18 @@ function cargar_comentarios(id_tablero) {
 
 
 
-// Inicializar sistema de comentarios
+// Inicializar sistema de comentarios y like (vista post individual)
 document.addEventListener('DOMContentLoaded', function() {
+    // Like en vista single: botón #like
+    var likeBtn = document.getElementById('like');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            likeSingleBoard();
+        });
+    }
+
     const enviar_comentario = document.getElementById('send_coment');
     let id_tablero = null;
     

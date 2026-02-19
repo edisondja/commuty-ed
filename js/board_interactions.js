@@ -232,15 +232,15 @@ function initLikeBoard() {
     // Usar delegación de eventos para los likes
     document.addEventListener('click', function(e) {
         if (e.target.closest('.like-icon')) {
+            const likeIcon = e.target.closest('.like-icon');
+            // En vista de post individual el like lo maneja single_board.js (#like + #likes_c)
+            if (likeIcon.id === 'like' && document.getElementById('likes_c')) return;
             e.preventDefault();
             e.stopPropagation();
-            
-            const likeIcon = e.target.closest('.like-icon');
             const idTablero = likeIcon.getAttribute('data-tablero') || (() => {
                 const boardCard = likeIcon.closest('.card-board');
                 return boardCard ? boardCard.id.replace('board', '') : null;
             })();
-            
             if (idTablero) {
                 toggleLike(idTablero, likeIcon);
             }
@@ -281,13 +281,11 @@ function toggleLike(idTablero, likeIcon) {
                     likeIcon.classList.remove('fa-regular');
                     likeIcon.classList.add('fa-solid');
                     likeIcon.style.color = '#20c997';
-                    if (typeof alertify !== 'undefined') alertify.success('Me gusta agregado');
                 } else if (responseText === 'inactivo_success') {
                     delta = -1;
                     likeIcon.classList.remove('fa-solid');
                     likeIcon.classList.add('fa-regular');
                     likeIcon.style.color = '#20c997';
-                    if (typeof alertify !== 'undefined') alertify.message('Me gusta removido');
                 }
             } else if (data && typeof data === 'object') {
                 if (data.success || data.status === 'activo') {
