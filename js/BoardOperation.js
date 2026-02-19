@@ -221,28 +221,15 @@ window.onload=function(){
 
 
     
-    login.addEventListener('click',function(){
-
-        let usuario =  document.querySelector('#usuario').value;
-        let clave =  document.querySelector('#clave').value;
-
+    function enviarLogin(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        let usuario = document.querySelector('#usuario').value;
+        let clave = document.querySelector('#clave').value;
         let FormDatas = new FormData();
-        FormDatas.append('action','login');
-        FormDatas.append('usuario',usuario);
-        FormDatas.append('clave',clave);
-
-       // localStorage.setItem('myCat', 'Tom');
-       //const cat = localStorage.getItem('myCat');
-       //localStorage.clear();
-        /*
-        headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token}`
-                 
-              }
-        */
-
-        axios.post(`controllers/actions_board.php`,FormDatas).then(data=>{
+        FormDatas.append('action', 'login');
+        FormDatas.append('usuario', usuario);
+        FormDatas.append('clave', clave);
+        axios.post((baseUrl || '') + '/controllers/actions_board.php', FormDatas).then(data=>{
 
 
 
@@ -273,13 +260,14 @@ window.onload=function(){
             localStorage.setItem('token',token);*/
 
         }).catch(error=>{
-
             alertify.warning(error);
-
         });
+    }
 
-
-    });
+    var loginForm = document.querySelector('#loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', enviarLogin);
+    }
 
 
     document.querySelector('#update_changes').addEventListener('click', function(event) {

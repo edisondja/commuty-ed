@@ -11,7 +11,8 @@
         <button type="button" class="btn-close btn-close-white login-modal-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body login-modal-body">
-        <form id="loginForm" class="login-form-modern">
+        <form id="loginForm" class="login-form-modern" method="post" action="{$dominio}/controllers/actions_board.php">
+          <input type="hidden" name="action" value="login">
           <div class="login-field">
             <label for="usuario" class="login-label">Usuario</label>
             <div class="login-input-wrap">
