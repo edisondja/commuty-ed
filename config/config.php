@@ -46,6 +46,11 @@
         define('FFMPEG_NICE', 5);
     }
 
+    # Google Tag Manager (GTM): ID del contenedor. Definir GTM_ID en el entorno para sobreescribir.
+    if (!defined('GTM_ID')) {
+        define('GTM_ID', getenv('GTM_ID') !== false ? getenv('GTM_ID') : 'GTM-WWQ5SQGF');
+    }
+
     #api_tranfer_video 
     define("API_TRANSFER_VIDEO","https://videosegg.com/download_video.php");
     /*El retorno debe de ser asi 

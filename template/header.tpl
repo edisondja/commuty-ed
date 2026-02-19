@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
+    {if $gtm_id|trim != ''}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{$gtm_id}');</script>
+    <!-- End Google Tag Manager -->
+    {/if}
   {literal}
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KBJQB4PRQ2"></script>
@@ -210,7 +219,12 @@
 
   </head>
   <body style='background:#151c1b;'>
-    
+    {if $gtm_id|trim != ''}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={$gtm_id}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {/if}
     <input type='hidden' id="api_transfer_video" value='{$api_transfer_video}'>
     <input type='hidden' value='{$dominio}' id='dominio'/> 
     <input type='hidden' id='paginador_scroll'  value='{$paginador_scroll}'/>

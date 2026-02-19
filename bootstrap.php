@@ -203,6 +203,7 @@
         
         $smarty->assign('email_sitio', $config_data->email_sitio ?? MAIL_SITE);
         $smarty->assign('google_analytics_id', $config_data->google_analytics_id ?? '');
+        $smarty->assign('gtm_id', defined('GTM_ID') ? GTM_ID : '');
         
         // Asignar dominio a Smarty (ya actualizado desde BD)
         $smarty->assign('dominio', $dominio);
